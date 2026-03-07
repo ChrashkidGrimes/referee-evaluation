@@ -190,9 +190,7 @@
   .ifa-footer-text { font-size:10px; color:rgba(255,255,255,0.55); letter-spacing:0.5px; line-height:1.6; }
 
   /* Language selector */
-  .lang-sel { display:flex; gap:4px; align-items:center; margin-left:4px; }
-  .lang-btn { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:6px; color:rgba(255,255,255,0.75); cursor:pointer; font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:1px; padding:4px 9px; text-transform:uppercase; transition:all 0.18s; }
-  .lang-btn.active { background:var(--ifa-accent); border-color:var(--ifa-accent); color:white; }
+  .lang-sel { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:6px; color:white; cursor:pointer; font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.5px; padding:5px 8px; outline:none; flex-shrink:0; -webkit-appearance:none; appearance:none; }
 
   /* Speech not supported notice */
   .stt-notice { font-size:11px; color:var(--ifa-muted); background:var(--ifa-gray2); border-radius:6px; padding:6px 10px; margin-top:8px; display:none; }
@@ -213,13 +211,13 @@
       <p>International Referee Commission</p>
     </div>
     <div class="header-step" id="stepCounter">1 / 3</div>
-    <div class="lang-sel">
-      <button class="lang-btn active" id="lang-en" onclick="setLanguage('en')">EN</button>
-      <button class="lang-btn" id="lang-de" onclick="setLanguage('de')">DE</button>
-      <button class="lang-btn" id="lang-es" onclick="setLanguage('es')">ES</button>
-      <button class="lang-btn" id="lang-pt" onclick="setLanguage('pt')">PT</button>
-      <button class="lang-btn" id="lang-it" onclick="setLanguage('it')">IT</button>
-    </div>
+    <select id="langSelect" class="lang-sel" onchange="setLanguage(this.value)">
+      <option value="en">EN</option>
+      <option value="de">DE</option>
+      <option value="es">ES</option>
+      <option value="pt">PT</option>
+      <option value="it">IT</option>
+    </select>
   </div>
   <div class="progress-wrap"><div class="progress-fill" id="progressBar" style="width:33%"></div></div>
   <div class="nav-dots" id="navDots"></div>
@@ -611,8 +609,7 @@ function t(key) { return TRANSLATIONS[currentLang][key] ?? key; }
 
 function setLanguage(lang) {
   currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('lang-'+lang).classList.add('active');
+  document.getElementById('langSelect').value = lang;
   applyTranslations();
 }
 
@@ -927,7 +924,6 @@ function renderResult() {
       <div class="chip"><div class="chip-label">${t('labelPlace')}</div><div class="chip-value" style="font-size:12px">${escapeHtml(place)}</div></div>
       ${(document.getElementById('teamHome').value||document.getElementById('teamAway').value) ? `<div class="chip"><div class="chip-label">${t('labelTeams')}</div><div class="chip-value" style="font-size:11px">${escapeHtml(document.getElementById('teamHome').value||'?')} vs ${escapeHtml(document.getElementById('teamAway').value||'?')}</div></div>` : ''}
       <div class="chip"><div class="chip-label">${t('labelDifficulty')}</div><div class="chip-value">${selectedDiff ? t('diff'+selectedDiff) : '—'}</div></div>
-      <div class="chip"><div class="chip-label">${t('weight')}</div><div class="chip-value">${TOTAL_WEIGHT}</div></div>
     </div>
 
     ${warnings?`<div class="warn-box"><div class="warn-box-title">${t('warningTitle')}</div>${warnings}</div>`:''}
