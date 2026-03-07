@@ -470,7 +470,7 @@ function toggleRecording(id) {
 
   const recognition = new SpeechRecognition();
   recognition.continuous = true;
-  recognition.interimResults = true;
+  recognition.interimResults = false;
   recognition.lang = navigator.language || 'en-US';
 
   let baseText = textarea.value;
@@ -485,17 +485,15 @@ function toggleRecording(id) {
   };
 
   recognition.onresult = (e) => {
-    let interim = '';
-    let final = '';
     for(let i = e.resultIndex; i < e.results.length; i++) {
-      const t = e.results[i][0].transcript;
-      if(e.results[i].isFinal) final += t;
-      else interim += t;
+      if(e.results[i].isFinal) {
+        const t = e.results[i][0].transcript.trim();
+        if(t) baseText += (baseText && !baseText.endsWith(' ') ? ' ' : '') + t;
+      }
     }
-    if(final) baseText += (baseText && !baseText.endsWith(' ') ? ' ' : '') + final;
-    textarea.value = baseText + (interim ? ' ' + interim : '');
-    if(isRemarks) remarksHints = textarea.value;
-    else { notes[id] = textarea.value; saveNote(id); }
+    textarea.value = baseText;
+    if(isRemarks) remarksHints = baseText;
+    else { notes[id] = baseText; saveNote(id); }
   };
 
   recognition.onerror = (e) => {
