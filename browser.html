@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>IFA Evaluation Browser</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3/dist/index.min.js"></script>
+<script src="https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js"></script>
 <style>
   :root {
     --ifa-blue: #003A70;
@@ -278,7 +278,6 @@ let debounceTimer = null;
 
 // ── INIT ──
 async function init() {
-  await pca.initialize();
   try { await pca.handleRedirectPromise(); } catch(e) {}
   const accounts = pca.getAllAccounts();
   if (accounts.length > 0) {
