@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>IFA Evaluation Browser</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3/dist/index.min.js"></script>
+<style>
+  :root {
+    --ifa-blue: #003A70;
+    --ifa-blue-mid: #005098;
+    --ifa-blue-light: #0069B4;
+    --ifa-accent: #009FE3;
+    --ifa-gray: #F4F6F9;
+    --ifa-gray2: #E8ECF0;
+    --ifa-border: #C8D4E0;
+    --ifa-text: #1a2a3a;
+    --ifa-muted: #6b7f99;
+    --danger: #D0021B;
+    --success: #1B7B34;
+    --radius: 10px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  body { font-family:'Roboto',sans-serif; background:var(--ifa-gray); color:var(--ifa-text); min-height:100vh; padding-bottom:40px; }
+
+  /* ── HEADER ── */
+  .header { background:linear-gradient(160deg,var(--ifa-blue) 0%,var(--ifa-blue-mid) 100%); position:sticky; top:0; z-index:100; box-shadow:0 3px 16px rgba(0,58,112,0.35); }
+  .header-main { display:flex; align-items:center; gap:14px; padding:12px 16px 10px; }
+  .header-logos { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .header-logos img { height:42px; width:auto; object-fit:contain; }
+  .header-divider { width:1px; height:36px; background:rgba(255,255,255,0.25); }
+  .header-text { flex:1; min-width:0; }
+  .header-text h1 { font-family:'Oswald',sans-serif; font-size:17px; font-weight:700; letter-spacing:0.5px; color:white; text-transform:uppercase; line-height:1.2; }
+  .header-text p { font-size:10px; color:rgba(255,255,255,0.6); letter-spacing:1.2px; text-transform:uppercase; margin-top:2px; }
+  .header-user { font-size:11px; color:rgba(255,255,255,0.75); font-family:'Oswald',sans-serif; letter-spacing:0.5px; flex-shrink:0; display:none; text-align:right; }
+  .header-user span { display:block; font-size:9px; color:rgba(255,255,255,0.45); text-transform:uppercase; letter-spacing:1px; }
+  .btn-signout { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:6px; color:rgba(255,255,255,0.8); cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.5px; padding:5px 10px; flex-shrink:0; display:none; }
+  .btn-signout:active { background:rgba(255,255,255,0.22); }
+
+  /* ── LOGIN SCREEN ── */
+  #login-screen { display:none; min-height:calc(100vh - 70px); display:flex; align-items:center; justify-content:center; padding:24px 16px; }
+  .login-card { background:white; border:1px solid var(--ifa-border); border-radius:16px; box-shadow:0 4px 24px rgba(0,58,112,0.12); max-width:380px; width:100%; padding:36px 28px; text-align:center; }
+  .login-logo { height:48px; margin-bottom:20px; }
+  .login-title { font-family:'Oswald',sans-serif; font-size:22px; font-weight:700; color:var(--ifa-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+  .login-sub { font-size:13px; color:var(--ifa-muted); line-height:1.5; margin-bottom:28px; }
+  .btn-ms { align-items:center; background:var(--ifa-blue); border:none; border-radius:8px; box-shadow:0 3px 12px rgba(0,58,112,0.3); color:white; cursor:pointer; display:inline-flex; font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; gap:10px; justify-content:center; letter-spacing:0.5px; padding:14px 24px; text-transform:uppercase; width:100%; }
+  .btn-ms:active { transform:scale(0.98); }
+  .ms-icon { width:20px; height:20px; flex-shrink:0; }
+  #login-error { color:var(--danger); font-size:12px; margin-top:14px; display:none; }
+
+  /* ── MAIN APP ── */
+  #app { display:none; padding:16px 14px 0; }
+
+  /* ── FILTER BAR ── */
+  .filters-card { background:white; border:1px solid var(--ifa-border); border-radius:var(--radius); box-shadow:0 1px 6px rgba(0,58,112,0.07); margin-bottom:12px; padding:14px; }
+  .filters-title { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; color:var(--ifa-blue-light); text-transform:uppercase; margin-bottom:12px; }
+  .filters-row { display:grid; gap:10px; margin-bottom:10px; grid-template-columns:1fr 1fr; }
+  .filters-row:last-child { margin-bottom:0; }
+  .filters-row.single { grid-template-columns:1fr; }
+  .f-label { font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--ifa-muted); margin-bottom:5px; display:block; }
+  .f-input { width:100%; background:var(--ifa-gray); border:1.5px solid var(--ifa-border); border-radius:8px; color:var(--ifa-text); font-family:'Roboto',sans-serif; font-size:15px; padding:10px 12px; outline:none; transition:border-color 0.2s; -webkit-appearance:none; appearance:none; }
+  .f-input:focus { border-color:var(--ifa-blue-light); background:white; }
+  .f-btn-clear { background:var(--ifa-gray); border:1.5px solid var(--ifa-border); border-radius:8px; color:var(--ifa-muted); cursor:pointer; font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.5px; padding:10px 14px; text-transform:uppercase; white-space:nowrap; }
+  .f-btn-clear:active { background:var(--ifa-gray2); }
+
+  /* ── STATS BAR ── */
+  .stats-bar { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .stat-chip { background:white; border:1px solid var(--ifa-border); border-radius:8px; flex:1; min-width:60px; padding:9px 8px; text-align:center; box-shadow:0 1px 4px rgba(0,58,112,0.06); }
+  .stat-chip-label { font-size:9px; color:var(--ifa-muted); text-transform:uppercase; letter-spacing:1px; font-weight:700; }
+  .stat-chip-value { font-family:'Oswald',sans-serif; font-size:16px; font-weight:600; color:var(--ifa-blue); margin-top:2px; }
+  .stat-chip.it1 .stat-chip-value { color:var(--success); }
+  .stat-chip.it2 .stat-chip-value { color:var(--ifa-blue-light); }
+  .stat-chip.nq  .stat-chip-value { color:var(--danger); }
+
+  /* ── STATES ── */
+  .state-box { background:white; border:1px solid var(--ifa-border); border-radius:var(--radius); padding:32px 20px; text-align:center; margin-bottom:12px; }
+  .state-box-icon { font-size:32px; margin-bottom:12px; }
+  .state-box-title { font-family:'Oswald',sans-serif; font-size:16px; font-weight:600; color:var(--ifa-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+  .state-box-sub { font-size:13px; color:var(--ifa-muted); line-height:1.5; }
+
+  /* ── EVALUATION CARDS ── */
+  .eval-card { background:white; border:1px solid var(--ifa-border); border-left:4px solid var(--ifa-border); border-radius:var(--radius); box-shadow:0 1px 6px rgba(0,58,112,0.07); margin-bottom:12px; overflow:hidden; transition:border-left-color 0.2s; }
+  .eval-card.it1 { border-left-color:var(--success); }
+  .eval-card.it2 { border-left-color:var(--ifa-blue-light); }
+  .eval-card.nq  { border-left-color:var(--danger); }
+
+  .eval-card-main { padding:14px 14px 12px; cursor:pointer; user-select:none; }
+  .eval-top { display:flex; align-items:flex-start; gap:10px; margin-bottom:8px; }
+  .eval-name { font-family:'Oswald',sans-serif; font-size:18px; font-weight:700; color:var(--ifa-blue); text-transform:uppercase; letter-spacing:0.3px; flex:1; line-height:1.2; }
+  .eval-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+  .eval-score { font-family:'Oswald',sans-serif; font-size:22px; font-weight:700; color:var(--ifa-blue); line-height:1; }
+  .eval-score span { font-size:13px; color:var(--ifa-muted); font-weight:400; }
+  .verdict-badge { border-radius:6px; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; letter-spacing:1.5px; padding:3px 10px; text-transform:uppercase; color:white; }
+  .vb-it1 { background:var(--success); }
+  .vb-it2 { background:var(--ifa-blue-light); }
+  .vb-nq  { background:var(--danger); }
+
+  .eval-meta { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .eval-tag { background:var(--ifa-gray); border-radius:5px; color:var(--ifa-muted); font-size:11px; font-weight:600; letter-spacing:0.3px; padding:3px 8px; }
+  .eval-tag.country { background:rgba(0,80,152,0.08); border:1px solid rgba(0,80,152,0.18); color:var(--ifa-blue-mid); font-family:'Oswald',sans-serif; letter-spacing:1px; }
+
+  /* Score mini-bars */
+  .score-bars { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .score-bar-item { }
+  .score-bar-label { font-size:9px; color:var(--ifa-muted); text-transform:uppercase; letter-spacing:0.5px; font-weight:700; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .score-bar-track { background:var(--ifa-gray2); border-radius:99px; height:6px; overflow:hidden; }
+  .score-bar-fill { border-radius:99px; height:6px; transition:width 0.3s; }
+  .score-bar-val { font-family:'Oswald',sans-serif; font-size:10px; font-weight:600; color:var(--ifa-muted); margin-top:2px; }
+  .fill-5{background:#1B7B34;} .fill-4{background:#4CAF50;} .fill-35{background:#8BC34A;}
+  .fill-3{background:#E8A000;} .fill-2{background:#E06000;} .fill-1{background:#D0021B;}
+
+  /* Expand toggle */
+  .eval-expand-btn { border-top:1px solid var(--ifa-gray2); display:flex; align-items:center; justify-content:center; gap:6px; padding:8px 14px; cursor:pointer; }
+  .eval-expand-label { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--ifa-muted); }
+  .eval-expand-arrow { color:var(--ifa-muted); font-size:10px; transition:transform 0.2s; }
+  .eval-expand-arrow.open { transform:rotate(180deg); }
+
+  /* Detail section */
+  .eval-detail { display:none; padding:14px; border-top:1px solid var(--ifa-gray2); background:var(--ifa-gray); }
+  .eval-detail.open { display:block; }
+  .detail-section { margin-bottom:12px; }
+  .detail-section:last-child { margin-bottom:0; }
+  .detail-section-title { font-family:'Oswald',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; color:var(--ifa-accent); text-transform:uppercase; margin-bottom:8px; }
+  .detail-crit-row { border-bottom:1px solid var(--ifa-border); display:flex; gap:10px; padding:8px 0; }
+  .detail-crit-row:last-child { border-bottom:none; }
+  .detail-crit-name { font-size:12px; font-weight:600; color:var(--ifa-blue); min-width:120px; flex-shrink:0; }
+  .detail-crit-score { font-family:'Oswald',sans-serif; font-size:16px; font-weight:700; color:var(--ifa-blue); flex-shrink:0; min-width:30px; }
+  .detail-crit-notes { color:var(--ifa-muted); font-size:12px; flex:1; font-style:italic; line-height:1.5; }
+  .detail-remarks { background:white; border:1px solid var(--ifa-border); border-radius:8px; color:var(--ifa-text); font-size:13px; line-height:1.6; padding:10px 12px; }
+  .detail-evaluator { color:var(--ifa-muted); font-size:11px; text-align:right; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-main">
+    <div class="header-logos">
+      <img src="https://ifa.fistball.sport/wp-content/uploads/2025/03/IFA-simple_white_quer.png" alt="IFA"
+           onerror="this.outerHTML='<span style=\'font-family:Oswald,sans-serif;font-size:18px;font-weight:700;color:white;letter-spacing:1px;\'>IFA</span>'">
+    </div>
+    <div class="header-divider"></div>
+    <div class="header-text">
+      <h1>Evaluation Browser</h1>
+      <p>International Referee Commission</p>
+    </div>
+    <div class="header-user" id="header-user">
+      <span>Signed in as</span>
+      <span id="user-name"></span>
+    </div>
+    <button class="btn-signout" id="btn-signout" onclick="signOut()">Sign out</button>
+  </div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <img class="login-logo" src="https://ifa.fistball.sport/wp-content/uploads/2025/03/IFA-simple_white_quer.png"
+         alt="IFA" onerror="this.style.display='none'">
+    <div class="login-title">Evaluation Browser</div>
+    <div class="login-sub">Sign in with your IFA Microsoft account to access all referee evaluations.</div>
+    <button class="btn-ms" onclick="signIn()">
+      <svg class="ms-icon" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
+        <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
+        <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
+        <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
+      </svg>
+      Sign in with Microsoft
+    </button>
+    <div id="login-error"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- Filter bar -->
+  <div class="filters-card">
+    <div class="filters-title">Filter Evaluations</div>
+    <div class="filters-row single">
+      <div>
+        <label class="f-label">Referee name</label>
+        <input id="f-referee" class="f-input" type="text" placeholder="Search by referee name…" oninput="debouncedLoad()">
+      </div>
+    </div>
+    <div class="filters-row">
+      <div>
+        <label class="f-label">Verdict</label>
+        <select id="f-verdict" class="f-input" onchange="loadData()">
+          <option value="all">All verdicts</option>
+          <option value="IT1">IT1</option>
+          <option value="IT2">IT2</option>
+          <option value="NQ">NQ</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:flex-end;">
+        <button class="f-btn-clear" onclick="clearFilters()">Clear filters</button>
+      </div>
+    </div>
+    <div class="filters-row">
+      <div>
+        <label class="f-label">From date</label>
+        <input id="f-date-from" class="f-input" type="date" onchange="loadData()">
+      </div>
+      <div>
+        <label class="f-label">To date</label>
+        <input id="f-date-to" class="f-input" type="date" onchange="loadData()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar" id="stats-bar" style="display:none">
+    <div class="stat-chip"><div class="stat-chip-label">Total</div><div class="stat-chip-value" id="stat-total">-</div></div>
+    <div class="stat-chip it1"><div class="stat-chip-label">IT1</div><div class="stat-chip-value" id="stat-it1">-</div></div>
+    <div class="stat-chip it2"><div class="stat-chip-label">IT2</div><div class="stat-chip-value" id="stat-it2">-</div></div>
+    <div class="stat-chip nq"><div class="stat-chip-label">NQ</div><div class="stat-chip-value" id="stat-nq">-</div></div>
+    <div class="stat-chip"><div class="stat-chip-label">Avg score</div><div class="stat-chip-value" id="stat-avg">-</div></div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="state-box" id="state-loading">
+    <div class="state-box-icon">⏳</div>
+    <div class="state-box-title">Loading evaluations…</div>
+    <div class="state-box-sub">Fetching data from SharePoint.</div>
+  </div>
+
+  <!-- Error state -->
+  <div class="state-box" id="state-error" style="display:none">
+    <div class="state-box-icon">⚠️</div>
+    <div class="state-box-title">Could not load data</div>
+    <div class="state-box-sub" id="error-msg">Please try again.</div>
+    <button class="f-btn-clear" style="margin-top:14px" onclick="loadData()">Retry</button>
+  </div>
+
+  <!-- Empty state -->
+  <div class="state-box" id="state-empty" style="display:none">
+    <div class="state-box-icon">🔍</div>
+    <div class="state-box-title">No evaluations found</div>
+    <div class="state-box-sub">Try adjusting your filters or submit the first evaluation.</div>
+  </div>
+
+  <!-- Evaluation list -->
+  <div id="eval-list"></div>
+
+</div><!-- /#app -->
+
+<script>
+// ── CONFIG ──
+const MSAL_CONFIG = {
+  auth: {
+    clientId: '2c0270dc-f777-438e-b311-7534ca3e931f',
+    authority: 'https://login.microsoftonline.com/91745eb9-5fb2-4d3e-9671-26b215217dbd',
+    redirectUri: window.location.href.split('?')[0]
+  },
+  cache: { cacheLocation: 'sessionStorage' }
+};
+const LOGIN_REQUEST = { scopes: ['User.Read', 'Sites.Read.All'] };
+const SP_HOST   = 'ifafistball.sharepoint.com';
+const SP_SITE   = 'referee';
+const LIST_NAME = 'RefereeEvaluations';
+
+const CRITERIA_LABELS = {
+  rules:      '1. Rules',
+  leadership: '2. Leadership',
+  technical:  '3. Technical',
+  balls:      '4. Balls',
+  demeanor:   '5. Demeanor',
+  motion:     '6. Motion'
+};
+
+// ── STATE ──
+const pca = new msal.PublicClientApplication(MSAL_CONFIG);
+let siteId = null, listId = null;
+let debounceTimer = null;
+
+// ── INIT ──
+async function init() {
+  await pca.initialize();
+  try { await pca.handleRedirectPromise(); } catch(e) {}
+  const accounts = pca.getAllAccounts();
+  if (accounts.length > 0) {
+    showApp(accounts[0]);
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+}
+
+// ── AUTH ──
+async function signIn() {
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+  try {
+    const result = await pca.loginPopup(LOGIN_REQUEST);
+    showApp(result.account);
+  } catch(e) {
+    errEl.textContent = 'Sign-in failed: ' + (e.message || e);
+    errEl.style.display = 'block';
+  }
+}
+
+function signOut() {
+  pca.logoutPopup({ postLogoutRedirectUri: window.location.href });
+}
+
+function showApp(account) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('header-user').style.display = 'block';
+  document.getElementById('btn-signout').style.display = 'block';
+  document.getElementById('user-name').textContent = account.name || account.username;
+  loadData();
+}
+
+async function getToken() {
+  const account = pca.getAllAccounts()[0];
+  try {
+    const r = await pca.acquireTokenSilent({ ...LOGIN_REQUEST, account });
+    return r.accessToken;
+  } catch {
+    const r = await pca.acquireTokenPopup(LOGIN_REQUEST);
+    return r.accessToken;
+  }
+}
+
+// ── GRAPH API ──
+async function graphGet(url) {
+  const token = await getToken();
+  const res = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
+  if (!res.ok) throw new Error('Graph API error ' + res.status + ' — ' + url);
+  return res.json();
+}
+
+async function ensureSiteAndList() {
+  if (siteId && listId) return;
+  const site = await graphGet(
+    `https://graph.microsoft.com/v1.0/sites/${SP_HOST}:/sites/${SP_SITE}`
+  );
+  siteId = site.id;
+
+  const listsData = await graphGet(
+    `https://graph.microsoft.com/v1.0/sites/${siteId}/lists?$select=id,displayName`
+  );
+  const found = listsData.value.find(l =>
+    l.displayName.toLowerCase() === LIST_NAME.toLowerCase()
+  );
+  if (!found) throw new Error(`SharePoint list "${LIST_NAME}" not found.`);
+  listId = found.id;
+}
+
+// ── DATA LOADING ──
+async function loadData() {
+  showState('loading');
+  try {
+    await ensureSiteAndList();
+
+    const dateFrom = document.getElementById('f-date-from').value;
+    const dateTo   = document.getElementById('f-date-to').value;
+    const verdict  = document.getElementById('f-verdict').value;
+
+    let filters = [];
+    if (dateFrom) filters.push(`fields/Date ge '${dateFrom}'`);
+    if (dateTo)   filters.push(`fields/Date le '${dateTo}T23:59:59Z'`);
+    if (verdict !== 'all') filters.push(`fields/Label eq '${verdict}'`);
+
+    let url = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items` +
+              `?$expand=fields&$top=500`;
+    if (filters.length) url += '&$filter=' + encodeURIComponent(filters.join(' and '));
+
+    // Follow pagination
+    let items = [];
+    let nextUrl = url;
+    while (nextUrl) {
+      const page = await graphGet(nextUrl);
+      items = items.concat(page.value);
+      nextUrl = page['@odata.nextLink'] || null;
+    }
+
+    // Client-side referee text filter
+    const refSearch = document.getElementById('f-referee').value.trim().toLowerCase();
+    if (refSearch) {
+      items = items.filter(i =>
+        (i.fields.Referee || '').toLowerCase().includes(refSearch)
+      );
+    }
+
+    // Sort newest first
+    items.sort((a, b) => (b.fields.Date || '').localeCompare(a.fields.Date || ''));
+
+    renderStats(items);
+    renderList(items);
+    showState(items.length === 0 ? 'empty' : 'list');
+  } catch(e) {
+    document.getElementById('error-msg').textContent = e.message || 'Unexpected error.';
+    showState('error');
+  }
+}
+
+function debouncedLoad() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(loadData, 400);
+}
+
+function clearFilters() {
+  document.getElementById('f-referee').value = '';
+  document.getElementById('f-verdict').value = 'all';
+  document.getElementById('f-date-from').value = '';
+  document.getElementById('f-date-to').value = '';
+  loadData();
+}
+
+// ── RENDER ──
+function showState(state) {
+  document.getElementById('state-loading').style.display = state === 'loading' ? 'block' : 'none';
+  document.getElementById('state-error').style.display   = state === 'error'   ? 'block' : 'none';
+  document.getElementById('state-empty').style.display   = state === 'empty'   ? 'block' : 'none';
+  document.getElementById('stats-bar').style.display     = state === 'list'    ? 'flex'  : 'none';
+}
+
+function renderStats(items) {
+  const it1 = items.filter(i => i.fields.Label === 'IT1').length;
+  const it2 = items.filter(i => i.fields.Label === 'IT2').length;
+  const nq  = items.filter(i => i.fields.Label === 'NQ').length;
+  const scores = items.map(i => parseFloat(i.fields.ScorePercent) || 0).filter(s => s > 0);
+  const avg = scores.length ? (scores.reduce((a,b) => a+b, 0) / scores.length).toFixed(1) : '-';
+  document.getElementById('stat-total').textContent = items.length;
+  document.getElementById('stat-it1').textContent   = it1;
+  document.getElementById('stat-it2').textContent   = it2;
+  document.getElementById('stat-nq').textContent    = nq;
+  document.getElementById('stat-avg').textContent   = avg !== '-' ? avg + '%' : '-';
+}
+
+function renderList(items) {
+  const container = document.getElementById('eval-list');
+  container.innerHTML = '';
+  items.forEach((item, idx) => {
+    const f = item.fields;
+    container.insertAdjacentHTML('beforeend', renderCard(f, idx));
+  });
+}
+
+function renderCard(f, idx) {
+  const label   = f.Label || 'NQ';
+  const score   = f.ScorePercent != null ? parseFloat(f.ScorePercent).toFixed(1) : '-';
+  const date    = f.Date ? formatDate(f.Date) : '-';
+  const country = (f.Country || '').toUpperCase();
+  const home    = f.Home || '-';
+  const away    = f.Away || '-';
+  const contest = f.Contest || '-';
+  const diff    = f.Difficulty || '';
+  // Title column holds evaluator (SharePoint internal name for renamed "Evaluator" column)
+  const evaluator = f.Title || f.Evaluator || '-';
+
+  const labelClass = label === 'IT1' ? 'it1' : label === 'IT2' ? 'it2' : 'nq';
+  const badgeClass = label === 'IT1' ? 'vb-it1' : label === 'IT2' ? 'vb-it2' : 'vb-nq';
+
+  const criteria = [
+    { key:'ScoreRules',       id:'rules',      label:'Rules' },
+    { key:'ScoreLeadership',  id:'leadership', label:'Leadership' },
+    { key:'ScoreTechnical',   id:'technical',  label:'Technical' },
+    { key:'ScoreBalls',       id:'balls',      label:'Balls' },
+    { key:'ScoreDemeanor',    id:'demeanor',   label:'Demeanor' },
+    { key:'ScoreMotion',      id:'motion',     label:'Motion' }
+  ];
+
+  const scoreBars = criteria.map(c => {
+    const val = parseFloat(f[c.key]) || 5;
+    const pct = Math.round(((val - 1) / 4) * 100);
+    const fillClass = val >= 4.5 ? 'fill-5' : val >= 3.5 ? 'fill-4' : val >= 3.0 ? 'fill-35' : val >= 2.5 ? 'fill-3' : val >= 1.5 ? 'fill-2' : 'fill-1';
+    return `<div class="score-bar-item">
+      <div class="score-bar-label">${c.label}</div>
+      <div class="score-bar-track"><div class="score-bar-fill ${fillClass}" style="width:${pct}%"></div></div>
+      <div class="score-bar-val">${val.toFixed(1)}</div>
+    </div>`;
+  }).join('');
+
+  const detailCriteria = criteria.map(c => {
+    const val   = parseFloat(f[c.key]) || 5;
+    const notes = f[{'rules':'NotesRules','leadership':'NotesLeadership','technical':'NotesTechnical','balls':'NotesBalls','demeanor':'NotesDemeanor','motion':'NotesMotion'}[c.id]] || f['notes_'+c.id] || '';
+    return `<div class="detail-crit-row">
+      <div class="detail-crit-name">${CRITERIA_LABELS[c.id]}</div>
+      <div class="detail-crit-score">${val.toFixed(1)}</div>
+      <div class="detail-crit-notes">${esc(notes) || '<span style="color:var(--ifa-border)">—</span>'}</div>
+    </div>`;
+  }).join('');
+
+  const remarks = f.Remarks || '';
+
+  const metaTags = [
+    `<span class="eval-tag country">${country || '??'}</span>`,
+    `<span class="eval-tag">📅 ${date}</span>`,
+    `<span class="eval-tag">🏆 ${esc(contest)}</span>`,
+    diff ? `<span class="eval-tag">${esc(diff)}</span>` : ''
+  ].join('');
+
+  return `<div class="eval-card ${labelClass}" id="card-${idx}">
+    <div class="eval-card-main" onclick="toggleDetail(${idx})">
+      <div class="eval-top">
+        <div class="eval-name">${esc(f.Referee || '-')}</div>
+        <div class="eval-right">
+          <div class="eval-score">${score}<span>%</span></div>
+          <div class="verdict-badge ${badgeClass}">${label}</div>
+        </div>
+      </div>
+      <div class="eval-meta">${metaTags}</div>
+      <div class="eval-meta" style="margin-bottom:0">
+        <span class="eval-tag">⚽ ${esc(home)} vs ${esc(away)}</span>
+      </div>
+    </div>
+    <div class="score-bars" style="padding:0 14px 12px">${scoreBars}</div>
+    <div class="eval-expand-btn" onclick="toggleDetail(${idx})">
+      <div class="eval-expand-label">Details & Notes</div>
+      <div class="eval-expand-arrow" id="arrow-${idx}">▼</div>
+    </div>
+    <div class="eval-detail" id="detail-${idx}">
+      <div class="detail-section">
+        <div class="detail-section-title">Score Breakdown & Notes</div>
+        ${detailCriteria}
+      </div>
+      ${remarks && remarks !== '-' ? `<div class="detail-section">
+        <div class="detail-section-title">Overall Remarks</div>
+        <div class="detail-remarks">${esc(remarks)}</div>
+      </div>` : ''}
+      <div class="detail-evaluator">Evaluated by: ${esc(evaluator)}</div>
+    </div>
+  </div>`;
+}
+
+function toggleDetail(idx) {
+  const detail = document.getElementById('detail-' + idx);
+  const arrow  = document.getElementById('arrow-' + idx);
+  const open   = detail.classList.toggle('open');
+  arrow.classList.toggle('open', open);
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '-';
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr;
+  return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/\n/g,'<br>');
+}
+
+// ── Notes field name lookup ──
+// SharePoint field names for notes depend on how the list was created.
+// Trying both formats (PascalCase from display name and snake_case fallback).
+function getNotesField(f, criterionId) {
+  const pascal = {
+    rules:'NotesRules', leadership:'NotesLeadership', technical:'NotesTechnical',
+    balls:'NotesBalls', demeanor:'NotesDemeanor', motion:'NotesMotion'
+  };
+  return f[pascal[criterionId]] || f['notes_'+criterionId] || '';
+}
+
+init();
+</script>
+</body>
+</html>
