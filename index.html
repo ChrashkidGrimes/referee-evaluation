@@ -383,7 +383,7 @@ const TRANSLATIONS = {
     scoringMethod:'SCORING METHOD',
     scoringDesc:'Each item starts at <strong>5 points</strong>. Each mistake: −0.5 pts. Important items are weighted more heavily.',
     btnContinue:'Continue →', btnBack:'← Back', btnResults:'Results →',
-    btnEdit:'← Edit', btnExport:'⬇ Export', btnNewEval:'🔄 New Evaluation',
+    btnEdit:'← Edit', btnExport:'✉ Send to SharePoint', btnNewEval:'🔄 New Evaluation',
     scoreExcellent:'Excellent', scoreGood:'Good', scoreInconstant:'Inconstant', scorePoor:'Poor', scoreCritical:'Critical',
     eachMistake:'Each mistake: −0.5 pts', weight:'Weight',
     notes:'📝 Notes', recording:'🔴 Recording… tap mic to stop',
@@ -430,7 +430,7 @@ const TRANSLATIONS = {
     scoringMethod:'BEWERTUNGSMETHODE',
     scoringDesc:'Jedes Element startet bei <strong>5 Punkten</strong>. Jeder Fehler: −0,5 Pkt. Wichtige Elemente werden stärker gewichtet.',
     btnContinue:'Weiter →', btnBack:'← Zurück', btnResults:'Ergebnisse →',
-    btnEdit:'← Bearbeiten', btnExport:'⬇ Exportieren', btnNewEval:'🔄 Neue Bewertung',
+    btnEdit:'← Bearbeiten', btnExport:'✉ An SharePoint senden', btnNewEval:'🔄 Neue Bewertung',
     scoreExcellent:'Ausgezeichnet', scoreGood:'Gut', scoreInconstant:'Inkonstant', scorePoor:'Schwach', scoreCritical:'Kritisch',
     eachMistake:'Jeder Fehler: −0,5 Pkt.', weight:'Gewicht',
     notes:'📝 Notizen', recording:'🔴 Aufnahme… Mikrofon tippen zum Stoppen',
@@ -477,7 +477,7 @@ const TRANSLATIONS = {
     scoringMethod:'MÉTODO DE PUNTUACIÓN',
     scoringDesc:'Cada elemento comienza en <strong>5 puntos</strong>. Cada error: −0,5 pts. Los elementos importantes tienen mayor peso.',
     btnContinue:'Continuar →', btnBack:'← Atrás', btnResults:'Resultados →',
-    btnEdit:'← Editar', btnExport:'⬇ Exportar', btnNewEval:'🔄 Nueva Evaluación',
+    btnEdit:'← Editar', btnExport:'✉ Enviar a SharePoint', btnNewEval:'🔄 Nueva Evaluación',
     scoreExcellent:'Excelente', scoreGood:'Bueno', scoreInconstant:'Inconstante', scorePoor:'Deficiente', scoreCritical:'Crítico',
     eachMistake:'Cada error: −0,5 pts', weight:'Peso',
     notes:'📝 Notas', recording:'🔴 Grabando… toque el mic para detener',
@@ -524,7 +524,7 @@ const TRANSLATIONS = {
     scoringMethod:'MÉTODO DE PONTUAÇÃO',
     scoringDesc:'Cada item começa em <strong>5 pontos</strong>. Cada erro: −0,5 pts. Itens importantes têm maior peso.',
     btnContinue:'Continuar →', btnBack:'← Voltar', btnResults:'Resultados →',
-    btnEdit:'← Editar', btnExport:'⬇ Exportar', btnNewEval:'🔄 Nova Avaliação',
+    btnEdit:'← Editar', btnExport:'✉ Enviar para SharePoint', btnNewEval:'🔄 Nova Avaliação',
     scoreExcellent:'Excelente', scoreGood:'Bom', scoreInconstant:'Inconstante', scorePoor:'Fraco', scoreCritical:'Crítico',
     eachMistake:'Cada erro: −0,5 pts', weight:'Peso',
     notes:'📝 Notas', recording:'🔴 Gravando… toque o mic para parar',
@@ -571,7 +571,7 @@ const TRANSLATIONS = {
     scoringMethod:'METODO DI PUNTEGGIO',
     scoringDesc:'Ogni elemento inizia da <strong>5 punti</strong>. Ogni errore: −0,5 pts. Gli elementi importanti hanno peso maggiore.',
     btnContinue:'Continua →', btnBack:'← Indietro', btnResults:'Risultati →',
-    btnEdit:'← Modifica', btnExport:'⬇ Esporta', btnNewEval:'🔄 Nuova Valutazione',
+    btnEdit:'← Modifica', btnExport:'✉ Invia a SharePoint', btnNewEval:'🔄 Nuova Valutazione',
     scoreExcellent:'Eccellente', scoreGood:'Buono', scoreInconstant:'Incostante', scorePoor:'Scarso', scoreCritical:'Critico',
     eachMistake:'Ogni errore: −0,5 pts', weight:'Peso',
     notes:'📝 Note', recording:'🔴 Registrazione… tocca il mic per fermare',
@@ -969,47 +969,26 @@ function goStep(n) {
 
 // ── Export ──
 function saveResult() {
-  const r=computeResult();
-  const name=document.getElementById('refName').value||'Referee';
-  const country=(document.getElementById('country').value||'').toUpperCase();
-  const date=document.getElementById('matchDate').value||new Date().toISOString().slice(0,10);
-  const sep = '='.repeat(50);
-  const sep2 = '-'.repeat(50);
-  const lines=[
-    t('exportHeader'),
-    t('exportCommission'),
-    sep,
-    `${t('exportEvaluator').padEnd(12)}: ${document.getElementById('evaluatorName').value||'-'}`,
-    `${t('exportReferee').padEnd(12)}: ${name}`,
-    `${t('exportCountry').padEnd(12)}: ${country}`,
-    `${t('exportDate').padEnd(12)}: ${date}`,
-    `${t('exportPlace').padEnd(12)}: ${document.getElementById('place').value||'-'}`,
-    `${t('exportTeams').padEnd(12)}: ${document.getElementById('teamHome').value||'-'} vs ${document.getElementById('teamAway').value||'-'}`,
-    `${t('exportDifficulty').padEnd(12)}: ${selectedDiff ? t('diff'+selectedDiff) : '-'}`,
-    ``,
-    `${t('exportBreakdown')}:`,
-    ...CRITERIA.flatMap(c=>{
-      const s=(scores[c.id]||5).toFixed(1);
-      const n=notes[c.id]?`\n      ${t('exportNote')}: ${notes[c.id]}`:'';
-      return [`  [W:${c.weight}]  ${s}  ${c.name[currentLang]}${n}`];
-    }),
-    ``,sep2,
-    `${t('exportAvg')}: ${r.avg.toFixed(2)} pts`,
-    `${t('exportPct')}: ${r.pctD}%`,
-    `${t('exportVerdict')}: ${r.verdict}`,
-    sep2,``,
-    `${t('exportQual')}:`,
-    `  ${t('exportQualIT1')}`,
-    `  ${t('exportQualIT2')}`,
-    `  ${t('exportQualNQ')}`,``,
-    ...(remarksHints.trim() ? [`${t('exportRemarks')}:`, remarksHints.trim(), ``] : []),
-    t('exportFooter')
-  ].join('\n');
-  const blob=new Blob([lines],{type:'text/plain;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url; a.download=`IFA_Eval_${name.replace(/\s+/g,'_')}_${date}.txt`; a.click();
-  URL.revokeObjectURL(url);
+  const r = computeResult();
+  const name = document.getElementById('refName').value || 'Referee';
+  const country = (document.getElementById('country').value || '').toUpperCase();
+  const date = document.getElementById('matchDate').value || new Date().toISOString().slice(0, 10);
+  const payload = {
+    evaluator: document.getElementById('evaluatorName').value || '-',
+    referee: name,
+    country: country,
+    date: date,
+    contest: document.getElementById('place').value || '-',
+    home: document.getElementById('teamHome').value || '-',
+    away: document.getElementById('teamAway').value || '-',
+    difficulty: selectedDiff ? t('diff' + selectedDiff) : '-',
+    score: parseFloat(r.avg.toFixed(2)),
+    label: r.verdict,
+    remarks: remarksHints.trim() || '-'
+  };
+  const subject = encodeURIComponent('REFEREE_EVAL: ' + name + ' - ' + date);
+  const body = encodeURIComponent(JSON.stringify(payload));
+  window.location.href = 'mailto:t.spaltenberger@fistball.sport?subject=' + subject + '&body=' + body;
 }
 
 function resetForm() {
