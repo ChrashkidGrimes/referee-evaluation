@@ -982,8 +982,20 @@ function saveResult() {
     home: document.getElementById('teamHome').value || '-',
     away: document.getElementById('teamAway').value || '-',
     difficulty: selectedDiff ? t('diff' + selectedDiff) : '-',
-    score: parseFloat(r.avg.toFixed(2)),
+    scorePercent: r.pctD,
     label: r.verdict,
+    score_rules:      parseFloat((scores['rules']     ||5).toFixed(1)),
+    score_leadership: parseFloat((scores['leadership']||5).toFixed(1)),
+    score_technical:  parseFloat((scores['technical'] ||5).toFixed(1)),
+    score_balls:      parseFloat((scores['balls']     ||5).toFixed(1)),
+    score_demeanor:   parseFloat((scores['demeanor']  ||5).toFixed(1)),
+    score_motion:     parseFloat((scores['motion']    ||5).toFixed(1)),
+    notes_rules:      notes['rules']      || '-',
+    notes_leadership: notes['leadership'] || '-',
+    notes_technical:  notes['technical']  || '-',
+    notes_balls:      notes['balls']      || '-',
+    notes_demeanor:   notes['demeanor']   || '-',
+    notes_motion:     notes['motion']     || '-',
     remarks: remarksHints.trim() || '-'
   };
   const subject = encodeURIComponent('REFEREE_EVAL: ' + name + ' - ' + date);
