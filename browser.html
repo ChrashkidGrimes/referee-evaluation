@@ -272,12 +272,21 @@ const CRITERIA_LABELS = {
 };
 
 // ── STATE ──
-const pca = new msal.PublicClientApplication(MSAL_CONFIG);
+let pca = null;
 let siteId = null, listId = null;
 let debounceTimer = null;
 
 // ── INIT ──
 async function init() {
+  const errEl = document.getElementById('login-error');
+  try {
+    pca = new msal.PublicClientApplication(MSAL_CONFIG);
+  } catch(e) {
+    errEl.textContent = 'MSAL init failed: ' + (e.message || e);
+    errEl.style.display = 'block';
+    document.getElementById('login-screen').style.display = 'flex';
+    return;
+  }
   try { await pca.handleRedirectPromise(); } catch(e) {}
   const accounts = pca.getAllAccounts();
   if (accounts.length > 0) {
@@ -291,6 +300,7 @@ async function init() {
 async function signIn() {
   const errEl = document.getElementById('login-error');
   errEl.style.display = 'none';
+  if (!pca) { errEl.textContent = 'Auth not ready. Please reload the page.'; errEl.style.display = 'block'; return; }
   try {
     const result = await pca.loginPopup(LOGIN_REQUEST);
     showApp(result.account);
