@@ -16,6 +16,7 @@
     --ifa-border: #C8D4E0;
     --ifa-text: #1a2a3a;
     --ifa-muted: #6b7f99;
+    --ifa-card: white;
     --danger: #D0021B;
     --success: #1B7B34;
     --radius: 10px;
@@ -48,7 +49,7 @@
   .section-title { font-family:'Oswald',sans-serif; font-size:26px; font-weight:700; color:var(--ifa-blue); text-transform:uppercase; line-height:1.05; margin-bottom:18px; letter-spacing:0.5px; }
 
   /* ── CARDS ── */
-  .card { background:white; border:1px solid var(--ifa-border); border-radius:var(--radius); padding:16px; margin-bottom:14px; box-shadow:0 1px 6px rgba(0,58,112,0.07); }
+  .card { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:var(--radius); padding:16px; margin-bottom:14px; box-shadow:0 1px 6px rgba(0,58,112,0.07); }
   .card-title { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; color:var(--ifa-blue-light); text-transform:uppercase; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--ifa-gray2); }
 
   /* ── FORM ── */
@@ -60,7 +61,7 @@
     color:var(--ifa-text); font-family:'Roboto',sans-serif; font-size:16px; padding:12px 14px;
     outline:none; transition:border-color 0.2s,box-shadow 0.2s; -webkit-appearance:none; appearance:none;
   }
-  input:focus,select:focus,textarea:focus { border-color:var(--ifa-blue-light); box-shadow:0 0 0 3px rgba(0,105,180,0.12); background:white; }
+  input:focus,select:focus,textarea:focus { border-color:var(--ifa-blue-light); box-shadow:0 0 0 3px rgba(0,105,180,0.12); background:var(--ifa-card); }
   textarea { resize:none; height:72px; font-size:14px; padding:10px 12px; }
   .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .diff-group { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
@@ -68,7 +69,7 @@
   .diff-btn.selected { border-color:var(--ifa-blue-light); background:var(--ifa-blue); color:white; }
 
   /* ── CRITERION CARDS ── */
-  .criterion-card { background:white; border:1.5px solid var(--ifa-border); border-left:4px solid var(--ifa-border); border-radius:var(--radius); padding:15px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,58,112,0.06); transition:border-left-color 0.2s; }
+  .criterion-card { background:var(--ifa-card); border:1.5px solid var(--ifa-border); border-left:4px solid var(--ifa-border); border-radius:var(--radius); padding:15px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,58,112,0.06); transition:border-left-color 0.2s; }
   .criterion-card.scored { border-left-color:var(--ifa-blue-light); }
   .criterion-card.warn   { border-left-color:var(--danger); }
   .crit-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px; }
@@ -106,7 +107,7 @@
     outline:none; resize:none; height:80px; line-height:1.5;
     transition:border-color 0.2s,box-shadow 0.2s;
   }
-  .notes-textarea:focus { border-color:var(--ifa-blue-light); box-shadow:0 0 0 3px rgba(0,105,180,0.12); background:white; }
+  .notes-textarea:focus { border-color:var(--ifa-blue-light); box-shadow:0 0 0 3px rgba(0,105,180,0.12); background:var(--ifa-card); }
   .notes-textarea.recording { border-color:#D0021B; background:#fff8f8; box-shadow:0 0 0 3px rgba(208,2,27,0.1); }
 
   /* Mic button */
@@ -140,7 +141,7 @@
   .btn { flex:1; border:none; border-radius:8px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:15px; font-weight:600; letter-spacing:1px; padding:15px; text-transform:uppercase; transition:all 0.18s; }
   .btn-primary { background:var(--ifa-blue); color:white; box-shadow:0 3px 12px rgba(0,58,112,0.3); }
   .btn-primary:active { background:var(--ifa-blue-mid); transform:scale(0.98); }
-  .btn-secondary { background:white; border:1.5px solid var(--ifa-border); color:var(--ifa-muted); flex:0.55; }
+  .btn-secondary { background:var(--ifa-card); border:1.5px solid var(--ifa-border); color:var(--ifa-muted); flex:0.55; }
   .btn-danger  { background:var(--danger); color:white; }
   .btn-accent  { background:var(--ifa-accent); color:white; box-shadow:0 3px 10px rgba(0,159,227,0.3); }
 
@@ -161,11 +162,11 @@
   .vp-nq  { background:rgba(208,2,27,0.9);  border:1.5px solid rgba(255,100,100,0.5); }
 
   .chips-row { display:flex; gap:8px; margin-bottom:12px; }
-  .chip { background:white; border:1px solid var(--ifa-border); border-radius:8px; flex:1; padding:10px 8px; text-align:center; box-shadow:0 1px 4px rgba(0,58,112,0.06); }
+  .chip { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:8px; flex:1; padding:10px 8px; text-align:center; box-shadow:0 1px 4px rgba(0,58,112,0.06); }
   .chip-label { font-size:9px; color:var(--ifa-muted); text-transform:uppercase; letter-spacing:1px; font-weight:700; }
   .chip-value { font-family:'Oswald',sans-serif; font-size:15px; font-weight:600; color:var(--ifa-blue); margin-top:2px; }
 
-  .breakdown-card { background:white; border:1px solid var(--ifa-border); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,58,112,0.07); }
+  .breakdown-card { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,58,112,0.07); }
   .breakdown-header { background:var(--ifa-blue); color:white; font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:8px 14px; }
   .breakdown-row { display:flex; justify-content:space-between; align-items:flex-start; padding:11px 14px; border-bottom:1px solid var(--ifa-gray2); }
   .breakdown-row:last-child { border-bottom:none; }
@@ -180,7 +181,7 @@
   .warn-box-title { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:2px; color:var(--danger); text-transform:uppercase; font-weight:700; margin-bottom:8px; }
   .warn-item { display:flex; gap:8px; font-size:12px; color:#8B0000; padding:4px 0; line-height:1.4; }
 
-  .qual-box { background:white; border:1px solid var(--ifa-border); border-radius:var(--radius); overflow:hidden; margin-bottom:14px; box-shadow:0 1px 5px rgba(0,58,112,0.07); }
+  .qual-box { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:var(--radius); overflow:hidden; margin-bottom:14px; box-shadow:0 1px 5px rgba(0,58,112,0.07); }
   .qual-header { background:var(--ifa-gray2); color:var(--ifa-blue); font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:8px 14px; border-bottom:1px solid var(--ifa-border); }
   .qual-row { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-bottom:1px solid var(--ifa-gray2); font-size:12px; line-height:1.5; }
   .qual-row:last-child { border-bottom:none; }
@@ -194,6 +195,23 @@
 
   /* Speech not supported notice */
   .stt-notice { font-size:11px; color:var(--ifa-muted); background:var(--ifa-gray2); border-radius:6px; padding:6px 10px; margin-top:8px; display:none; }
+
+  /* Dark mode toggle button */
+  .btn-dark-toggle { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:6px; color:white; cursor:pointer; font-size:14px; line-height:1; padding:5px 8px; flex-shrink:0; }
+  .btn-dark-toggle:active { background:rgba(255,255,255,0.22); }
+
+  /* ── DARK MODE ── */
+  [data-theme="dark"] {
+    --ifa-gray: #0e1420;
+    --ifa-gray2: #1a2435;
+    --ifa-border: #283650;
+    --ifa-text: #dce6f2;
+    --ifa-muted: #7a90ad;
+    --ifa-card: #16202e;
+  }
+  [data-theme="dark"] .warn-box { background:#2a1520; }
+  [data-theme="dark"] .breakdown-row.row-warn { background:rgba(208,2,27,0.08); }
+  [data-theme="dark"] .qual-header { background:var(--ifa-gray2); }
 </style>
 </head>
 <body>
@@ -218,6 +236,7 @@
       <option value="pt">PT</option>
       <option value="it">IT</option>
     </select>
+    <button class="btn-dark-toggle" id="darkToggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
   </div>
   <div class="progress-wrap"><div class="progress-fill" id="progressBar" style="width:33%"></div></div>
   <div class="nav-dots" id="navDots"></div>
@@ -336,6 +355,19 @@
 </div>
 
 <script>
+// ── DARK MODE ──
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = dark ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  localStorage.setItem('ifa-theme', isDark ? 'light' : 'dark');
+  applyTheme(!isDark);
+}
+applyTheme(localStorage.getItem('ifa-theme') === 'dark');
+
 const CRITERIA = [
   { id:'rules',
     name:{en:'1. Rules', de:'1. Regeln', es:'1. Reglas', pt:'1. Regras', it:'1. Regole'},
