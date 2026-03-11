@@ -509,22 +509,22 @@ function renderCard(f, idx) {
   ];
 
   const scoreBars = criteria.map(c => {
-    const val = parseFloat(f[c.key]) || 5;
-    const pct = Math.round(((val - 1) / 4) * 100);
-    const fillClass = val >= 4.5 ? 'fill-5' : val >= 3.5 ? 'fill-4' : val >= 3.0 ? 'fill-35' : val >= 2.5 ? 'fill-3' : val >= 1.5 ? 'fill-2' : 'fill-1';
+    const val = parseFloat(f[c.key]) || 10;
+    const pct = Math.round(((val - 1) / 9) * 100);
+    const fillClass = val >= 9 ? 'fill-5' : val >= 7 ? 'fill-4' : val >= 6 ? 'fill-35' : val >= 5 ? 'fill-3' : val >= 3 ? 'fill-2' : 'fill-1';
     return `<div class="score-bar-item">
       <div class="score-bar-label">${c.label}</div>
       <div class="score-bar-track"><div class="score-bar-fill ${fillClass}" style="width:${pct}%"></div></div>
-      <div class="score-bar-val">${val.toFixed(1)}</div>
+      <div class="score-bar-val">${val}</div>
     </div>`;
   }).join('');
 
   const detailCriteria = criteria.map(c => {
-    const val   = parseFloat(f[c.key]) || 5;
+    const val   = parseFloat(f[c.key]) || 10;
     const notes = f[{'rules':'NotesRules','leadership':'NotesLeadership','technical':'NotesTechnical','balls':'NotesBalls','demeanor':'NotesDemeanor','motion':'NotesMotion'}[c.id]] || f['notes_'+c.id] || '';
     return `<div class="detail-crit-row">
       <div class="detail-crit-name">${CRITERIA_LABELS[c.id]}</div>
-      <div class="detail-crit-score">${val.toFixed(1)}</div>
+      <div class="detail-crit-score">${val}</div>
       <div class="detail-crit-notes">${esc(notes) || '<span style="color:var(--ifa-border)">—</span>'}</div>
     </div>`;
   }).join('');

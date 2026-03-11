@@ -715,12 +715,12 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
 const sttSupported = !!SpeechRecognition;
 
 function scoreLabel(v) {
-  if(v>=4.5)return t('scoreExcellent'); if(v>=3.5)return t('scoreGood');
-  if(v>=2.5)return t('scoreInconstant'); if(v>=1.5)return t('scorePoor'); return t('scoreCritical');
+  if(v>=9)return t('scoreExcellent'); if(v>=7)return t('scoreGood');
+  if(v>=5)return t('scoreInconstant'); if(v>=3)return t('scorePoor'); return t('scoreCritical');
 }
 function scoreClass(v) {
-  if(v>=4.5)return'sc-5'; if(v>=3.5)return'sc-4';
-  if(v>=2.5)return'sc-3'; if(v>=1.5)return'sc-2'; return'sc-1';
+  if(v>=9)return'sc-5'; if(v>=7)return'sc-4';
+  if(v>=5)return'sc-3'; if(v>=3)return'sc-2'; return'sc-1';
 }
 function selectDiff(val,el) {
   selectedDiff=val;
@@ -736,13 +736,13 @@ function buildCriteria() {
   const container = document.getElementById('criteriaContainer');
   container.innerHTML = '';
   CRITERIA.forEach(cr => {
-    const val = scores[cr.id] !== undefined ? scores[cr.id] : 5;
+    const val = scores[cr.id] !== undefined ? scores[cr.id] : 10;
     scores[cr.id] = val;
     const note = notes[cr.id] || '';
     const hasNote = note.trim().length > 0;
 
     const div = document.createElement('div');
-    div.className = `criterion-card scored${val<3?' warn':''}`;
+    div.className = `criterion-card scored${val<6?' warn':''}`;
     div.id = 'card-'+cr.id;
     div.innerHTML = `
       <div class="crit-header">
@@ -751,15 +751,15 @@ function buildCriteria() {
       </div>
       <div class="crit-desc">${cr.desc[currentLang]}</div>
       <div class="score-row">
-        <div class="score-num ${scoreClass(val)}" id="sv-${cr.id}">${val.toFixed(1)}</div>
+        <div class="score-num ${scoreClass(val)}" id="sv-${cr.id}">${val}</div>
         <div class="score-info">
           <div class="score-label-text ${scoreClass(val)}" id="sl-${cr.id}">${scoreLabel(val)}</div>
           <div class="score-sub">${t('eachMistake')}</div>
         </div>
       </div>
-      <input type="range" min="1" max="5" step="0.5" value="${val}" id="slider-${cr.id}"
+      <input type="range" min="1" max="10" step="1" value="${val}" id="slider-${cr.id}"
         oninput="updateScore('${cr.id}',parseFloat(this.value))">
-      <div class="slider-ticks"><span>1.0</span><span>2.0</span><span>3.0</span><span>4.0</span><span>5.0</span></div>
+      <div class="slider-ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
 
       <div class="notes-toggle" onclick="toggleNotes('${cr.id}')">
         <span class="notes-toggle-label">${t('notes')}</span>
@@ -790,10 +790,10 @@ function buildCriteria() {
 function updateScore(id, val) {
   scores[id] = val;
   const sv = document.getElementById('sv-'+id);
-  sv.textContent = val.toFixed(1); sv.className = 'score-num '+scoreClass(val);
+  sv.textContent = val; sv.className = 'score-num '+scoreClass(val);
   const sl = document.getElementById('sl-'+id);
   sl.textContent = scoreLabel(val); sl.className = 'score-label-text '+scoreClass(val);
-  document.getElementById('card-'+id).className = `criterion-card scored${val<3?' warn':''}`;
+  document.getElementById('card-'+id).className = `criterion-card scored${val<6?' warn':''}`;
 }
 
 function saveNote(id) {
@@ -896,12 +896,12 @@ function stopRecording(id) {
 // ── Compute & Render ──
 function computeResult() {
   let wSum = 0;
-  CRITERIA.forEach(c => { wSum += (scores[c.id]||5)*c.weight; });
+  CRITERIA.forEach(c => { wSum += (scores[c.id]||10)*c.weight; });
   const avg  = wSum / TOTAL_WEIGHT;
-  const pctD = Math.round(((avg-1)/4)*1000)/10;
-  const hasUnder3  = CRITERIA.some(c=>(scores[c.id]||5)<3);
-  const countAt3   = CRITERIA.filter(c=>{const s=scores[c.id]||5;return s>=3&&s<3.5;}).length;
-  const lawMistake = (scores['rules']||5)<4;
+  const pctD = Math.round(((avg-1)/9)*1000)/10;
+  const hasUnder3  = CRITERIA.some(c=>(scores[c.id]||10)<6);
+  const countAt3   = CRITERIA.filter(c=>{const s=scores[c.id]||10;return s>=6&&s<7;}).length;
+  const lawMistake = (scores['rules']||10)<8;
   let verdict = 'NQ';
   if(pctD>=90 && !hasUnder3 && countAt3<=1 && !lawMistake) verdict='IT1';
   else if(pctD>=85 && !hasUnder3 && countAt3<=1) verdict='IT2';
@@ -1016,12 +1016,12 @@ function saveResult() {
     difficulty: selectedDiff ? t('diff' + selectedDiff) : '-',
     scorePercent: r.pctD,
     label: r.verdict,
-    score_rules:      parseFloat((scores['rules']     ||5).toFixed(1)),
-    score_leadership: parseFloat((scores['leadership']||5).toFixed(1)),
-    score_technical:  parseFloat((scores['technical'] ||5).toFixed(1)),
-    score_balls:      parseFloat((scores['balls']     ||5).toFixed(1)),
-    score_demeanor:   parseFloat((scores['demeanor']  ||5).toFixed(1)),
-    score_motion:     parseFloat((scores['motion']    ||5).toFixed(1)),
+    score_rules:      scores['rules']      || 10,
+    score_leadership: scores['leadership'] || 10,
+    score_technical:  scores['technical']  || 10,
+    score_balls:      scores['balls']      || 10,
+    score_demeanor:   scores['demeanor']   || 10,
+    score_motion:     scores['motion']     || 10,
     notes_rules:      notes['rules']      || '-',
     notes_leadership: notes['leadership'] || '-',
     notes_technical:  notes['technical']  || '-',
