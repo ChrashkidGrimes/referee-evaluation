@@ -17,6 +17,7 @@
     --ifa-border: #C8D4E0;
     --ifa-text: #1a2a3a;
     --ifa-muted: #6b7f99;
+    --ifa-card: white;
     --danger: #D0021B;
     --success: #1B7B34;
     --radius: 10px;
@@ -40,7 +41,7 @@
 
   /* ── LOGIN SCREEN ── */
   #login-screen { display:none; min-height:calc(100vh - 70px); display:flex; align-items:center; justify-content:center; padding:24px 16px; }
-  .login-card { background:white; border:1px solid var(--ifa-border); border-radius:16px; box-shadow:0 4px 24px rgba(0,58,112,0.12); max-width:380px; width:100%; padding:36px 28px; text-align:center; }
+  .login-card { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:16px; box-shadow:0 4px 24px rgba(0,58,112,0.12); max-width:380px; width:100%; padding:36px 28px; text-align:center; }
   .login-logo { height:48px; margin-bottom:20px; }
   .login-title { font-family:'Oswald',sans-serif; font-size:22px; font-weight:700; color:var(--ifa-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
   .login-sub { font-size:13px; color:var(--ifa-muted); line-height:1.5; margin-bottom:28px; }
@@ -53,20 +54,20 @@
   #app { display:none; padding:16px 14px 0; }
 
   /* ── FILTER BAR ── */
-  .filters-card { background:white; border:1px solid var(--ifa-border); border-radius:var(--radius); box-shadow:0 1px 6px rgba(0,58,112,0.07); margin-bottom:12px; padding:14px; }
+  .filters-card { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:var(--radius); box-shadow:0 1px 6px rgba(0,58,112,0.07); margin-bottom:12px; padding:14px; }
   .filters-title { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; color:var(--ifa-blue-light); text-transform:uppercase; margin-bottom:12px; }
   .filters-row { display:grid; gap:10px; margin-bottom:10px; grid-template-columns:1fr 1fr; }
   .filters-row:last-child { margin-bottom:0; }
   .filters-row.single { grid-template-columns:1fr; }
   .f-label { font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--ifa-muted); margin-bottom:5px; display:block; }
   .f-input { width:100%; background:var(--ifa-gray); border:1.5px solid var(--ifa-border); border-radius:8px; color:var(--ifa-text); font-family:'Roboto',sans-serif; font-size:15px; padding:10px 12px; outline:none; transition:border-color 0.2s; -webkit-appearance:none; appearance:none; }
-  .f-input:focus { border-color:var(--ifa-blue-light); background:white; }
+  .f-input:focus { border-color:var(--ifa-blue-light); background:var(--ifa-card); }
   .f-btn-clear { background:var(--ifa-gray); border:1.5px solid var(--ifa-border); border-radius:8px; color:var(--ifa-muted); cursor:pointer; font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.5px; padding:10px 14px; text-transform:uppercase; white-space:nowrap; }
   .f-btn-clear:active { background:var(--ifa-gray2); }
 
   /* ── STATS BAR ── */
   .stats-bar { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
-  .stat-chip { background:white; border:1px solid var(--ifa-border); border-radius:8px; flex:1; min-width:60px; padding:9px 8px; text-align:center; box-shadow:0 1px 4px rgba(0,58,112,0.06); }
+  .stat-chip { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:8px; flex:1; min-width:60px; padding:9px 8px; text-align:center; box-shadow:0 1px 4px rgba(0,58,112,0.06); }
   .stat-chip-label { font-size:9px; color:var(--ifa-muted); text-transform:uppercase; letter-spacing:1px; font-weight:700; }
   .stat-chip-value { font-family:'Oswald',sans-serif; font-size:16px; font-weight:600; color:var(--ifa-blue); margin-top:2px; }
   .stat-chip.it1 .stat-chip-value { color:var(--success); }
@@ -74,13 +75,13 @@
   .stat-chip.nq  .stat-chip-value { color:var(--danger); }
 
   /* ── STATES ── */
-  .state-box { background:white; border:1px solid var(--ifa-border); border-radius:var(--radius); padding:32px 20px; text-align:center; margin-bottom:12px; }
+  .state-box { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:var(--radius); padding:32px 20px; text-align:center; margin-bottom:12px; }
   .state-box-icon { font-size:32px; margin-bottom:12px; }
   .state-box-title { font-family:'Oswald',sans-serif; font-size:16px; font-weight:600; color:var(--ifa-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
   .state-box-sub { font-size:13px; color:var(--ifa-muted); line-height:1.5; }
 
   /* ── EVALUATION CARDS ── */
-  .eval-card { background:white; border:1px solid var(--ifa-border); border-left:4px solid var(--ifa-border); border-radius:var(--radius); box-shadow:0 1px 6px rgba(0,58,112,0.07); margin-bottom:12px; overflow:hidden; transition:border-left-color 0.2s; }
+  .eval-card { background:var(--ifa-card); border:1px solid var(--ifa-border); border-left:4px solid var(--ifa-border); border-radius:var(--radius); box-shadow:0 1px 6px rgba(0,58,112,0.07); margin-bottom:12px; overflow:hidden; transition:border-left-color 0.2s; }
   .eval-card.it1 { border-left-color:var(--success); }
   .eval-card.it2 { border-left-color:var(--ifa-blue-light); }
   .eval-card.nq  { border-left-color:var(--danger); }
@@ -127,8 +128,22 @@
   .detail-crit-name { font-size:12px; font-weight:600; color:var(--ifa-blue); min-width:120px; flex-shrink:0; }
   .detail-crit-score { font-family:'Oswald',sans-serif; font-size:16px; font-weight:700; color:var(--ifa-blue); flex-shrink:0; min-width:30px; }
   .detail-crit-notes { color:var(--ifa-muted); font-size:12px; flex:1; font-style:italic; line-height:1.5; }
-  .detail-remarks { background:white; border:1px solid var(--ifa-border); border-radius:8px; color:var(--ifa-text); font-size:13px; line-height:1.6; padding:10px 12px; }
+  .detail-remarks { background:var(--ifa-card); border:1px solid var(--ifa-border); border-radius:8px; color:var(--ifa-text); font-size:13px; line-height:1.6; padding:10px 12px; }
   .detail-evaluator { color:var(--ifa-muted); font-size:11px; text-align:right; }
+
+  /* Dark mode toggle button */
+  .btn-dark-toggle { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:6px; color:white; cursor:pointer; font-size:14px; line-height:1; padding:5px 8px; flex-shrink:0; }
+  .btn-dark-toggle:active { background:rgba(255,255,255,0.22); }
+
+  /* ── DARK MODE ── */
+  [data-theme="dark"] {
+    --ifa-gray: #0e1420;
+    --ifa-gray2: #1a2435;
+    --ifa-border: #283650;
+    --ifa-text: #dce6f2;
+    --ifa-muted: #7a90ad;
+    --ifa-card: #16202e;
+  }
 </style>
 </head>
 <body>
@@ -150,6 +165,7 @@
       <span id="user-name"></span>
     </div>
     <button class="btn-signout" id="btn-signout" onclick="signOut()">Sign out</button>
+    <button class="btn-dark-toggle" id="darkToggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
   </div>
 </div>
 
@@ -248,6 +264,19 @@
 </div><!-- /#app -->
 
 <script>
+// ── DARK MODE ──
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = dark ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  localStorage.setItem('ifa-theme', isDark ? 'light' : 'dark');
+  applyTheme(!isDark);
+}
+applyTheme(localStorage.getItem('ifa-theme') === 'dark');
+
 // ── CONFIG ──
 const MSAL_CONFIG = {
   auth: {
