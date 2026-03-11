@@ -428,8 +428,8 @@ const TRANSLATIONS = {
     warningTitle:'⚠ Disqualification Factors',
     verdictIT1:'✓ IT1 — International 1', verdictIT2:'✓ IT2 — International 2', verdictNQ:'✗ Not Qualified (NQ)',
     qualTitle:'Qualification Criteria',
-    qualIT1:'<strong>IT1</strong> — ≥90% · no score <3 · max 1 item at 3 · no law mistakes',
-    qualIT2:'<strong>IT2</strong> — ≥85% · no score <3 · max 1 item at 3',
+    qualIT1:'<strong>IT1</strong> — ≥90% · no score <6 · max 1 item at 6 · no law mistakes',
+    qualIT2:'<strong>IT2</strong> — ≥85% · no score <6 · max 1 item at 6',
     qualNQ:'<strong>NQ</strong> — Does not meet minimum requirements',
     breakdownTitle:'Score Breakdown & Notes',
     confirmReset:'Start a new evaluation? Current data will be lost.',
@@ -475,8 +475,8 @@ const TRANSLATIONS = {
     warningTitle:'⚠ Disqualifikationsfaktoren',
     verdictIT1:'✓ IT1 — International 1', verdictIT2:'✓ IT2 — International 2', verdictNQ:'✗ Nicht qualifiziert (NQ)',
     qualTitle:'Qualifikationskriterien',
-    qualIT1:'<strong>IT1</strong> — ≥90% · keine Wertung <3 · max. 1 Element bei 3 · keine Regelfehler',
-    qualIT2:'<strong>IT2</strong> — ≥85% · keine Wertung <3 · max. 1 Element bei 3',
+    qualIT1:'<strong>IT1</strong> — ≥90% · keine Wertung <6 · max. 1 Element bei 6 · keine Regelfehler',
+    qualIT2:'<strong>IT2</strong> — ≥85% · keine Wertung <6 · max. 1 Element bei 6',
     qualNQ:'<strong>NQ</strong> — Erfüllt nicht die Mindestanforderungen',
     breakdownTitle:'Punkte-Aufschlüsselung & Notizen',
     confirmReset:'Neue Bewertung starten? Aktuelle Daten gehen verloren.',
@@ -522,8 +522,8 @@ const TRANSLATIONS = {
     warningTitle:'⚠ Factores de Descalificación',
     verdictIT1:'✓ IT1 — Internacional 1', verdictIT2:'✓ IT2 — Internacional 2', verdictNQ:'✗ No Calificado (NQ)',
     qualTitle:'Criterios de Calificación',
-    qualIT1:'<strong>IT1</strong> — ≥90% · sin puntaje <3 · máx. 1 elemento en 3 · sin errores de reglamento',
-    qualIT2:'<strong>IT2</strong> — ≥85% · sin puntaje <3 · máx. 1 elemento en 3',
+    qualIT1:'<strong>IT1</strong> — ≥90% · sin puntaje <6 · máx. 1 elemento en 6 · sin errores de reglamento',
+    qualIT2:'<strong>IT2</strong> — ≥85% · sin puntaje <6 · máx. 1 elemento en 6',
     qualNQ:'<strong>NQ</strong> — No cumple los requisitos mínimos',
     breakdownTitle:'Desglose de Puntajes & Notas',
     confirmReset:'¿Iniciar una nueva evaluación? Los datos actuales se perderán.',
@@ -569,8 +569,8 @@ const TRANSLATIONS = {
     warningTitle:'⚠ Fatores de Desclassificação',
     verdictIT1:'✓ IT1 — Internacional 1', verdictIT2:'✓ IT2 — Internacional 2', verdictNQ:'✗ Não Qualificado (NQ)',
     qualTitle:'Critérios de Qualificação',
-    qualIT1:'<strong>IT1</strong> — ≥90% · sem pontuação <3 · máx. 1 item em 3 · sem erros de regras',
-    qualIT2:'<strong>IT2</strong> — ≥85% · sem pontuação <3 · máx. 1 item em 3',
+    qualIT1:'<strong>IT1</strong> — ≥90% · sem pontuação <6 · máx. 1 item em 6 · sem erros de regras',
+    qualIT2:'<strong>IT2</strong> — ≥85% · sem pontuação <6 · máx. 1 item em 6',
     qualNQ:'<strong>NQ</strong> — Não atende aos requisitos mínimos',
     breakdownTitle:'Detalhamento de Pontuações & Notas',
     confirmReset:'Iniciar uma nova avaliação? Os dados atuais serão perdidos.',
@@ -616,8 +616,8 @@ const TRANSLATIONS = {
     warningTitle:'⚠ Fattori di Squalifica',
     verdictIT1:'✓ IT1 — Internazionale 1', verdictIT2:'✓ IT2 — Internazionale 2', verdictNQ:'✗ Non Qualificato (NQ)',
     qualTitle:'Criteri di Qualificazione',
-    qualIT1:'<strong>IT1</strong> — ≥90% · nessun punteggio <3 · max 1 elemento a 3 · nessun errore di regola',
-    qualIT2:'<strong>IT2</strong> — ≥85% · nessun punteggio <3 · max 1 elemento a 3',
+    qualIT1:'<strong>IT1</strong> — ≥90% · nessun punteggio <6 · max 1 elemento a 6 · nessun errore di regola',
+    qualIT2:'<strong>IT2</strong> — ≥85% · nessun punteggio <6 · max 1 elemento a 6',
     qualNQ:'<strong>NQ</strong> — Non soddisfa i requisiti minimi',
     breakdownTitle:'Dettaglio Punteggi & Note',
     confirmReset:'Avviare una nuova valutazione? I dati attuali andranno persi.',
@@ -924,15 +924,15 @@ function renderResult() {
   if(r.lawMistake) warnings+=`<div class="warn-item"><span>▸</span>${t('warnLaw')}</div>`;
 
   const bdRows = CRITERIA.map(c => {
-    const s = scores[c.id]||5;
-    const w = s<3?' row-warn':'';
+    const s = scores[c.id]||10;
+    const w = s<6?' row-warn':'';
     const n = notes[c.id] ? `<div class="breakdown-row-note">💬 ${escapeHtml(notes[c.id])}</div>` : '';
     return `<div class="breakdown-row${w}">
       <div class="breakdown-row-left">
         <div class="breakdown-row-label">${c.name[currentLang]} <span style="font-size:10px;color:var(--ifa-muted)">(×${c.weight})</span></div>
         ${n}
       </div>
-      <div class="breakdown-row-score ${w?'':scoreClass(s)}">${s.toFixed(1)}</div>
+      <div class="breakdown-row-score ${w?'':scoreClass(s)}">${s}</div>
     </div>`;
   }).join('');
 
@@ -947,8 +947,7 @@ function renderResult() {
       <div class="result-name">${escapeHtml(name)}</div>
       <div class="result-meta">${escapeHtml(country)} · ${selectedDiff ? t('diff'+selectedDiff) : '—'} · ${date}</div>
       ${document.getElementById('evaluatorName').value ? `<div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:10px;position:relative;z-index:1;">${t('exportEvaluator')}: ${escapeHtml(document.getElementById('evaluatorName').value)}</div>` : ''}
-      <div class="result-score-big">${r.avg.toFixed(2)}</div>
-      <div class="result-pct">${r.pctD}% Score</div>
+      <div class="result-score-big">${r.pctD}%</div>
       <div class="verdict-pill ${vpClass}">${vpText}</div>
     </div>
 
