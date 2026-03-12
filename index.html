@@ -1236,11 +1236,12 @@ const TOUR_STEPS = {
     { target:'step-0',          title:'Continue When Ready',    body:'Once all fields are filled, tap Continue to proceed to Criteria Scoring. You can always navigate back to correct details.', arrow:'bottom' }
   ],
   1: [
-    { target:'criteriaContainer',title:'Criteria Scoring',     body:'Score the referee on 6 criteria. Each starts at 10 — use − and + to deduct one point per observable mistake.' },
-    { target:'card-rules',       title:'Rules (×4)',            body:'Highest weight. A score below 8 automatically prevents IT1 certification. Tap ? for details on what to assess.' },
-    { target:'card-leadership',  title:'Leadership (×3)',       body:'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.' },
-    { target:'card-demeanor',    title:'Demeanor (×3)',         body:'Observe hand signals, whistle volume, and body language. Tap ? on any card for detailed assessment guidance.' },
-    { target:'card-rules',       title:'Tap ? for Help',        body:'Every criterion has a ? button in its header. Tap it to see exactly what to observe and common deduction examples.', arrow:'bottom' }
+    { target:'card-rules',      title:'Rules (×4) — Most Important', body:'This criterion carries the highest weight. A score below 8 automatically prevents IT1 — regardless of the overall percentage.' },
+    { target:'sv-rules',        title:'Scoring Stepper',              body:'Each criterion starts at 10. Tap − to deduct 1 point per mistake. The label and colour update in real time.' },
+    { target:'help-btn-rules',  title:'Tap ? for Guidance',          body:'Every criterion has a ? button. Tap it to see exactly what to observe and a list of common deduction examples.' },
+    { target:'card-leadership', title:'Leadership (×3)',              body:'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.' },
+    { target:'card-demeanor',   title:'Demeanor (×3)',                body:'Observe hand signals, whistle volume, and body language. Is the referee confident and visibly in control?' },
+    { target:'card-motion',     title:'Notes — Always Add Context',   body:'Tap the Notes toggle on any card to explain why you deducted points. Specific notes are valuable feedback for the referee.', arrow:'bottom' }
   ],
   2: [
     { target:'resultContent',   title:'Evaluation Result',     body:'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.' },
@@ -1281,32 +1282,32 @@ function renderTourStep() {
   const el = document.getElementById(s.target);
   if (!el) { shiftTour(1); return; }
 
-  el.scrollIntoView({ behavior:'smooth', block:'center' });
+  el.scrollIntoView({ behavior:'instant', block:'center' });
 
   const arrow = s.arrow || 'top';
   const pad = 8;
   const rect = el.getBoundingClientRect();
-  const t = rect.top  + window.scrollY - pad;
-  const l = rect.left - pad;
-  const r = rect.right + pad;
-  const b = rect.bottom + window.scrollY + pad;
-  const W = window.innerWidth;
-  const H = document.documentElement.scrollHeight;
+  const t = rect.top    - pad;
+  const l = rect.left   - pad;
+  const r = rect.right  + pad;
+  const b = rect.bottom + pad;
+  const W  = window.innerWidth;
+  const VH = window.innerHeight;
 
   document.getElementById('tour-ring').style.cssText =
     `top:${t}px;left:${l}px;width:${r-l}px;height:${b-t}px;`;
 
   document.getElementById('tour-mask').style.clipPath =
-    `polygon(0 0,${W}px 0,${W}px ${H}px,0 ${H}px,0 0,${l}px ${t}px,${l}px ${b}px,${r}px ${b}px,${r}px ${t}px,${l}px ${t}px)`;
+    `polygon(0 0,${W}px 0,${W}px ${VH}px,0 ${VH}px,0 0,${l}px ${t}px,${l}px ${b}px,${r}px ${b}px,${r}px ${t}px,${l}px ${t}px)`;
 
   const bubble = document.getElementById('tour-bubble');
   bubble.className = 'arrow-' + arrow;
   if (arrow === 'top') {
-    bubble.style.top  = (b + 14) + 'px';
+    bubble.style.top    = (b + 14) + 'px';
     bubble.style.bottom = '';
   } else {
-    bubble.style.top = '';
-    bubble.style.bottom = (H - t + 14) + 'px';
+    bubble.style.top    = '';
+    bubble.style.bottom = (VH - t + 14) + 'px';
   }
   bubble.style.left = Math.max(14, Math.min(rect.left, W - 338)) + 'px';
 
