@@ -81,9 +81,10 @@
   .score-info { flex:1; }
   .score-label-text { font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; transition:color 0.2s; }
   .score-sub { font-size:11px; color:var(--ifa-muted); margin-top:2px; }
-  input[type="range"] { -webkit-appearance:none; appearance:none; width:100%; height:5px; border-radius:99px; background:var(--ifa-gray2); outline:none; padding:0; border:none; cursor:pointer; }
-  input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:24px; height:24px; border-radius:50%; background:var(--ifa-blue); cursor:pointer; box-shadow:0 2px 8px rgba(0,58,112,0.35); border:2px solid white; }
-  .slider-ticks { display:flex; justify-content:space-between; font-size:10px; color:var(--ifa-muted); margin-top:5px; padding:0 2px; font-family:'Oswald',sans-serif; }
+  .score-stepper { display:flex; align-items:center; gap:12px; max-width:300px; margin:0 auto 4px; }
+  .step-btn { width:48px; height:48px; border-radius:10px; border:2px solid var(--ifa-border); background:var(--ifa-gray); color:var(--ifa-blue); font-size:26px; font-weight:700; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; flex-shrink:0; font-family:'Oswald',sans-serif; }
+  .step-btn:active { transform:scale(0.93); }
+  .step-btn:disabled { opacity:0.25; cursor:not-allowed; transform:none; }
   .sc-5{color:#1B7B34;} .sc-4{color:#4CAF50;} .sc-3{color:#E8A000;} .sc-2{color:#E06000;} .sc-1{color:#D0021B;}
 
   /* ── NOTES SECTION ── */
@@ -751,16 +752,15 @@ function buildCriteria() {
         <div class="weight-pill">${t('weight')}: ${cr.weight}</div>
       </div>
       <div class="crit-desc">${cr.desc[currentLang]}</div>
-      <div class="score-row">
-        <div class="score-num ${scoreClass(val)}" id="sv-${cr.id}">${val}</div>
-        <div class="score-info">
+      <div class="score-stepper">
+        <button class="step-btn" id="minus-${cr.id}" onclick="stepScore('${cr.id}',-1)" ${val<=1?'disabled':''}>−</button>
+        <div style="flex:1;text-align:center;">
+          <div class="score-num ${scoreClass(val)}" id="sv-${cr.id}" style="font-size:52px">${val}</div>
           <div class="score-label-text ${scoreClass(val)}" id="sl-${cr.id}">${scoreLabel(val)}</div>
           <div class="score-sub">${t('eachMistake')}</div>
         </div>
+        <button class="step-btn" id="plus-${cr.id}" onclick="stepScore('${cr.id}',1)" ${val>=10?'disabled':''}>+</button>
       </div>
-      <input type="range" min="1" max="10" step="1" value="${val}" id="slider-${cr.id}"
-        oninput="updateScore('${cr.id}',parseFloat(this.value))">
-      <div class="slider-ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
 
       <div class="notes-toggle" onclick="toggleNotes('${cr.id}')">
         <span class="notes-toggle-label">${t('notes')}</span>
@@ -788,6 +788,11 @@ function buildCriteria() {
   });
 }
 
+function stepScore(id, delta) {
+  const next = Math.min(10, Math.max(1, (scores[id] || 10) + delta));
+  updateScore(id, next);
+}
+
 function updateScore(id, val) {
   scores[id] = val;
   const sv = document.getElementById('sv-'+id);
@@ -795,6 +800,8 @@ function updateScore(id, val) {
   const sl = document.getElementById('sl-'+id);
   sl.textContent = scoreLabel(val); sl.className = 'score-label-text '+scoreClass(val);
   document.getElementById('card-'+id).className = `criterion-card scored${val<6?' warn':''}`;
+  document.getElementById('minus-'+id).disabled = val <= 1;
+  document.getElementById('plus-'+id).disabled  = val >= 10;
 }
 
 function saveNote(id) {
