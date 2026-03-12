@@ -348,7 +348,7 @@
   </div>
 
   <div class="btn-row">
-    <button class="btn btn-primary" onclick="goStep(1)">Continue →</button>
+    <button class="btn btn-primary" id="btn-continue" onclick="goStep(1)">Continue →</button>
   </div>
 </div>
 
@@ -392,7 +392,7 @@
 
   <div class="btn-row">
     <button class="btn btn-secondary" onclick="goStep(1)">← Edit</button>
-    <button class="btn btn-accent" onclick="saveResult()">⬇ Export</button>
+    <button class="btn btn-accent" id="btn-export" onclick="saveResult()">⬇ Export</button>
   </div>
   <div style="margin-top:10px;">
     <button id="btnNewEval" class="btn btn-danger" onclick="resetForm()" style="width:100%;">🔄 New Evaluation</button>
@@ -1228,12 +1228,12 @@ document.addEventListener('click', e => {
 // ══ GUIDED TOUR ══
 const TOUR_STEPS = {
   0: [
-    { target:'step-0',          title:'Match & Referee Info',   body:'Fill in all fields on this screen before proceeding. The data appears in the exported report and is stored in the IFA database.' },
+    { target:'scoringMethodBox',title:'Match & Referee Info',   body:'Fill in all fields on this screen before proceeding. The data appears in the exported report and is stored in the IFA database.' },
     { target:'evaluatorName',   title:'Your Name',              body:'Enter your full name as the evaluator. This identifies who conducted the evaluation.' },
     { target:'refName',         title:'Referee\'s Name',        body:'Enter the full name of the referee being evaluated, their country code (3 letters), and the match date.' },
     { target:'teamHome',        title:'Match Details',          body:'Enter team names and the competition/venue. This context matters — a World Championship final differs from a regional league match.' },
     { target:'scoringMethodBox',title:'Scoring Method',         body:'Each criterion starts at 10 points. Deduct 1 point per observable mistake. Higher weights amplify the impact on the final score.' },
-    { target:'step-0',          title:'Continue When Ready',    body:'Once all fields are filled, tap Continue to proceed to Criteria Scoring. You can always navigate back to correct details.', arrow:'bottom' }
+    { target:'btn-continue',    title:'Continue When Ready',    body:'Once all fields are filled, tap Continue to proceed to Criteria Scoring. You can always navigate back to correct details.', arrow:'bottom' }
   ],
   1: [
     { target:'card-rules',      title:'Rules (×4) — Most Important', body:'This criterion carries the highest weight. A score below 8 automatically prevents IT1 — regardless of the overall percentage.' },
@@ -1246,7 +1246,7 @@ const TOUR_STEPS = {
   2: [
     { target:'resultContent',   title:'Evaluation Result',     body:'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.' },
     { target:'remarksTitle',    title:'Overall Remarks',       body:'Before exporting, hold a brief post-match discussion with the referee. Add observations from that conversation here.' },
-    { target:'step-2',          title:'Export the Evaluation', body:'Tap Export to open your email client with the evaluation pre-filled. You must send the email — it is not submitted until sent.', arrow:'bottom' }
+    { target:'btn-export',      title:'Export the Evaluation', body:'Tap Export to open your email client with the evaluation pre-filled. You must send the email — it is not submitted until sent.', arrow:'bottom' }
   ]
 };
 
@@ -1301,13 +1301,20 @@ function renderTourStep() {
     `polygon(0 0,${W}px 0,${W}px ${VH}px,0 ${VH}px,0 0,${l}px ${t}px,${l}px ${b}px,${r}px ${b}px,${r}px ${t}px,${l}px ${t}px)`;
 
   const bubble = document.getElementById('tour-bubble');
-  bubble.className = 'arrow-' + arrow;
-  if (arrow === 'top') {
-    bubble.style.top    = (b + 14) + 'px';
+  const bubbleH = 200; // estimated bubble height for clamping
+  let useArrow = arrow;
+  // auto-flip: if arrow:top would push bubble off bottom, switch to bottom
+  if (useArrow === 'top'  && b + 14 + bubbleH > VH) useArrow = 'bottom';
+  // auto-flip: if arrow:bottom would push bubble off top, switch to top
+  if (useArrow === 'bottom' && t - 14 - bubbleH < 0) useArrow = 'top';
+  bubble.className = 'arrow-' + useArrow;
+  if (useArrow === 'top') {
+    bubble.style.top    = Math.min(b + 14, VH - bubbleH - 8) + 'px';
     bubble.style.bottom = '';
   } else {
+    const rawBottom = VH - t + 14;
     bubble.style.top    = '';
-    bubble.style.bottom = (VH - t + 14) + 'px';
+    bubble.style.bottom = Math.min(rawBottom, VH - bubbleH - 8) + 'px';
   }
   bubble.style.left = Math.max(14, Math.min(rect.left, W - 338)) + 'px';
 
