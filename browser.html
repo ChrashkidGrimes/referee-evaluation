@@ -103,7 +103,7 @@
 
   /* Score mini-bars */
   .score-bars { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
-  .score-bar-item { }
+
   .score-bar-label { font-size:9px; color:var(--ifa-muted); text-transform:uppercase; letter-spacing:0.5px; font-weight:700; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .score-bar-track { background:var(--ifa-gray2); border-radius:99px; height:6px; overflow:hidden; }
   .score-bar-fill { border-radius:99px; height:6px; transition:width 0.3s; }
@@ -137,6 +137,7 @@
 
   /* ── DARK MODE ── */
   [data-theme="dark"] {
+    color-scheme: dark;
     --ifa-gray: #0e1420;
     --ifa-gray2: #1a2435;
     --ifa-border: #283650;
