@@ -201,6 +201,47 @@
   .btn-dark-toggle { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:6px; color:white; cursor:pointer; font-size:14px; line-height:1; padding:5px 8px; flex-shrink:0; }
   .btn-dark-toggle:active { background:rgba(255,255,255,0.22); }
 
+  /* ── CRITERION HELP POPOVER ── */
+  .btn-crit-help { background:none; border:1.5px solid var(--ifa-accent); border-radius:50%; color:var(--ifa-accent); cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.15s; margin-left:6px; }
+  .btn-crit-help:hover, .btn-crit-help.active { background:var(--ifa-accent); color:white; }
+  .crit-help-pop { display:none; background:var(--ifa-card); border:1.5px solid var(--ifa-accent); border-radius:var(--radius); padding:14px; margin:4px 0 10px; position:relative; animation:fadeSlide 0.18s ease; }
+  .crit-help-pop::before { content:''; position:absolute; top:-7px; left:22px; width:12px; height:12px; background:var(--ifa-card); border-left:1.5px solid var(--ifa-accent); border-top:1.5px solid var(--ifa-accent); transform:rotate(45deg); }
+  .crit-help-pop.open { display:block; }
+  .crit-help-pop-title { font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.5px; color:var(--ifa-accent); text-transform:uppercase; margin-bottom:8px; }
+  .crit-help-pop > p { font-size:12.5px; color:var(--ifa-text); line-height:1.55; margin-bottom:10px; }
+  .crit-help-pop > p strong { color:var(--ifa-blue); }
+  [data-theme="dark"] .crit-help-pop > p strong { color:var(--ifa-accent); }
+  .crit-help-examples { background:var(--ifa-gray); border-radius:6px; padding:8px 10px; font-size:12px; }
+  .crit-help-examples .ex-title { font-family:'Oswald',sans-serif; font-size:10px; font-weight:600; letter-spacing:1px; color:var(--ifa-muted); text-transform:uppercase; margin-bottom:4px; }
+  .crit-help-examples ul { padding-left:16px; }
+  .crit-help-examples li { margin-bottom:2px; color:var(--ifa-text); line-height:1.4; }
+  .crit-help-warn { background:rgba(208,2,27,0.07); border:1px solid rgba(208,2,27,0.25); border-radius:6px; padding:8px 10px; font-size:12px; color:#8B0000; margin-top:10px; line-height:1.5; }
+  [data-theme="dark"] .crit-help-warn { background:rgba(208,2,27,0.12); color:#ff8080; }
+  [data-theme="dark"] .crit-help-examples { background:var(--ifa-gray2); }
+
+  /* ── GUIDED TOUR ── */
+  #tour-backdrop { display:none; position:fixed; inset:0; z-index:900; pointer-events:none; }
+  #tour-backdrop.active { display:block; pointer-events:auto; }
+  #tour-mask { position:absolute; inset:0; background:rgba(0,20,50,0.70); transition:clip-path 0.3s ease; }
+  #tour-ring { position:absolute; border:2.5px solid var(--ifa-accent); border-radius:12px; box-shadow:0 0 0 4px rgba(0,159,227,0.22); transition:all 0.3s ease; pointer-events:none; }
+  #tour-bubble { position:absolute; background:var(--ifa-card); border:1.5px solid var(--ifa-accent); border-radius:14px; padding:16px; width:min(310px,calc(100vw - 28px)); box-shadow:0 8px 32px rgba(0,20,50,0.3); z-index:901; transition:all 0.3s ease; }
+  #tour-bubble::before { content:''; position:absolute; width:12px; height:12px; background:var(--ifa-card); border-left:1.5px solid var(--ifa-accent); border-top:1.5px solid var(--ifa-accent); transform:rotate(45deg); }
+  #tour-bubble.arrow-top::before { top:-7px; left:26px; }
+  #tour-bubble.arrow-bottom::before { bottom:-7px; left:26px; transform:rotate(225deg); }
+  #tour-progress { font-family:'Oswald',sans-serif; font-size:10px; font-weight:600; letter-spacing:1.5px; color:var(--ifa-accent); text-transform:uppercase; margin-bottom:6px; }
+  #tour-title { font-family:'Oswald',sans-serif; font-size:14px; font-weight:700; color:var(--ifa-blue); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:5px; }
+  [data-theme="dark"] #tour-title { color:var(--ifa-accent); }
+  #tour-body { font-size:13px; color:var(--ifa-text); line-height:1.55; margin-bottom:12px; }
+  .tour-actions { display:flex; align-items:center; gap:8px; }
+  #tour-skip { background:none; border:none; color:var(--ifa-muted); cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.5px; margin-right:auto; padding:0; text-transform:uppercase; }
+  #tour-prev { background:var(--ifa-gray); border:1.5px solid var(--ifa-border); border-radius:6px; color:var(--ifa-muted); cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.5px; padding:7px 12px; text-transform:uppercase; }
+  #tour-next { background:var(--ifa-accent); border:none; border-radius:6px; color:white; cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.5px; padding:7px 16px; text-transform:uppercase; box-shadow:0 2px 8px rgba(0,159,227,0.3); }
+  #tour-dots { display:flex; gap:5px; justify-content:center; margin-top:10px; }
+  .tour-dot { width:6px; height:6px; border-radius:3px; background:var(--ifa-border); transition:all 0.2s; }
+  .tour-dot.active { background:var(--ifa-accent); width:18px; }
+  .btn-tour { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:6px; color:rgba(255,255,255,0.85); cursor:pointer; font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.5px; padding:5px 10px; text-transform:uppercase; flex-shrink:0; text-decoration:none; display:inline-flex; align-items:center; }
+  .btn-tour:active { background:rgba(255,255,255,0.22); }
+
   /* ── DARK MODE ── */
   [data-theme="dark"] {
     color-scheme: dark;
@@ -238,6 +279,8 @@
       <option value="pt">PT</option>
       <option value="it">IT</option>
     </select>
+    <a href="help.html" class="btn-tour" title="Open user manual">? Help</a>
+    <button class="btn-tour" id="btnTour" onclick="startTour()" title="Start guided tour">▶ Tour</button>
     <button class="btn-dark-toggle" id="darkToggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
   </div>
   <div class="progress-wrap"><div class="progress-fill" id="progressBar" style="width:33%"></div></div>
@@ -301,7 +344,7 @@
 
   <div id="scoringMethodBox" style="background:rgba(0,80,152,0.07);border:1px solid rgba(0,80,152,0.2);border-radius:var(--radius);padding:12px 14px;font-size:12px;color:var(--ifa-blue-mid);line-height:1.6;">
     <strong style="font-family:'Oswald',sans-serif;letter-spacing:1px;font-size:11px;">SCORING METHOD</strong><br>
-    Each item starts at <strong>5 points</strong>. Each mistake: −0.5 pts. Important items are weighted more heavily.
+    Each criterion starts at <strong>10 points</strong>. Deduct 1 point per mistake. Higher weight = more impact on total score.
   </div>
 
   <div class="btn-row">
@@ -374,27 +417,98 @@ const CRITERIA = [
   { id:'rules',
     name:{en:'1. Rules', de:'1. Regeln', es:'1. Reglas', pt:'1. Regras', it:'1. Regole'},
     weight:4,
-    desc:{en:'Practical application of rules in the match.', de:'Praktische Anwendung der Regeln im Spiel.', es:'Aplicación práctica de las reglas en el partido.', pt:'Aplicação prática das regras na partida.', it:'Applicazione pratica delle regole nella partita.'} },
+    desc:{en:'Practical application of rules in the match.', de:'Praktische Anwendung der Regeln im Spiel.', es:'Aplicación práctica de las reglas en el partido.', pt:'Aplicação prática das regras na partida.', it:'Applicazione pratica delle regole nella partita.'},
+    help:{en:'Watch for wrong fault calls, incorrect point or service awards, and violations that should have been called.',
+          de:'Achten auf: falsche Fehlerpfiffe, falsche Punkt- oder Aufschlagvergabe, übersehene Regelverstöße.',
+          es:'Observar: silbatos de falta incorrectos, adjudicación incorrecta de puntos o saques, infracciones ignoradas.',
+          pt:'Observar: erros de falta incorretos, atribuição incorreta de pontos ou saques, violações ignoradas.',
+          it:'Osservare: fischi errati, assegnazione errata di punti o servizi, violazioni ignorate.'},
+    exLabel:{en:'Common deductions', de:'Häufige Abzüge', es:'Deducciones comunes', pt:'Deduções comuns', it:'Deduzioni comuni'},
+    examples:{en:['Wrong fault call (in/out, net, foot fault)','Incorrect point or service award','Misapplication of timeout or substitution rule','Ignoring a violation that should have been called'],
+              de:['Falscher Fehlerpfiff (In/Out, Netz, Fußfehler)','Falsche Punkt- oder Aufschlagvergabe','Falsche Anwendung der Auszeit- oder Auswechslungsregel','Übersehener Regelverstoß'],
+              es:['Silbato de falta incorrecto (In/Out, red, falta de pie)','Adjudicación incorrecta de punto o saque','Aplicación incorrecta de tiempo muerto o sustitución','Infracción ignorada que debía sancionarse'],
+              pt:['Erro de falta incorreto (In/Out, rede, falta de pé)','Atribuição incorreta de ponto ou saque','Aplicação incorreta de tempo morto ou substituição','Violação ignorada que deveria ser marcada'],
+              it:['Fischio di fallo errato (In/Out, rete, fallo di piede)','Assegnazione errata di punto o servizio','Applicazione errata del timeout o della sostituzione','Violazione ignorata che andava sanzionata']},
+    warn:{en:'⚠️ Rules score below 8 automatically blocks IT1 — regardless of the overall percentage.',
+          de:'⚠️ Regelwertung unter 8 sperrt IT1 – unabhängig vom Gesamtergebnis.',
+          es:'⚠️ Puntaje en Reglas menor a 8 bloquea IT1 automáticamente.',
+          pt:'⚠️ Pontuação em Regras abaixo de 8 bloqueia IT1 automaticamente.',
+          it:'⚠️ Punteggio Regole sotto 8 blocca IT1 automaticamente.'} },
   { id:'leadership',
     name:{en:'2. Leadership Performance', de:'2. Führungsleistung', es:'2. Liderazgo', pt:'2. Desempenho de Liderança', it:'2. Prestazione di Leadership'},
     weight:3,
-    desc:{en:'Penalties, disciplinary control, game control, communication with players & coaches, referee team management.', de:'Strafen, Disziplinkontrolle, Spielkontrolle, Kommunikation mit Spielern & Trainern, Management des Schiedsrichterteams.', es:'Sanciones, control disciplinario, control del juego, comunicación con jugadores y entrenadores, gestión del equipo arbitral.', pt:'Penalidades, controle disciplinar, controle do jogo, comunicação com jogadores e treinadores, gestão da equipe de arbitragem.', it:'Sanzioni, controllo disciplinare, controllo del gioco, comunicazione con giocatori e allenatori, gestione della squadra arbitrale.'} },
+    desc:{en:'Penalties, disciplinary control, game control, communication with players & coaches, referee team management.', de:'Strafen, Disziplinkontrolle, Spielkontrolle, Kommunikation mit Spielern & Trainern, Management des Schiedsrichterteams.', es:'Sanciones, control disciplinario, control del juego, comunicación con jugadores y entrenadores, gestión del equipo arbitral.', pt:'Penalidades, controle disciplinar, controle do jogo, comunicação com jogadores e treinadores, gestão da equipe de arbitragem.', it:'Sanzioni, controllo disciplinare, controllo del gioco, comunicazione con giocatori e allenatori, gestione della squadra arbitrale.'},
+    help:{en:'How effectively the referee controls the game and manages all parties — players, coaches, and the referee team.',
+          de:'Wie effektiv der Schiedsrichter das Spiel kontrolliert und alle Beteiligten führt.',
+          es:'Qué tan efectivamente el árbitro controla el partido y gestiona a todos los involucrados.',
+          pt:'Quão efetivamente o árbitro controla o jogo e gerencia todos os envolvidos.',
+          it:'Quanto efficacemente l’arbitro controlla il gioco e gestisce tutti i soggetti coinvolti.'},
+    exLabel:{en:'Covers', de:'Beinhaltet', es:'Incluye', pt:'Inclui', it:'Comprende'},
+    examples:{en:['Penalties not issued consistently or firmly','Lost discipline control in a heated situation','Unclear or weak communication with coaches','Poor coordination with second referee or line judges'],
+              de:['Strafen nicht konsequent ausgesprochen','Disziplinverlust in angespannter Situation','Unklare Kommunikation mit Trainern','Schwache Koordination mit Zweitem SR oder Linienrichtern'],
+              es:['Sanciones no aplicadas con consistencia','Pérdida de control en situación tensa','Comunicación deficiente con entrenadores','Coordinación débil con el segundo árbitro'],
+              pt:['Penalidades não aplicadas de forma consistente','Perda de controle em situação tensa','Comunicação fraca com treinadores','Coordenação fraca com o segundo árbitro'],
+              it:['Sanzioni non applicate con coerenza','Perdita di controllo in situazione tesa','Comunicazione scarsa con gli allenatori','Coordinamento debole con il secondo arbitro']} },
   { id:'technical',
     name:{en:'3. Technical Management', de:'3. Technisches Management', es:'3. Gestión Técnica', pt:'3. Gestão Técnica', it:'3. Gestione Tecnica'},
     weight:1,
-    desc:{en:'Start & end of match (jerseys, game report, signatures), score boards, technical interruptions, unexpected situations.', de:'Beginn & Ende des Spiels (Trikots, Spielbericht, Unterschriften), Anzeigetafeln, technische Unterbrechungen, unerwartete Situationen.', es:'Inicio y fin del partido (camisetas, acta, firmas), marcadores, interrupciones técnicas, situaciones inesperadas.', pt:'Início e fim da partida (camisetas, relatório, assinaturas), placares, interrupções técnicas, situações inesperadas.', it:'Inizio e fine partita (maglie, referto, firme), tabelloni, interruzioni tecniche, situazioni impreviste.'} },
+    desc:{en:'Start & end of match (jerseys, game report, signatures), score boards, technical interruptions, unexpected situations.', de:'Beginn & Ende des Spiels (Trikots, Spielbericht, Unterschriften), Anzeigetafeln, technische Unterbrechungen, unerwartete Situationen.', es:'Inicio y fin del partido (camisetas, acta, firmas), marcadores, interrupciones técnicas, situaciones inesperadas.', pt:'Início e fim da partida (camisetas, relatório, assinaturas), placares, interrupções técnicas, situações inesperadas.', it:'Inizio e fine partita (maglie, referto, firme), tabelloni, interruzioni tecniche, situazioni impreviste.'},
+    help:{en:'Administrative and procedural correctness <strong>before, during, and after the match</strong>.',
+          de:'Administrative und verfahrenstechnische Korrektheit <strong>vor, während und nach dem Spiel</strong>.',
+          es:'Corrección administrativa y de procedimiento <strong>antes, durante y después del partido</strong>.',
+          pt:'Correção administrativa e de procedimento <strong>antes, durante e após a partida</strong>.',
+          it:'Correttezza amministrativa e procedurale <strong>prima, durante e dopo la partita</strong>.'},
+    exLabel:{en:'Covers', de:'Beinhaltet', es:'Incluye', pt:'Inclui', it:'Comprende'},
+    examples:{en:['Jersey check omitted or incomplete','Game report not properly completed or signed','Scoreboard not updated correctly','Unexpected situation (protest, injury) poorly handled'],
+              de:['Trikotprüfung ausgelassen oder unvollständig','Spielbericht nicht ordnungsgemäß ausgefüllt oder unterschrieben','Anzeigetafel nicht korrekt aktualisiert','Unerwartete Situation schlecht gehandhabt'],
+              es:['Revisión de camisetas omitida o incompleta','Acta no completada o firmada correctamente','Marcador no actualizado correctamente','Situación inesperada mal gestionada'],
+              pt:['Verificação de camisetas omitida ou incompleta','Relatório não preenchido ou assinado corretamente','Placar não atualizado corretamente','Situação inesperada mal gerenciada'],
+              it:['Controllo maglie omesso o incompleto','Referto non compilato o firmato correttamente','Tabellone non aggiornato correttamente','Situazione imprevista gestita male']} },
   { id:'balls',
     name:{en:'4. Balls', de:'4. Bälle', es:'4. Balones', pt:'4. Bolas', it:'4. Palle'},
     weight:1,
-    desc:{en:'Approval and management (exchanges).', de:'Genehmigung und Verwaltung (Wechsel).', es:'Aprobación y gestión (cambios).', pt:'Aprovação e gestão (substituições).', it:'Approvazione e gestione (sostituzioni).'} },
+    desc:{en:'Approval and management (exchanges).', de:'Genehmigung und Verwaltung (Wechsel).', es:'Aprobación y gestión (cambios).', pt:'Aprovação e gestão (substituições).', it:'Approvazione e gestione (sostituzioni).'},
+    help:{en:'Approval and management of ball exchanges according to the rules.',
+          de:'Genehmigung und Verwaltung von Ballwechseln gemäß den Regeln.',
+          es:'Aprobación y gestión de cambios de balón según el reglamento.',
+          pt:'Aprovação e gestão das trocas de bola conforme as regras.',
+          it:'Approvazione e gestione delle sostituzioni di palla secondo il regolamento.'},
+    exLabel:{en:'Common deductions', de:'Häufige Abzüge', es:'Deducciones comunes', pt:'Deduções comuns', it:'Deduzioni comuni'},
+    examples:{en:['Ball not inspected before approval','Exchange allowed without proper check','Delay in approving or rejecting a ball change','Wrong ball used without intervention'],
+              de:['Ball vor Genehmigung nicht geprüft','Wechsel ohne ordentliche Kontrolle zugelassen','Verzögerung bei Genehmigung oder Ablehnung','Falscher Ball ohne Eingreifen verwendet'],
+              es:['Balón no inspeccionado antes de aprobación','Cambio permitido sin revisión adecuada','Demora en aprobar o rechazar cambio','Balón incorrecto usado sin intervención'],
+              pt:['Bola não inspecionada antes da aprovação','Troca permitida sem verificação adequada','Atraso na aprovação ou rejeição da troca','Bola incorreta usada sem intervenção'],
+              it:["Palla non ispezionata prima dell'approvazione","Sostituzione consentita senza adeguato controllo","Ritardo nell'approvazione o rifiuto del cambio","Palla errata usata senza intervento"]} },
   { id:'demeanor',
     name:{en:"5. Referee's Demeanor", de:'5. Auftreten des Schiedsrichters', es:'5. Comportamiento del Árbitro', pt:'5. Comportamento do Árbitro', it:"5. Comportamento dell'Arbitro"},
     weight:3,
-    desc:{en:'Hand signals, whistle volume, body language.', de:'Handzeichen, Pfifflautstärke, Körpersprache.', es:'Señales manuales, volumen del silbato, lenguaje corporal.', pt:'Sinais manuais, volume do apito, linguagem corporal.', it:'Segnali manuali, volume del fischietto, linguaggio del corpo.'} },
+    desc:{en:'Hand signals, whistle volume, body language.', de:'Handzeichen, Pfifflautstärke, Körpersprache.', es:'Señales manuales, volumen del silbato, lenguaje corporal.', pt:'Sinais manuais, volume do apito, linguagem corporal.', it:'Segnali manuali, volume del fischietto, linguaggio del corpo.'},
+    help:{en:'Observe hand signals, whistle use, and body language. Is the referee visibly confident and in control?',
+          de:'Handzeichen, Pfiffgebung und Körpersprache beobachten. Wirkt der SR sichtlich sicher und in Kontrolle?',
+          es:'Observar señales manuales, uso del silbato y lenguaje corporal. ¿El árbitro parece seguro y en control?',
+          pt:'Observar sinais manuais, uso do apito e linguagem corporal. O árbitro parece confiante e no controle?',
+          it:"Osservare segnali manuali, fischietto e linguaggio del corpo. L'arbitro appare sicuro e in controllo?"},
+    exLabel:{en:'Common deductions', de:'Häufige Abzüge', es:'Deducciones comunes', pt:'Deduções comuns', it:'Deduzioni comuni'},
+    examples:{en:['Hand signal missing, late, or incorrect','Whistle too weak or hesitant','Passive or uncertain body language','Visible loss of composure or authority'],
+              de:['Handzeichen fehlend, zu spät oder falsch','Pfiff zu schwach oder zögerlich','Passive oder unsichere Körpersprache','Sichtbarer Verlust von Autorität'],
+              es:['Señal manual ausente, tardía o incorrecta','Silbato demasiado débil o dubitativo','Lenguaje corporal pasivo o inseguro','Pérdida visible de compostura o autoridad'],
+              pt:['Sinal manual ausente, atrasado ou incorreto','Apito muito fraco ou hesitante','Linguagem corporal passiva ou insegura','Perda visível de compostura ou autoridade'],
+              it:['Segnale mancante, in ritardo o errato','Fischietto troppo debole o esitante','Linguaggio del corpo passivo o incerto','Perdita visibile di compostezza o autorità']} },
   { id:'motion',
     name:{en:'6. Proper Motion & Technical Behavior', de:'6. Bewegung & Technisches Verhalten', es:'6. Movimiento & Comportamiento Técnico', pt:'6. Movimento & Comportamento Técnico', it:'6. Movimento & Comportamento Tecnico'},
     weight:2,
-    desc:{en:'Rally positioning, service positioning, net balls, cognitive aspect (observe → think → act).', de:'Positionierung beim Ballwechsel, Positionierung beim Aufschlag, Netzbälle, kognitiver Aspekt (beobachten → denken → handeln).', es:'Posicionamiento en el rally, posicionamiento en el saque, pelotas de red, aspecto cognitivo (observar → pensar → actuar).', pt:'Posicionamento no rally, posicionamento no saque, bolas na rede, aspecto cognitivo (observar → pensar → agir).', it:'Posizionamento in gioco, posizionamento al servizio, palle di rete, aspetto cognitivo (osservare → pensare → agire).'} }
+    desc:{en:'Rally positioning, service positioning, net balls, cognitive aspect (observe → think → act).', de:'Positionierung beim Ballwechsel, Positionierung beim Aufschlag, Netzbälle, kognitiver Aspekt (beobachten → denken → handeln).', es:'Posicionamiento en el rally, posicionamiento en el saque, pelotas de red, aspecto cognitivo (observar → pensar → actuar).', pt:'Posicionamento no rally, posicionamento no saque, bolas na rede, aspecto cognitivo (observar → pensar → agir).', it:'Posizionamento in gioco, posizionamento al servizio, palle di rete, aspetto cognitivo (osservare → pensare → agire).'},
+    help:{en:'Evaluate positioning, net ball decisions, and the cognitive chain: observe → think → act.',
+          de:'Positionierung, Netzballentscheidungen und die kognitive Kette bewerten: beobachten → denken → handeln.',
+          es:'Evaluar el posicionamiento, decisiones de bola en red y la cadena cognitiva: observar → pensar → actuar.',
+          pt:'Avaliar posicionamento, bolas na rede e a cadeia cognitiva: observar → pensar → agir.',
+          it:'Valutare il posizionamento, le palle di rete e la catena cognitiva: osservare → pensare → agire.'},
+    exLabel:{en:'Common deductions', de:'Häufige Abzüge', es:'Deducciones comunes', pt:'Deduções comuns', it:'Deduzioni comuni'},
+    examples:{en:['Wrong position during rally — call missed due to bad angle','Not in position at service — late or wrong spot','Inconsistent net ball decisions','Slow reaction: called too late after observing a fault'],
+              de:['Falsche Position im Wechsel — Pfiff wegen schlechtem Blickwinkel verspasst','Nicht rechtzeitig in Aufschlagposition','Inkonsistente Netzballentscheidungen','Langsame Reaktion: Pfiff zu spät nach Fehlerbeobachtung'],
+              es:['Posición incorrecta en rally — llamada perdida por ángulo','No en posición al saque','Decisiones inconsistentes sobre bola en red','Reacción lenta: silbato demasiado tarde'],
+              pt:['Posição errada no rally — chamada perdida por ângulo','Fora de posição no saque','Decisões inconsistentes sobre bola na rede','Reação lenta: apitou tarde após observar uma falta'],
+              it:['Posizione errata durante il gioco — chiamata mancata per angolazione','Non in posizione al servizio','Decisioni inconsistenti sulle palle di rete','Reazione lenta: fischiato in ritardo']} }
 ];
 const TOTAL_WEIGHT = CRITERIA.reduce((s,c)=>s+c.weight,0);
 let currentLang = 'en';
@@ -415,18 +529,18 @@ const TRANSLATIONS = {
     phNotes:'Add notes for this criterion…',
     diffEasy:'Easy', diffMedium:'Medium', diffHard:'Hard',
     scoringMethod:'SCORING METHOD',
-    scoringDesc:'Each item starts at <strong>5 points</strong>. Each mistake: −0.5 pts. Important items are weighted more heavily.',
+    scoringDesc:'Each criterion starts at <strong>10 points</strong>. Deduct 1 point per mistake. Higher weight = more impact on total score.',
     btnContinue:'Continue →', btnBack:'← Back', btnResults:'Results →',
     btnEdit:'← Edit', btnExport:'✉ Send to SharePoint', btnNewEval:'🔄 New Evaluation',
     scoreExcellent:'Excellent', scoreGood:'Good', scoreInconstant:'Inconstant', scorePoor:'Poor', scoreCritical:'Critical',
-    eachMistake:'Each mistake: −1 pt', weight:'Weight',
+    eachMistake:'Each mistake: −1 pt', helpWhatToAssess:'What to assess', weight:'Weight',
     notes:'📝 Notes', recording:'🔴 Recording… tap mic to stop',
     micTitle:'Voice input', micUnsupported:'Speech not supported in this browser',
     sttNotice:'🎤 Speech-to-text is not supported in this browser. Use Chrome or Safari on mobile for voice input.',
     remarksTitle:'💬 Remarks & Hints', remarksSub:'Post-game feedback for the referee',
-    warnUnder3:'Score below 3.0 detected — disqualifying criterion',
-    warnCountAt3:'More than 1 item rated exactly 3.0 — exceeds limit',
-    warnLaw:'Rules score below 4.0 — law mistakes disqualify IT1',
+    warnUnder3:'Score below 6 detected — disqualifying criterion',
+    warnCountAt3:'More than 1 item rated exactly 6 — exceeds limit',
+    warnLaw:'Rules score below 8 — law mistakes disqualify IT1',
     warningTitle:'⚠ Disqualification Factors',
     verdictIT1:'✓ IT1 — International 1', verdictIT2:'✓ IT2 — International 2', verdictNQ:'✗ Not Qualified (NQ)',
     qualTitle:'Qualification Criteria',
@@ -442,8 +556,8 @@ const TRANSLATIONS = {
     exportBreakdown:'Score Breakdown', exportNote:'Note',
     exportAvg:'Weighted Average', exportPct:'Percentage Score', exportVerdict:'Verdict',
     exportQual:'Qualification',
-    exportQualIT1:'IT1: >= 90%, no score < 3, max 1 item at 3, no law mistakes',
-    exportQualIT2:'IT2: >= 85%, no score < 3, max 1 item at 3',
+    exportQualIT1:'IT1: >= 90%, no score < 6, max 1 item at 6, no law mistakes',
+    exportQualIT2:'IT2: >= 85%, no score < 6, max 1 item at 6',
     exportQualNQ:'NQ:  Does not meet minimum requirements',
     exportRemarks:'Remarks & Hints',
     exportFooter:'International Fistball Association | ifa.fistball.sport',
@@ -462,18 +576,18 @@ const TRANSLATIONS = {
     phNotes:'Notizen zu diesem Kriterium hinzufügen…',
     diffEasy:'Leicht', diffMedium:'Mittel', diffHard:'Schwer',
     scoringMethod:'BEWERTUNGSMETHODE',
-    scoringDesc:'Jedes Element startet bei <strong>5 Punkten</strong>. Jeder Fehler: −1 Pkt. Wichtige Elemente werden stärker gewichtet.',
+    scoringDesc:'Jedes Kriterium startet bei <strong>10 Punkten</strong>. Jeder Fehler: −1 Pkt. Höhere Gewichtung = größerer Einfluss auf Gesamtergebnis.',
     btnContinue:'Weiter →', btnBack:'← Zurück', btnResults:'Ergebnisse →',
     btnEdit:'← Bearbeiten', btnExport:'✉ An SharePoint senden', btnNewEval:'🔄 Neue Bewertung',
     scoreExcellent:'Ausgezeichnet', scoreGood:'Gut', scoreInconstant:'Inkonstant', scorePoor:'Schwach', scoreCritical:'Kritisch',
-    eachMistake:'Jeder Fehler: −1 Pkt.', weight:'Gewicht',
+    eachMistake:'Jeder Fehler: −1 Pkt.', helpWhatToAssess:'Was zu bewerten', weight:'Gewicht',
     notes:'📝 Notizen', recording:'🔴 Aufnahme… Mikrofon tippen zum Stoppen',
     micTitle:'Spracheingabe', micUnsupported:'Spracheingabe nicht unterstützt',
     sttNotice:'🎤 Sprache-zu-Text wird in diesem Browser nicht unterstützt. Verwenden Sie Chrome oder Safari auf dem Mobilgerät für Spracheingabe.',
     remarksTitle:'💬 Bemerkungen & Hinweise', remarksSub:'Spielfeedback für den Schiedsrichter',
-    warnUnder3:'Punkte unter 3,0 erkannt — disqualifizierendes Kriterium',
-    warnCountAt3:'Mehr als 1 Element genau mit 3,0 bewertet — überschreitet Limit',
-    warnLaw:'Regelwertung unter 4,0 — Regelfehler disqualifizieren IT1',
+    warnUnder3:'Punkte unter 6 erkannt — disqualifizierendes Kriterium',
+    warnCountAt3:'Mehr als 1 Element genau mit 6 bewertet — überschreitet Limit',
+    warnLaw:'Regelwertung unter 8 — Regelfehler disqualifizieren IT1',
     warningTitle:'⚠ Disqualifikationsfaktoren',
     verdictIT1:'✓ IT1 — International 1', verdictIT2:'✓ IT2 — International 2', verdictNQ:'✗ Nicht qualifiziert (NQ)',
     qualTitle:'Qualifikationskriterien',
@@ -489,8 +603,8 @@ const TRANSLATIONS = {
     exportBreakdown:'Punkte-Aufschlüsselung', exportNote:'Notiz',
     exportAvg:'Gewichteter Durchschnitt', exportPct:'Prozentwertung', exportVerdict:'Urteil',
     exportQual:'Qualifikation',
-    exportQualIT1:'IT1: >= 90%, keine Wertung < 3, max. 1 Element bei 3, keine Regelfehler',
-    exportQualIT2:'IT2: >= 85%, keine Wertung < 3, max. 1 Element bei 3',
+    exportQualIT1:'IT1: >= 90%, keine Wertung < 6, max. 1 Element bei 6, keine Regelfehler',
+    exportQualIT2:'IT2: >= 85%, keine Wertung < 6, max. 1 Element bei 6',
     exportQualNQ:'NQ:  Erfüllt nicht die Mindestanforderungen',
     exportRemarks:'Bemerkungen & Hinweise',
     exportFooter:'International Fistball Association | ifa.fistball.sport',
@@ -509,18 +623,18 @@ const TRANSLATIONS = {
     phNotes:'Agregar notas para este criterio…',
     diffEasy:'Fácil', diffMedium:'Medio', diffHard:'Difícil',
     scoringMethod:'MÉTODO DE PUNTUACIÓN',
-    scoringDesc:'Cada elemento comienza en <strong>5 puntos</strong>. Cada error: −1 pt. Los elementos importantes tienen mayor peso.',
+    scoringDesc:'Cada criterio comienza en <strong>10 puntos</strong>. Cada error: −1 pt. Mayor peso = mayor impacto en la puntuación total.',
     btnContinue:'Continuar →', btnBack:'← Atrás', btnResults:'Resultados →',
     btnEdit:'← Editar', btnExport:'✉ Enviar a SharePoint', btnNewEval:'🔄 Nueva Evaluación',
     scoreExcellent:'Excelente', scoreGood:'Bueno', scoreInconstant:'Inconstante', scorePoor:'Deficiente', scoreCritical:'Crítico',
-    eachMistake:'Cada error: −1 pt', weight:'Peso',
+    eachMistake:'Cada error: −1 pt', helpWhatToAssess:'Qué evaluar', weight:'Peso',
     notes:'📝 Notas', recording:'🔴 Grabando… toque el mic para detener',
     micTitle:'Entrada de voz', micUnsupported:'Voz no compatible en este navegador',
     sttNotice:'🎤 El reconocimiento de voz no está disponible en este navegador. Use Chrome o Safari en móvil.',
     remarksTitle:'💬 Observaciones & Sugerencias', remarksSub:'Retroalimentación post-partido para el árbitro',
-    warnUnder3:'Puntaje menor a 3,0 detectado — criterio descalificatorio',
-    warnCountAt3:'Más de 1 elemento con 3,0 exacto — excede el límite',
-    warnLaw:'Puntaje en Reglas menor a 4,0 — errores de reglamento descalifican IT1',
+    warnUnder3:'Puntaje menor a 6 detectado — criterio descalificatorio',
+    warnCountAt3:'Más de 1 elemento con 6 exacto — excede el límite',
+    warnLaw:'Puntaje en Reglas menor a 8 — errores de reglamento descalifican IT1',
     warningTitle:'⚠ Factores de Descalificación',
     verdictIT1:'✓ IT1 — Internacional 1', verdictIT2:'✓ IT2 — Internacional 2', verdictNQ:'✗ No Calificado (NQ)',
     qualTitle:'Criterios de Calificación',
@@ -536,8 +650,8 @@ const TRANSLATIONS = {
     exportBreakdown:'Desglose de Puntajes', exportNote:'Nota',
     exportAvg:'Promedio Ponderado', exportPct:'Puntuación en %', exportVerdict:'Veredicto',
     exportQual:'Calificación',
-    exportQualIT1:'IT1: >= 90%, sin puntaje < 3, máx. 1 elemento en 3, sin errores de reglamento',
-    exportQualIT2:'IT2: >= 85%, sin puntaje < 3, máx. 1 elemento en 3',
+    exportQualIT1:'IT1: >= 90%, sin puntaje < 6, máx. 1 elemento en 6, sin errores de reglamento',
+    exportQualIT2:'IT2: >= 85%, sin puntaje < 6, máx. 1 elemento en 6',
     exportQualNQ:'NQ:  No cumple los requisitos mínimos',
     exportRemarks:'Observaciones & Sugerencias',
     exportFooter:'International Fistball Association | ifa.fistball.sport',
@@ -556,18 +670,18 @@ const TRANSLATIONS = {
     phNotes:'Adicionar notas para este critério…',
     diffEasy:'Fácil', diffMedium:'Médio', diffHard:'Difícil',
     scoringMethod:'MÉTODO DE PONTUAÇÃO',
-    scoringDesc:'Cada item começa em <strong>5 pontos</strong>. Cada erro: −1 pt. Itens importantes têm maior peso.',
+    scoringDesc:'Cada critério começa em <strong>10 pontos</strong>. Cada erro: −1 pt. Maior peso = maior impacto na pontuação total.',
     btnContinue:'Continuar →', btnBack:'← Voltar', btnResults:'Resultados →',
     btnEdit:'← Editar', btnExport:'✉ Enviar para SharePoint', btnNewEval:'🔄 Nova Avaliação',
     scoreExcellent:'Excelente', scoreGood:'Bom', scoreInconstant:'Inconstante', scorePoor:'Fraco', scoreCritical:'Crítico',
-    eachMistake:'Cada erro: −1 pt', weight:'Peso',
+    eachMistake:'Cada erro: −1 pt', helpWhatToAssess:'O que avaliar', weight:'Peso',
     notes:'📝 Notas', recording:'🔴 Gravando… toque o mic para parar',
     micTitle:'Entrada de voz', micUnsupported:'Voz não suportada neste navegador',
     sttNotice:'🎤 O reconhecimento de voz não é suportado neste navegador. Use Chrome ou Safari no celular.',
     remarksTitle:'💬 Observações & Dicas', remarksSub:'Feedback pós-jogo para o árbitro',
-    warnUnder3:'Pontuação abaixo de 3,0 detectada — critério desclassificatório',
-    warnCountAt3:'Mais de 1 item com exatamente 3,0 — excede o limite',
-    warnLaw:'Pontuação em Regras abaixo de 4,0 — erros de regras desclassificam IT1',
+    warnUnder3:'Pontuação abaixo de 6 detectada — critério desclassificatório',
+    warnCountAt3:'Mais de 1 item com exatamente 6 — excede o limite',
+    warnLaw:'Pontuação em Regras abaixo de 8 — erros de regras desclassificam IT1',
     warningTitle:'⚠ Fatores de Desclassificação',
     verdictIT1:'✓ IT1 — Internacional 1', verdictIT2:'✓ IT2 — Internacional 2', verdictNQ:'✗ Não Qualificado (NQ)',
     qualTitle:'Critérios de Qualificação',
@@ -583,8 +697,8 @@ const TRANSLATIONS = {
     exportBreakdown:'Detalhamento de Pontuações', exportNote:'Nota',
     exportAvg:'Média Ponderada', exportPct:'Pontuação em %', exportVerdict:'Veredicto',
     exportQual:'Qualificação',
-    exportQualIT1:'IT1: >= 90%, sem pontuação < 3, máx. 1 item em 3, sem erros de regras',
-    exportQualIT2:'IT2: >= 85%, sem pontuação < 3, máx. 1 item em 3',
+    exportQualIT1:'IT1: >= 90%, sem pontuação < 6, máx. 1 item em 6, sem erros de regras',
+    exportQualIT2:'IT2: >= 85%, sem pontuação < 6, máx. 1 item em 6',
     exportQualNQ:'NQ:  Não atende aos requisitos mínimos',
     exportRemarks:'Observações & Dicas',
     exportFooter:'International Fistball Association | ifa.fistball.sport',
@@ -603,18 +717,18 @@ const TRANSLATIONS = {
     phNotes:'Aggiungere note per questo criterio…',
     diffEasy:'Facile', diffMedium:'Medio', diffHard:'Difficile',
     scoringMethod:'METODO DI PUNTEGGIO',
-    scoringDesc:'Ogni elemento inizia da <strong>5 punti</strong>. Ogni errore: −1 pt. Gli elementi importanti hanno peso maggiore.',
+    scoringDesc:'Ogni criterio inizia da <strong>10 punti</strong>. Ogni errore: −1 pt. Peso maggiore = impatto maggiore sul punteggio totale.',
     btnContinue:'Continua →', btnBack:'← Indietro', btnResults:'Risultati →',
     btnEdit:'← Modifica', btnExport:'✉ Invia a SharePoint', btnNewEval:'🔄 Nuova Valutazione',
     scoreExcellent:'Eccellente', scoreGood:'Buono', scoreInconstant:'Incostante', scorePoor:'Scarso', scoreCritical:'Critico',
-    eachMistake:'Ogni errore: −1 pt', weight:'Peso',
+    eachMistake:'Ogni errore: −1 pt', helpWhatToAssess:'Cosa valutare', weight:'Peso',
     notes:'📝 Note', recording:'🔴 Registrazione… tocca il mic per fermare',
     micTitle:'Inserimento vocale', micUnsupported:'Voce non supportata in questo browser',
     sttNotice:'🎤 Il riconoscimento vocale non è supportato in questo browser. Usa Chrome o Safari su mobile.',
     remarksTitle:'💬 Osservazioni & Suggerimenti', remarksSub:"Feedback post-partita per l'arbitro",
-    warnUnder3:'Punteggio inferiore a 3,0 rilevato — criterio squalificante',
-    warnCountAt3:'Più di 1 elemento valutato esattamente 3,0 — supera il limite',
-    warnLaw:'Punteggio Regole inferiore a 4,0 — errori di regolamento squalificano IT1',
+    warnUnder3:'Punteggio inferiore a 6 rilevato — criterio squalificante',
+    warnCountAt3:'Più di 1 elemento valutato esattamente 6 — supera il limite',
+    warnLaw:'Punteggio Regole inferiore a 8 — errori di regolamento squalificano IT1',
     warningTitle:'⚠ Fattori di Squalifica',
     verdictIT1:'✓ IT1 — Internazionale 1', verdictIT2:'✓ IT2 — Internazionale 2', verdictNQ:'✗ Non Qualificato (NQ)',
     qualTitle:'Criteri di Qualificazione',
@@ -630,8 +744,8 @@ const TRANSLATIONS = {
     exportBreakdown:'Dettaglio Punteggi', exportNote:'Nota',
     exportAvg:'Media Ponderata', exportPct:'Punteggio in %', exportVerdict:'Verdetto',
     exportQual:'Qualificazione',
-    exportQualIT1:'IT1: >= 90%, nessun punteggio < 3, max 1 elemento a 3, nessun errore di regola',
-    exportQualIT2:'IT2: >= 85%, nessun punteggio < 3, max 1 elemento a 3',
+    exportQualIT1:'IT1: >= 90%, nessun punteggio < 6, max 1 elemento a 6, nessun errore di regola',
+    exportQualIT2:'IT2: >= 85%, nessun punteggio < 6, max 1 elemento a 6',
     exportQualNQ:'NQ:  Non soddisfa i requisiti minimi',
     exportRemarks:'Osservazioni & Suggerimenti',
     exportFooter:'International Fistball Association | ifa.fistball.sport',
@@ -750,6 +864,16 @@ function buildCriteria() {
       <div class="crit-header">
         <div class="crit-name">${cr.name[currentLang]}</div>
         <div class="weight-pill">${t('weight')}: ${cr.weight}</div>
+        <button class="btn-crit-help" id="help-btn-${cr.id}" onclick="toggleCritHelp('${cr.id}')" title="What to assess">?</button>
+      </div>
+      <div class="crit-help-pop" id="help-pop-${cr.id}">
+        <div class="crit-help-pop-title">${t('helpWhatToAssess')} — ${cr.name[currentLang]} (×${cr.weight})</div>
+        <p>${cr.help[currentLang] || cr.help.en}</p>
+        <div class="crit-help-examples">
+          <div class="ex-title">${cr.exLabel[currentLang] || cr.exLabel.en}</div>
+          <ul>${(cr.examples[currentLang] || cr.examples.en).map(e=>`<li>${e}</li>`).join('')}</ul>
+        </div>
+        ${cr.warn ? `<div class="crit-help-warn">${cr.warn[currentLang] || cr.warn.en}</div>` : ''}
       </div>
       <div class="crit-desc">${cr.desc[currentLang]}</div>
       <div class="score-stepper">
@@ -1054,6 +1178,149 @@ function resetForm() {
 document.getElementById('matchDate').value=new Date().toISOString().slice(0,10);
 applyTranslations();
 updateUI();
+</script>
+
+<!-- ═══ TOUR OVERLAY ═══ -->
+<div id="tour-backdrop">
+  <div id="tour-mask"></div>
+  <div id="tour-ring"></div>
+  <div id="tour-bubble" class="arrow-top">
+    <div id="tour-progress">Step 1 / 7</div>
+    <div id="tour-title">Title</div>
+    <div id="tour-body">Body</div>
+    <div class="tour-actions">
+      <button id="tour-skip" onclick="endTour()">Skip</button>
+      <button id="tour-prev" onclick="shiftTour(-1)">← Prev</button>
+      <button id="tour-next" onclick="shiftTour(1)">Next →</button>
+    </div>
+    <div id="tour-dots"></div>
+  </div>
+</div>
+
+<script>
+// ══ CRITERION HELP POPOVERS ══
+let openHelpId = null;
+function toggleCritHelp(id) {
+  const pop = document.getElementById('help-pop-' + id);
+  const btn = document.getElementById('help-btn-' + id);
+  if (!pop) return;
+  if (openHelpId && openHelpId !== id) {
+    const prev = document.getElementById('help-pop-' + openHelpId);
+    const prevBtn = document.getElementById('help-btn-' + openHelpId);
+    if (prev) prev.classList.remove('open');
+    if (prevBtn) prevBtn.classList.remove('active');
+  }
+  const isOpen = pop.classList.contains('open');
+  pop.classList.toggle('open', !isOpen);
+  btn.classList.toggle('active', !isOpen);
+  openHelpId = isOpen ? null : id;
+}
+document.addEventListener('click', e => {
+  if (openHelpId && !e.target.closest('.criterion-card')) {
+    const pop = document.getElementById('help-pop-' + openHelpId);
+    const btn = document.getElementById('help-btn-' + openHelpId);
+    if (pop) pop.classList.remove('open');
+    if (btn) btn.classList.remove('active');
+    openHelpId = null;
+  }
+});
+
+// ══ GUIDED TOUR ══
+const TOUR_STEPS = {
+  0: [
+    { target:'step-0',          title:'Match & Referee Info',   body:'Fill in all fields on this screen before proceeding. The data appears in the exported report and is stored in the IFA database.' },
+    { target:'evaluatorName',   title:'Your Name',              body:'Enter your full name as the evaluator. This identifies who conducted the evaluation.' },
+    { target:'refName',         title:'Referee\'s Name',        body:'Enter the full name of the referee being evaluated, their country code (3 letters), and the match date.' },
+    { target:'teamHome',        title:'Match Details',          body:'Enter team names and the competition/venue. This context matters — a World Championship final differs from a regional league match.' },
+    { target:'scoringMethodBox',title:'Scoring Method',         body:'Each criterion starts at 10 points. Deduct 1 point per observable mistake. Higher weights amplify the impact on the final score.' },
+    { target:'step-0',          title:'Continue When Ready',    body:'Once all fields are filled, tap Continue to proceed to Criteria Scoring. You can always navigate back to correct details.', arrow:'bottom' }
+  ],
+  1: [
+    { target:'criteriaContainer',title:'Criteria Scoring',     body:'Score the referee on 6 criteria. Each starts at 10 — use − and + to deduct one point per observable mistake.' },
+    { target:'card-rules',       title:'Rules (×4)',            body:'Highest weight. A score below 8 automatically prevents IT1 certification. Tap ? for details on what to assess.' },
+    { target:'card-leadership',  title:'Leadership (×3)',       body:'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.' },
+    { target:'card-demeanor',    title:'Demeanor (×3)',         body:'Observe hand signals, whistle volume, and body language. Tap ? on any card for detailed assessment guidance.' },
+    { target:'card-rules',       title:'Tap ? for Help',        body:'Every criterion has a ? button in its header. Tap it to see exactly what to observe and common deduction examples.', arrow:'bottom' }
+  ],
+  2: [
+    { target:'resultContent',   title:'Evaluation Result',     body:'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.' },
+    { target:'remarksTitle',    title:'Overall Remarks',       body:'Before exporting, hold a brief post-match discussion with the referee. Add observations from that conversation here.' },
+    { target:'step-2',          title:'Export the Evaluation', body:'Tap Export to open your email client with the evaluation pre-filled. You must send the email — it is not submitted until sent.', arrow:'bottom' }
+  ]
+};
+
+let tourIdx = 0;
+let tourSteps = [];
+
+function startTour() {
+  tourSteps = TOUR_STEPS[currentStep] || TOUR_STEPS[0];
+  tourIdx = 0;
+  document.getElementById('tour-backdrop').classList.add('active');
+  buildTourDots();
+  renderTourStep();
+}
+
+function endTour() {
+  document.getElementById('tour-backdrop').classList.remove('active');
+}
+
+function shiftTour(d) {
+  const next = tourIdx + d;
+  if (next < 0 || next >= tourSteps.length) return endTour();
+  tourIdx = next;
+  renderTourStep();
+}
+
+function buildTourDots() {
+  document.getElementById('tour-dots').innerHTML =
+    tourSteps.map((_, i) => `<div class="tour-dot" id="tdot-${i}"></div>`).join('');
+}
+
+function renderTourStep() {
+  const s = tourSteps[tourIdx];
+  const el = document.getElementById(s.target);
+  if (!el) { shiftTour(1); return; }
+
+  el.scrollIntoView({ behavior:'smooth', block:'center' });
+
+  const arrow = s.arrow || 'top';
+  const pad = 8;
+  const rect = el.getBoundingClientRect();
+  const t = rect.top  + window.scrollY - pad;
+  const l = rect.left - pad;
+  const r = rect.right + pad;
+  const b = rect.bottom + window.scrollY + pad;
+  const W = window.innerWidth;
+  const H = document.documentElement.scrollHeight;
+
+  document.getElementById('tour-ring').style.cssText =
+    `top:${t}px;left:${l}px;width:${r-l}px;height:${b-t}px;`;
+
+  document.getElementById('tour-mask').style.clipPath =
+    `polygon(0 0,${W}px 0,${W}px ${H}px,0 ${H}px,0 0,${l}px ${t}px,${l}px ${b}px,${r}px ${b}px,${r}px ${t}px,${l}px ${t}px)`;
+
+  const bubble = document.getElementById('tour-bubble');
+  bubble.className = 'arrow-' + arrow;
+  if (arrow === 'top') {
+    bubble.style.top  = (b + 14) + 'px';
+    bubble.style.bottom = '';
+  } else {
+    bubble.style.top = '';
+    bubble.style.bottom = (H - t + 14) + 'px';
+  }
+  bubble.style.left = Math.max(14, Math.min(rect.left, W - 338)) + 'px';
+
+  document.getElementById('tour-progress').textContent = `Step ${tourIdx+1} / ${tourSteps.length}`;
+  document.getElementById('tour-title').textContent = s.title;
+  document.getElementById('tour-body').textContent = s.body;
+  document.getElementById('tour-prev').style.display = tourIdx === 0 ? 'none' : '';
+  const nextBtn = document.getElementById('tour-next');
+  nextBtn.textContent = tourIdx === tourSteps.length - 1 ? '✓ Done' : 'Next →';
+  nextBtn.onclick = tourIdx === tourSteps.length - 1 ? endTour : () => shiftTour(1);
+
+  document.querySelectorAll('.tour-dot').forEach((d, i) =>
+    d.classList.toggle('active', i === tourIdx));
+}
 </script>
 </body>
 </html>
