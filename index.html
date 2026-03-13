@@ -2314,22 +2314,26 @@
             const parentOrigin = getAllowedParentOrigin();
 
             if (!parentOrigin) {
-                console.warn('No allowed parent origin found. Skipping postMessage.');
-            } else {
-                window.parent.postMessage({
-                    type: "evaluation_submit",
-                    payload: {
-                        subject,
-                        body
-                    }
-                }, parentOrigin);
-
-                alert(t('submitSuccess'));
+                const mailSubject = encodeURIComponent(subject);
+                const mailBody = encodeURIComponent(JSON.stringify(body));
+                window.location.href = 'mailto:t.spaltenberger@fistball.sport?subject=' + mailSubject + '&body=' + mailBody;
+                return;
             }
+
+            window.parent.postMessage({
+                type: "evaluation_submit",
+                payload: {
+                    subject,
+                    body
+                }
+            }, parentOrigin);
+
+            alert(t('submitSuccess'));
+            resetForm(true);
         }
 
-        function resetForm() {
-            if (!confirm(t('confirmReset'))) return;
+        function resetForm(skipConfirm = false) {
+            if (!skipConfirm && !confirm(t('confirmReset'))) return;
             scores = {}; notes = {}; selectedDiff = ''; remarksHints = '';
             ['refName', 'country', 'place', 'evaluatorName', 'remarksHints', 'teamHome', 'teamAway'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('matchDate').value = new Date().toISOString().slice(0, 10);
