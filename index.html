@@ -1661,6 +1661,7 @@
                 qualNQ: '<strong>NQ</strong> — Does not meet minimum requirements',
                 breakdownTitle: 'Score Breakdown & Notes',
                 confirmReset: 'Start a new evaluation? Current data will be lost.',
+                submitSuccess: 'Evaluation sent successfully.',
                 exportHeader: 'IFA - International Referee Practical Evaluation',
                 exportCommission: 'International Referee Commission',
                 exportEvaluator: 'Evaluator', exportReferee: 'Referee', exportCountry: 'Country',
@@ -1708,6 +1709,7 @@
                 qualNQ: '<strong>NQ</strong> — Erfüllt nicht die Mindestanforderungen',
                 breakdownTitle: 'Punkte-Aufschlüsselung & Notizen',
                 confirmReset: 'Neue Bewertung starten? Aktuelle Daten gehen verloren.',
+                submitSuccess: 'Bewertung erfolgreich gesendet.',
                 exportHeader: 'IFA - Internationale Schiedsrichter Praxisbewertung',
                 exportCommission: 'Internationale Schiedsrichter-Kommission',
                 exportEvaluator: 'Bewerter', exportReferee: 'Schiedsrichter', exportCountry: 'Land',
@@ -1755,6 +1757,7 @@
                 qualNQ: '<strong>NQ</strong> — No cumple los requisitos mínimos',
                 breakdownTitle: 'Desglose de Puntajes & Notas',
                 confirmReset: '¿Iniciar una nueva evaluación? Los datos actuales se perderán.',
+                submitSuccess: 'Evaluación enviada correctamente.',
                 exportHeader: 'IFA - Evaluación Práctica de Árbitro Internacional',
                 exportCommission: 'Comisión Internacional de Árbitros',
                 exportEvaluator: 'Evaluador', exportReferee: 'Árbitro', exportCountry: 'País',
@@ -1802,6 +1805,7 @@
                 qualNQ: '<strong>NQ</strong> — Não atende aos requisitos mínimos',
                 breakdownTitle: 'Detalhamento de Pontuações & Notas',
                 confirmReset: 'Iniciar uma nova avaliação? Os dados atuais serão perdidos.',
+                submitSuccess: 'Avaliação enviada com sucesso.',
                 exportHeader: 'IFA - Avaliação Prática de Árbitro Internacional',
                 exportCommission: 'Comissão Internacional de Árbitros',
                 exportEvaluator: 'Avaliador', exportReferee: 'Árbitro', exportCountry: 'País',
@@ -1849,6 +1853,7 @@
                 qualNQ: '<strong>NQ</strong> — Non soddisfa i requisiti minimi',
                 breakdownTitle: 'Dettaglio Punteggi & Note',
                 confirmReset: 'Avviare una nuova valutazione? I dati attuali andranno persi.',
+                submitSuccess: 'Valutazione inviata con successo.',
                 exportHeader: 'IFA - Valutazione Pratica Arbitro Internazionale',
                 exportCommission: 'Commissione Internazionale Arbitri',
                 exportEvaluator: 'Valutatore', exportReferee: 'Arbitro', exportCountry: 'Paese',
@@ -2318,6 +2323,8 @@
                         body
                     }
                 }, parentOrigin);
+
+                alert(t('submitSuccess'));
             }
         }
 
