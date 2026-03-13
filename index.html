@@ -2227,6 +2227,36 @@
             return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        const ALLOWED_PARENT_ORIGINS = new Set([
+            'https://fistball.org',
+            'https://test-fistball.org'
+        ]);
+        const FALLBACK_PARENT_ORIGIN = 'https://fistball.org';
+
+        function getAllowedOrigin(value) {
+            if (!value) return null;
+
+            try {
+                const origin = new URL(value).origin;
+                return ALLOWED_PARENT_ORIGINS.has(origin) ? origin : null;
+            } catch {
+                return null;
+            }
+        }
+
+        function getAllowedParentOrigin() {
+            if (window.parent === window) return null;
+
+            const params = new URLSearchParams(window.location.search);
+            const explicitParentOrigin = getAllowedOrigin(params.get('parentOrigin') || params.get('targetOrigin'));
+            if (explicitParentOrigin) return explicitParentOrigin;
+
+            const referrerOrigin = getAllowedOrigin(document.referrer);
+            if (referrerOrigin) return referrerOrigin;
+
+            return FALLBACK_PARENT_ORIGIN;
+        }
+
         // ── Navigation ──
         function updateUI() {
             document.querySelectorAll('.step').forEach((s, i) => s.classList.toggle('active', i === currentStep));
@@ -2274,10 +2304,21 @@
                 notes_motion: notes['motion'] || '-',
                 remarks: remarksHints.trim() || '-'
             };
-            const subject = encodeURIComponent('REFEREE_EVAL: ' + name + ' - ' + date);
-            const body = encodeURIComponent(JSON.stringify(payload));
+            const subject = 'REFEREE_EVAL: ' + name + ' - ' + date;
+            const body = payload;
+            const parentOrigin = getAllowedParentOrigin();
 
-            window.location.href = 'mailto:t.spaltenberger@fistball.sport?subject=' + subject + '&body=' + body;
+            if (!parentOrigin) {
+                console.warn('No allowed parent origin found. Skipping postMessage.');
+            } else {
+                window.parent.postMessage({
+                    type: "evaluation_submit",
+                    payload: {
+                        subject,
+                        body
+                    }
+                }, parentOrigin);
+            }
         }
 
         function resetForm() {
