@@ -1431,14 +1431,6 @@
                 <label>Place / Venue</label>
                 <input type="text" id="place" placeholder="City or stadium name">
             </div>
-            <div class="field">
-                <label>Match Difficulty Level</label>
-                <div class="diff-group">
-                    <div class="diff-btn" onclick="selectDiff('Easy',this)">Easy</div>
-                    <div class="diff-btn" onclick="selectDiff('Medium',this)">Medium</div>
-                    <div class="diff-btn" onclick="selectDiff('Hard',this)">Hard</div>
-                </div>
-            </div>
         </div>
 
         <div id="scoringMethodBox"
@@ -1476,6 +1468,17 @@
         <div class="section-eyebrow">Step 3 of 3</div>
         <div class="section-title">Evaluation<br>Result</div>
         <div id="resultContent"></div>
+
+        <div class="card" style="margin-top:18px;">
+            <div class="field">
+                <label id="labelDifficulty">Match Difficulty Level</label>
+                <div class="diff-group">
+                    <div class="diff-btn" onclick="selectDiff('Easy',this)">Easy</div>
+                    <div class="diff-btn" onclick="selectDiff('Medium',this)">Medium</div>
+                    <div class="diff-btn" onclick="selectDiff('Hard',this)">Hard</div>
+                </div>
+            </div>
+        </div>
 
         <div class="card" style="margin-top:18px;">
             <div id="remarksTitle"
@@ -1928,7 +1931,7 @@
             lb0[3].textContent = t('labelDate');
             lb0[4].textContent = t('labelTeams');
             lb0[5].textContent = t('labelPlace');
-            lb0[6].textContent = t('labelDifficulty');
+            document.getElementById('labelDifficulty').textContent = t('labelDifficulty');
             document.getElementById('evaluatorName').placeholder = t('phEvaluator');
             document.getElementById('refName').placeholder = t('phRefName');
             document.getElementById('country').placeholder = t('phCountry');
@@ -2513,10 +2516,12 @@
 
                 s2_0_title: 'Evaluation Result',
                 s2_0_body: 'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.',
-                s2_1_title: 'Overall Remarks',
-                s2_1_body: 'Before exporting, hold a brief post-match discussion with the referee. Add observations from that conversation here.',
-                s2_2_title: 'Export the Evaluation',
-                s2_2_body: 'Tap Export to open your email client with the evaluation pre-filled. You must send the email — it is not submitted until sent.'
+                s2_1_title: 'Match Difficulty',
+                s2_1_body: 'Select the difficulty level of the match. This context helps calibrate the evaluation — a harder match demands more from the referee.',
+                s2_2_title: 'Overall Remarks',
+                s2_2_body: 'Before exporting, hold a brief post-match discussion with the referee. Add observations from that conversation here.',
+                s2_3_title: 'Export the Evaluation',
+                s2_3_body: 'Tap Export to open your email client with the evaluation pre-filled. You must send the email — it is not submitted until sent.'
             },
 
             de: {
@@ -2548,10 +2553,12 @@
 
                 s2_0_title: 'Bewertungsergebnis',
                 s2_0_body: 'Das Ergebnis wird aus den gewichteten Summen aller Kriterien berechnet. Ein Prozentsatz und ein Urteil (IT1/IT2/NQ) werden automatisch angezeigt.',
-                s2_1_title: 'Allgemeine Bemerkungen',
-                s2_1_body: 'Führe vor dem Export ein kurzes Nachspielgespräch mit dem Schiedsrichter. Füge Beobachtungen aus diesem Gespräch hier ein.',
-                s2_2_title: 'Bewertung exportieren',
-                s2_2_body: 'Tippe auf Exportieren, um deinen E-Mail-Client mit der vorausgefüllten Bewertung zu öffnen. Du musst die E-Mail senden — sie gilt erst nach dem Versand als eingereicht.'
+                s2_1_title: 'Spielschwierigkeit',
+                s2_1_body: 'Wähle den Schwierigkeitsgrad des Spiels: Leicht, Mittel oder Schwer. Dieser Kontext hilft, die Bewertung einzuordnen — ein schwieriges Spiel stellt höhere Anforderungen an den Schiedsrichter.',
+                s2_2_title: 'Allgemeine Bemerkungen',
+                s2_2_body: 'Führe vor dem Export ein kurzes Nachspielgespräch mit dem Schiedsrichter. Füge Beobachtungen aus diesem Gespräch hier ein.',
+                s2_3_title: 'Bewertung exportieren',
+                s2_3_body: 'Tippe auf Exportieren, um deinen E-Mail-Client mit der vorausgefüllten Bewertung zu öffnen. Du musst die E-Mail senden — sie gilt erst nach dem Versand als eingereicht.'
             },
 
             es: {
@@ -2583,10 +2590,12 @@
 
                 s2_0_title: 'Resultado de la evaluación',
                 s2_0_body: 'La puntuación se calcula a partir de las sumas ponderadas de todos los criterios. Se muestran automáticamente un porcentaje y un veredicto (IT1/IT2/NQ).',
-                s2_1_title: 'Observaciones generales',
-                s2_1_body: 'Antes de exportar, mantén una breve conversación posterior al partido con el árbitro. Añade aquí las observaciones de esa conversación.',
-                s2_2_title: 'Exportar la evaluación',
-                s2_2_body: 'Toca Exportar para abrir tu cliente de correo con la evaluación prellenada. Debes enviar el correo — no se envía hasta que el mensaje sea efectivamente enviado.'
+                s2_1_title: 'Dificultad del partido',
+                s2_1_body: 'Selecciona el nivel de dificultad del partido: Fácil, Medio o Difícil. Este contexto ayuda a calibrar la evaluación — un partido más difícil exige más del árbitro.',
+                s2_2_title: 'Observaciones generales',
+                s2_2_body: 'Antes de exportar, mantén una breve conversación posterior al partido con el árbitro. Añade aquí las observaciones de esa conversación.',
+                s2_3_title: 'Exportar la evaluación',
+                s2_3_body: 'Toca Exportar para abrir tu cliente de correo con la evaluación prellenada. Debes enviar el correo — no se envía hasta que el mensaje sea efectivamente enviado.'
             },
 
             pt: {
@@ -2618,10 +2627,12 @@
 
                 s2_0_title: 'Resultado da avaliação',
                 s2_0_body: 'A pontuação é calculada a partir das somas ponderadas de todos os critérios. Um percentual e um veredicto (IT1/IT2/NQ) são exibidos automaticamente.',
-                s2_1_title: 'Observações gerais',
-                s2_1_body: 'Antes de exportar, realize uma breve conversa pós-partida com o árbitro. Adicione aqui as observações dessa conversa.',
-                s2_2_title: 'Exportar a avaliação',
-                s2_2_body: 'Toca em Exportar para abrir o teu cliente de e-mail com a avaliação pré-preenchida. Deves enviar o e-mail — ele não é submetido até que seja efetivamente enviado.'
+                s2_1_title: 'Dificuldade da partida',
+                s2_1_body: 'Seleciona o nível de dificuldade da partida: Fácil, Médio ou Difícil. Este contexto ajuda a calibrar a avaliação — uma partida mais difícil exige mais do árbitro.',
+                s2_2_title: 'Observações gerais',
+                s2_2_body: 'Antes de exportar, realize uma breve conversa pós-partida com o árbitro. Adicione aqui as observações dessa conversa.',
+                s2_3_title: 'Exportar a avaliação',
+                s2_3_body: 'Toca em Exportar para abrir o teu cliente de e-mail com a avaliação pré-preenchida. Deves enviar o e-mail — ele não é submetido até que seja efetivamente enviado.'
             },
 
             it: {
@@ -2653,10 +2664,12 @@
 
                 s2_0_title: 'Risultato della valutazione',
                 s2_0_body: 'Il punteggio è calcolato dalle somme ponderate di tutti i criteri. Una percentuale e un verdetto (IT1/IT2/NQ) vengono mostrati automaticamente.',
-                s2_1_title: 'Osservazioni generali',
-                s2_1_body: 'Prima di esportare, tieni un breve colloquio post-partita con l\'arbitro. Aggiungi qui le osservazioni emerse da quella conversazione.',
-                s2_2_title: 'Esporta la valutazione',
-                s2_2_body: 'Tocca Esporta per aprire il tuo client di posta con la valutazione precompilata. Devi inviare l\'e-mail — non viene inoltrata finché non viene effettivamente inviata.'
+                s2_1_title: 'Difficoltà della partita',
+                s2_1_body: 'Seleziona il livello di difficoltà della partita: Facile, Medio o Difficile. Questo contesto aiuta a calibrare la valutazione — una partita più difficile richiede di più all\'arbitro.',
+                s2_2_title: 'Osservazioni generali',
+                s2_2_body: 'Prima di esportare, tieni un breve colloquio post-partita con l\'arbitro. Aggiungi qui le osservazioni emerse da quella conversazione.',
+                s2_3_title: 'Esporta la valutazione',
+                s2_3_body: 'Tocca Esporta per aprire il tuo client di posta con la valutazione precompilata. Devi inviare l\'e-mail — non viene inoltrata finché non viene effettivamente inviata.'
             }
         };
 
@@ -2679,6 +2692,7 @@
             ],
             2: [
                 { target: 'resultContent', title: 'Evaluation Result', body: 'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.' },
+                { target: 'labelDifficulty', title: 'Match Difficulty', body: 'Select the difficulty level of the match. This context helps calibrate the evaluation — a harder match demands more from the referee.' },
                 { target: 'remarksTitle', title: 'Overall Remarks', body: 'Before exporting, hold a brief post-match discussion with the referee. Add observations from that conversation here.' },
                 { target: 'btn-export', title: 'Export the Evaluation', body: 'Tap Export to open your email client with the evaluation pre-filled. You must send the email — it is not submitted until sent.', arrow: 'bottom' }
             ]
