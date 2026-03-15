@@ -140,7 +140,6 @@
             background: var(--ifa-accent);
             transition: width 0.4s ease;
         }
-
         .nav-dots {
             display: flex;
             gap: 6px;
@@ -1972,6 +1971,7 @@
 
         function syncRemarks() {
             remarksHints = document.getElementById('remarksHints').value;
+            saveState();
         }
         let activeRecognition = null, activeRecordingId = null;
 
@@ -1987,10 +1987,60 @@
             if (v >= 9) return 'sc-5'; if (v >= 7) return 'sc-4';
             if (v >= 5) return 'sc-3'; if (v >= 3) return 'sc-2'; return 'sc-1';
         }
+        function saveState() {
+            localStorage.setItem('ifa-eval-state', JSON.stringify({
+                evaluatorName: document.getElementById('evaluatorName').value,
+                refName: document.getElementById('refName').value,
+                country: document.getElementById('country').value,
+                matchDate: document.getElementById('matchDate').value,
+                teamHome: document.getElementById('teamHome').value,
+                teamAway: document.getElementById('teamAway').value,
+                place: document.getElementById('place').value,
+                selectedDiff, scores, notes,
+                remarksHints: document.getElementById('remarksHints')?.value ?? remarksHints,
+                currentStep
+            }));
+        }
+
+        function restoreState() {
+            const raw = localStorage.getItem('ifa-eval-state');
+            if (!raw) return;
+            try {
+                const s = JSON.parse(raw);
+                ['evaluatorName','refName','country','matchDate','teamHome','teamAway','place'].forEach(id => {
+                    if (s[id] != null) document.getElementById(id).value = s[id];
+                });
+                if (s.selectedDiff) {
+                    selectedDiff = s.selectedDiff;
+                    document.querySelectorAll('.diff-btn').forEach(b => {
+                        b.classList.toggle('selected', b.getAttribute('onclick').includes(`'${s.selectedDiff}'`));
+                    });
+                }
+                if (s.scores) scores = s.scores;
+                if (s.notes) notes = s.notes;
+                if (s.remarksHints) remarksHints = s.remarksHints;
+                if (s.currentStep >= 1) {
+                    buildCriteria();
+                    Object.entries(scores).forEach(([id, val]) => updateScore(id, val));
+                    Object.entries(notes).forEach(([id, text]) => {
+                        const ta = document.getElementById('notes-' + id);
+                        if (ta) { ta.value = text; saveNote(id); }
+                    });
+                }
+                if (s.currentStep === 2) {
+                    document.getElementById('remarksHints').value = remarksHints;
+                    renderResult();
+                }
+                currentStep = s.currentStep || 0;
+                updateUI();
+            } catch (e) { localStorage.removeItem('ifa-eval-state'); }
+        }
+
         function selectDiff(val, el) {
             selectedDiff = val;
             document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
             el.classList.add('selected');
+            saveState();
         }
 
         // ── Build scoring step ──
@@ -2075,6 +2125,7 @@
             document.getElementById('card-' + id).className = `criterion-card scored${val < 6 ? ' warn' : ''}`;
             document.getElementById('minus-' + id).disabled = val <= 1;
             document.getElementById('plus-' + id).disabled = val >= 10;
+            saveState();
         }
 
         function saveNote(id) {
@@ -2089,6 +2140,7 @@
             } else if (!notes[id].trim() && existing) {
                 existing.remove();
             }
+            saveState();
         }
 
         function toggleNotes(id) {
@@ -2307,6 +2359,7 @@
             if (n === 1) buildCriteria();
             if (n === 2) renderResult();
             currentStep = n; updateUI(); window.scrollTo(0, 0);
+            saveState();
         }
 
         // ── Export ──
@@ -2369,12 +2422,18 @@
             ['refName', 'country', 'place', 'evaluatorName', 'remarksHints', 'teamHome', 'teamAway'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('matchDate').value = new Date().toISOString().slice(0, 10);
             document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+            localStorage.removeItem('ifa-eval-state');
             goStep(0);
         }
 
         document.getElementById('matchDate').value = new Date().toISOString().slice(0, 10);
         const _ls = document.getElementById('langSelect'); if (_ls) _ls.value = currentLang;
         applyTranslations();
+        // Attach saveState to all Step 0 text inputs
+        ['evaluatorName','refName','country','matchDate','teamHome','teamAway','place'].forEach(id => {
+            document.getElementById(id).addEventListener('input', saveState);
+        });
+        restoreState();
         updateUI();
     </script>
 
