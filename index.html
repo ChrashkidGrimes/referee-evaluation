@@ -411,6 +411,7 @@
             transition: all 0.15s;
             flex-shrink: 0;
             font-family: 'Oswald', sans-serif;
+            touch-action: manipulation;
         }
 
         .step-btn:active {
@@ -958,6 +959,17 @@
             width: auto;
         }
 
+        /* Narrow header — keep all buttons inside the blue bar */
+        @media (max-width: 580px) {
+            .header-main { gap: 6px; padding: 10px 10px 8px; }
+            .header-logos img { height: 34px; }
+            .header-divider { height: 28px; }
+            .header-text h1 { font-size: 14px; }
+            .header-text p { display: none; }
+            .btn-tour { font-size: 10px; padding: 4px 7px; }
+            select.lang-sel, select.lang-sel:focus { font-size: 12px; padding: 4px 6px; }
+        }
+
         /* Speech not supported notice */
         .stt-notice {
             font-size: 11px;
@@ -1467,7 +1479,7 @@
             <button class="btn btn-secondary" onclick="goStep(1)">← Edit</button>
             <button class="btn btn-accent" id="btn-export" onclick="saveResult()">⬇ Export</button>
         </div>
-        <div style="margin-top:10px;">
+        <div style="margin-top:28px;">
             <button id="btnNewEval" class="btn btn-danger" onclick="resetForm()" style="width:100%;">🔄 New
                 Evaluation</button>
         </div>
