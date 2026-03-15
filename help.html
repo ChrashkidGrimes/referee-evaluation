@@ -228,6 +228,7 @@
             height: 80px;
             margin-top: -80px;
             visibility: hidden;
+            pointer-events: none;
         }
 
         /* SECTION HEADER / COLLAPSIBLE */
@@ -243,6 +244,7 @@
             gap: 10px;
             text-align: left;
             transition: border-color 0.15s;
+            touch-action: manipulation;
         }
 
         .sec-toggle:hover {
@@ -1115,7 +1117,7 @@
                 tips4: "Regelfehler werden mit ×4 gewichtet — ein einziger schwerwiegender Fehler wirkt sich erheblich auf das Endergebnis aus.",
                 tips5: "Ein Wert von 6 bei einem Kriterium ist eine Grenzbeurteilung — mehr als ein solcher Wert sperrt IT1 und IT2.",
                 tips6: "Die Spracheingabe funktioniert am besten in einer ruhigen Umgebung — überprüfe die Transkription stets vor dem Speichern.",
-                tips7: "Führe nach dem Spiel eine <strong>kurze Rückmeldung mit dem Schiedsrichter</strong> durch, bevor du exportierst, und füge Beobachtungen in das Feld „Allgemeine Bemerkungen" ein.",
+                tips7: "Führe nach dem Spiel eine <strong>kurze Rückmeldung mit dem Schiedsrichter</strong> durch, bevor du exportierst, und füge Beobachtungen in das Feld \u201EAllgemeine Bemerkungen\u201C ein.",
     tips8: "Tippe auf dem Ergebnisbildschirm auf <strong>🔄 Neue Bewertung</strong>, um alle Felder für den nächsten Schiedsrichter zurückzusetzen."
   },
 
@@ -1508,6 +1510,35 @@
         }
         document.getElementById('langSelect').value = currentLang;
         applyTranslations();
+
+        // Expand section when nav link is clicked, then scroll to it
+        document.querySelectorAll('.mobile-nav a, .toc-list a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.getAttribute('href').slice(1);
+                const anchor = document.getElementById(id);
+                if (!anchor) return;
+
+                // Find which section to expand
+                let section = anchor.nextElementSibling; // top-level: <section> is right after anchor
+                if (!section || section.tagName !== 'SECTION') {
+                    section = anchor.closest('section'); // sub-anchor inside a sec-body
+                }
+                if (section) {
+                    const btn = section.querySelector('.sec-toggle');
+                    if (btn && btn.getAttribute('aria-expanded') === 'false') toggle(btn);
+                }
+
+                // Scroll after expansion so height is correct
+                requestAnimationFrame(() => {
+                    const headerH = document.querySelector('.header').offsetHeight;
+                    const mobileNavH = document.querySelector('.mobile-nav').offsetHeight || 0;
+                    const offset = headerH + mobileNavH + 8;
+                    const top = anchor.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                });
+            });
+        });
 
         // Highlight active TOC link on scroll
         const anchors = document.querySelectorAll('.section-anchor');
