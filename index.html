@@ -148,24 +148,30 @@
         }
         .nav-dots {
             display: flex;
-            gap: 6px;
+            gap: 10px;
             justify-content: center;
-            padding: 7px 0 8px;
+            padding: 12px 0;
             background: rgba(0, 0, 0, 0.15);
         }
 
         .nav-dot {
-            width: 6px;
-            height: 6px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.3);
             transition: all 0.25s;
+            cursor: pointer;
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.3);
         }
 
         .nav-dot.active {
             background: var(--ifa-accent);
-            width: 18px;
-            border-radius: 3px;
+            width: 26px;
+            border-radius: 5px;
         }
 
         /* ── STEPS ── */
@@ -277,6 +283,11 @@
             border-color: var(--ifa-blue-light);
             box-shadow: 0 0 0 3px rgba(0, 105, 180, 0.12);
             background: var(--ifa-card);
+        }
+
+        .field-error {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 3px rgba(208, 2, 27, 0.12) !important;
         }
 
         textarea {
@@ -1447,7 +1458,8 @@
         </div>
 
         <div class="btn-row">
-            <button class="btn btn-primary" id="btn-continue" onclick="goStep(1)">Continue →</button>
+            <div id="step0-error" style="display:none;color:var(--danger);font-size:13px;margin-bottom:8px;text-align:center;"></div>
+            <button class="btn btn-primary" id="btn-continue" onclick="if(validateStep0())goStep(1)">Continue →</button>
         </div>
     </div>
 
@@ -1711,7 +1723,7 @@
                 exportQualNQ: 'NQ:  Does not meet minimum requirements',
                 exportRemarks: 'Remarks & Hints',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'en-US', btnHelp: 'Help'
+                sttLang: 'en-US', btnHelp: 'Help', validationError: 'Please fill in all fields before continuing.'
             },
             de: {
                 headerTitle: 'Schiedsrichter-Bewertung', headerSub: 'Internationale Schiedsrichter-Kommission',
@@ -1759,7 +1771,7 @@
                 exportQualNQ: 'NQ:  Erfüllt nicht die Mindestanforderungen',
                 exportRemarks: 'Bemerkungen & Hinweise',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'de-DE', btnHelp: 'Hilfe'
+                sttLang: 'de-DE', btnHelp: 'Hilfe', validationError: 'Bitte alle Felder ausfüllen, bevor du weiter gehst.'
             },
             es: {
                 headerTitle: 'Evaluación del Árbitro', headerSub: 'Comisión Internacional de Árbitros',
@@ -1807,7 +1819,7 @@
                 exportQualNQ: 'NQ:  No cumple los requisitos mínimos',
                 exportRemarks: 'Observaciones & Sugerencias',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'es-ES', btnHelp: 'Ayuda'
+                sttLang: 'es-ES', btnHelp: 'Ayuda', validationError: 'Por favor, completa todos los campos antes de continuar.'
             },
             pt: {
                 headerTitle: 'Avaliação do Árbitro', headerSub: 'Comissão Internacional de Árbitros',
@@ -1855,7 +1867,7 @@
                 exportQualNQ: 'NQ:  Não atende aos requisitos mínimos',
                 exportRemarks: 'Observações & Dicas',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'pt-BR', btnHelp: 'Ajuda'
+                sttLang: 'pt-BR', btnHelp: 'Ajuda', validationError: 'Por favor, preenche todos os campos antes de continuar.'
             },
             it: {
                 headerTitle: "Valutazione dell'Arbitro", headerSub: 'Commissione Internazionale Arbitri',
@@ -1903,7 +1915,7 @@
                 exportQualNQ: 'NQ:  Non soddisfa i requisiti minimi',
                 exportRemarks: 'Osservazioni & Suggerimenti',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'it-IT', btnHelp: 'Guida'
+                sttLang: 'it-IT', btnHelp: 'Guida', validationError: 'Per favore, compila tutti i campi prima di continuare.'
             }
         };
 
@@ -2049,6 +2061,25 @@
             document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
             el.classList.add('selected');
             saveState();
+        }
+
+        function validateStep0() {
+            const required = ['evaluatorName', 'refName', 'country', 'matchDate', 'teamHome', 'teamAway', 'place'];
+            let valid = true;
+            required.forEach(id => {
+                const el = document.getElementById(id);
+                const empty = !el.value.trim();
+                el.classList.toggle('field-error', empty);
+                if (empty) valid = false;
+            });
+            if (!valid) {
+                const msg = document.getElementById('step0-error');
+                msg.textContent = t('validationError');
+                msg.style.display = 'block';
+            } else {
+                document.getElementById('step0-error').style.display = 'none';
+            }
+            return valid;
         }
 
         // ── Build scoring step ──
@@ -2359,7 +2390,13 @@
             document.getElementById('progressBar').style.width = (((currentStep + 1) / 3) * 100) + '%';
             document.getElementById('stepCounter').textContent = `${currentStep + 1} / 3`;
             const dots = document.getElementById('navDots'); dots.innerHTML = '';
-            for (let i = 0; i < 3; i++) { const d = document.createElement('div'); d.className = 'nav-dot' + (i === currentStep ? ' active' : ''); dots.appendChild(d); }
+            for (let i = 0; i < 3; i++) { const d = document.createElement('div'); d.className = 'nav-dot' + (i === currentStep ? ' active' : ''); d.onclick = () => navToStep(i); dots.appendChild(d); }
+        }
+
+        function navToStep(n) {
+            if (n === currentStep) return;
+            if (n > 0 && currentStep === 0 && !validateStep0()) return;
+            goStep(n);
         }
 
         function goStep(n) {
@@ -2437,9 +2474,12 @@
         document.getElementById('matchDate').value = new Date().toISOString().slice(0, 10);
         const _ls = document.getElementById('langSelect'); if (_ls) _ls.value = currentLang;
         applyTranslations();
-        // Attach saveState to all Step 0 text inputs
+        // Attach saveState + clear validation error to all Step 0 text inputs
         ['evaluatorName','refName','country','matchDate','teamHome','teamAway','place'].forEach(id => {
-            document.getElementById(id).addEventListener('input', saveState);
+            document.getElementById(id).addEventListener('input', function() {
+                saveState();
+                if (this.value.trim()) this.classList.remove('field-error');
+            });
         });
         restoreState();
         updateUI();
