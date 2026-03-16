@@ -628,6 +628,28 @@
             color: white;
             border-color: var(--ifa-blue);
         }
+
+        .admin-pre {
+            background: var(--ifa-gray2);
+            border: 1px solid var(--ifa-border);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            overflow-x: auto;
+            padding: 12px 14px;
+            white-space: pre;
+            margin: 10px 0 14px;
+        }
+
+        .admin-note {
+            background: rgba(208, 2, 27, 0.07);
+            border-left: 3px solid var(--danger);
+            border-radius: 0 6px 6px 0;
+            font-size: 13px;
+            padding: 8px 12px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 
@@ -660,6 +682,7 @@
         <a href="#criteria" data-i18n="navCriteria">Criteria</a>
         <a href="#result" data-i18n="navResult">Result</a>
         <a href="#tips" data-i18n="navTips">Tips</a>
+        <a href="#admin">Admin</a>
     </nav>
 
     <div class="layout">
@@ -677,6 +700,7 @@
                 <li><a href="#verdict" class="toc-sub" data-i18n="tocVerdict">Verdict Conditions</a></li>
                 <li><a href="#export" class="toc-sub" data-i18n="tocExport">Exporting</a></li>
                 <li><a href="#tips" data-i18n="tocTips">Tips &amp; Best Practices</a></li>
+                <li><a href="#admin">Administrator Guide</a></li>
             </ul>
         </nav>
 
@@ -738,12 +762,10 @@
                                 <td class="field-name" data-i18n="step1FieldContest">Contest / Venue</td>
                                 <td data-i18n="step1DescContest"></td>
                             </tr>
-                            <tr>
-                                <td class="field-name" data-i18n="step1FieldDiff">Match Difficulty</td>
-                                <td data-i18n="step1DescDiff"></td>
-                            </tr>
                         </tbody>
                     </table>
+                    <div class="tip" data-i18n="step1ValidationTip"></div>
+                    <p style="margin-top:10px;font-size:14px;" data-i18n="step1NavDots"></p>
                     <div class="tip" data-i18n="step1Tip"></div>
                 </div>
             </section>
@@ -850,6 +872,9 @@
                     <div class="sec-chevron">&#9662;</div>
                 </button>
                 <div class="sec-body">
+                    <h2 data-i18n="step3hDiff">Match Difficulty Level</h2>
+                    <p data-i18n="step3DiffDesc"></p>
+
                     <h2 data-i18n="step3hCalc">Score Calculation</h2>
                     <div class="formula-box" id="formulaBox"></div>
 
@@ -898,6 +923,117 @@
                 </div>
             </section>
 
+            <span class="section-anchor" id="admin"></span>
+            <section>
+                <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
+                    <div class="sec-num">&#9881;</div>
+                    <div class="sec-label">Administrator Guide</div>
+                    <div class="sec-chevron">&#9662;</div>
+                </button>
+                <div class="sec-body">
+                    <p style="font-size:13px;color:var(--ifa-muted);margin-bottom:16px;">Technical reference for the IFA administrator. This section is in English only.</p>
+
+                    <h2>Architecture Overview</h2>
+                    <p>There are two submission paths depending on how <code>index.html</code> is opened:</p>
+                    <pre class="admin-pre">── Primary path (index.html embedded in fistball.org iframe) ────────
+
+Evaluator fills index.html
+        │
+        ▼
+  Tap ✉ Submit
+        │
+        ▼
+  window.postMessage → parent fistball.org page receives payload
+  (parent handles storage / further processing)
+
+── Fallback path (index.html opened standalone) ─────────────────────
+
+Evaluator fills index.html
+        │
+        ▼
+  Tap ✉ Submit
+        │
+        ▼
+  mailto: link opens email client
+  (body contains JSON payload)
+        │
+        ▼
+  Power Automate flow (email trigger)
+  ├── Parse JSON from email body
+  └── Create item in SharePoint List</pre>
+
+                    <h2>Component Reference</h2>
+                    <table class="field-table">
+                        <thead><tr><th>Component</th><th>Details</th></tr></thead>
+                        <tbody>
+                            <tr><td class="field-name">SharePoint site</td><td>https://ifafistball.sharepoint.com/sites/referee</td></tr>
+                            <tr><td class="field-name">SharePoint list</td><td>RefereeEvaluations</td></tr>
+                            <tr><td class="field-name">Evaluation form URL</td><td>…/SiteAssets/index.html</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>Step 1 — SharePoint List Setup</h2>
+                    <p>In the SharePoint site, create a new List called exactly <strong>RefereeEvaluations</strong>. The <code>Title</code> column is built-in — rename its display name to <em>Evaluator</em> (internal name stays <code>Title</code>).</p>
+                    <table class="field-table" style="margin-top:10px;">
+                        <thead><tr><th>Display name</th><th>Internal name</th><th>Type</th></tr></thead>
+                        <tbody>
+                            <tr><td class="field-name">Evaluator</td><td>Title</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Referee</td><td>Referee</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Country</td><td>Country</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Date</td><td>Date</td><td>Date only</td></tr>
+                            <tr><td class="field-name">Contest</td><td>Contest</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Home</td><td>Home</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Away</td><td>Away</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Difficulty</td><td>Difficulty</td><td>Choice: Easy / Medium / Hard</td></tr>
+                            <tr><td class="field-name">ScorePercent</td><td>ScorePercent</td><td>Number</td></tr>
+                            <tr><td class="field-name">Label</td><td>Label</td><td>Choice: IT1 / IT2 / NQ</td></tr>
+                            <tr><td class="field-name">ScoreRules … ScoreMotion</td><td>(6 columns)</td><td>Number</td></tr>
+                            <tr><td class="field-name">NotesRules … NotesMotion</td><td>(6 columns)</td><td>Multiple lines of text</td></tr>
+                            <tr><td class="field-name">Remarks</td><td>Remarks</td><td>Multiple lines of text</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>Step 2 — Power Automate Flow</h2>
+                    <div class="admin-note">⚠️ This flow is only triggered when <code>index.html</code> is opened standalone. When embedded in the fistball.org iframe, submission uses <code>postMessage</code> and bypasses this flow entirely.</div>
+                    <p style="margin-top:10px;font-size:14px;">Trigger: <strong>When a new email arrives (V3)</strong> — Office 365 Outlook, filtered to the evaluation mailbox.</p>
+                    <p style="font-size:14px;margin-top:8px;"><strong>Step 1 — Compose: Extract JSON</strong></p>
+                    <pre class="admin-pre">substring(
+  body('Get_email')?['body'],
+  indexOf(body('Get_email')?['body'], '{&amp;quot;'),
+  sub(
+    lastIndexOf(body('Get_email')?['body'], '&amp;quot;}'),
+    indexOf(body('Get_email')?['body'], '{&amp;quot;')
+  )
+)</pre>
+                    <p style="font-size:13px;color:var(--ifa-muted);">Uses <code>{&amp;quot;</code> (not <code>{</code>) to skip CSS curly braces in the HTML-encoded email body.</p>
+                    <p style="font-size:14px;margin-top:8px;"><strong>Step 2 — Compose: Decode HTML entities</strong> — chain <code>replace()</code> calls to convert <code>&amp;quot;</code> → <code>"</code>, <code>&amp;amp;</code> → <code>&amp;</code>, <code>&amp;lt;</code> → <code>&lt;</code>, <code>&amp;gt;</code> → <code>&gt;</code>, <code>&amp;#39;</code> → <code>'</code>.</p>
+                    <p style="font-size:14px;margin-top:8px;"><strong>Step 3 — Parse JSON</strong> — use the decoded output. Click <em>Generate from sample</em> with a real exported evaluation JSON to build the schema. Re-generate if new fields are added.</p>
+                    <p style="font-size:14px;margin-top:8px;"><strong>Step 4 — Create item in SharePoint</strong> — site: referee, list: RefereeEvaluations. Map all Parse JSON output fields to the corresponding SharePoint columns.</p>
+
+                    <h2>Step 3 — SharePoint File Hosting</h2>
+                    <p style="font-size:14px;">Upload <code>index.html</code> and <code>help.html</code> to <strong>Site contents → SiteAssets</strong>. Navigate into the file and copy the URL from the address bar (not the sharing link) to get the direct executable URL.</p>
+                    <div class="admin-note" style="margin-top:8px;">If the page loads but nothing happens, the site may have <strong>NoScript</strong> enabled. Fix: <code>Set-SPOSite -Identity … -DenyAddAndCustomizePages $false</code></div>
+
+                    <h2>Step 4 — Updating Files</h2>
+                    <p style="font-size:14px;">Upload the new version to SiteAssets — SharePoint replaces the existing file. Users may need to clear cache (<kbd>Ctrl+Shift+R</kbd>). No changes to the list or flow are needed for UI updates. If the email payload structure changes, regenerate the Parse JSON schema from a sample.</p>
+
+                    <h2>Troubleshooting</h2>
+                    <table class="field-table" style="margin-top:8px;">
+                        <thead><tr><th>Symptom</th><th>Cause &amp; Fix</th></tr></thead>
+                        <tbody>
+                            <tr><td class="field-name">Power Automate: "Invalid JavaScript property identifier character: -"</td><td>Compose formula found a CSS <code>{</code> before the JSON. Search for <code>{&amp;quot;</code> instead of <code>{</code>.</td></tr>
+                            <tr><td class="field-name">Power Automate: "Schema validation failed"</td><td>Payload has new fields. Regenerate schema via <em>Generate from sample</em>.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>Maintenance Notes</h2>
+                    <ul style="font-size:14px;line-height:2;padding-left:20px;margin-top:8px;">
+                        <li><strong>List permissions:</strong> Inherited from the SharePoint site. Adjust if tighter access control is needed.</li>
+                        <li><strong>Power Automate licence:</strong> Uses standard connectors only (Office 365 Outlook, SharePoint). A standard M365 Business licence is sufficient.</li>
+                    </ul>
+                </div>
+            </section>
+
         </div><!-- /content -->
     </div><!-- /layout -->
 
@@ -924,16 +1060,16 @@
                 tocNotes: "Notes & Voice",
                 tocResult: "Step 3 — Result",
                 tocVerdict: "Verdict Conditions",
-                tocExport: "Exporting",
+                tocExport: "Submitting",
                 tocTips: "Tips & Best Practices",
                 secOverview: "Overview",
                 secStep1: "Step 1 — Match & Referee Info",
                 secStep2: "Step 2 — Criteria Scoring",
                 secResult: "Step 3 — Result & Export",
                 secTips: "Tips & Best Practices",
-                overviewP1: "The IFA Referee Evaluation form is a mobile-first web app for evaluating fistball referees during matches. Fill in match details, score the referee across 6 weighted criteria, and export the result via email to the IFA office.",
+                overviewP1: "The IFA Referee Evaluation form is a mobile-first web app for evaluating fistball referees during matches. Fill in match details, score the referee across 6 weighted criteria, and submit the result to the IFA office.",
                 overviewP2: "The form works in 5 languages (English, German, Spanish, Portuguese, Italian) — toggle in the top-right corner of the header.",
-                overviewTip: "💡 The form remembers your scores if you navigate back from the result screen. All data is reset with 🔄 New Evaluation.",
+                overviewTip: "💡 The form saves your progress automatically — data persists across page reloads and accidental navigation. All data is reset with 🔄 New Evaluation.",
                 step1Intro: "Fill in all fields before proceeding to scoring. This data appears in the final report and is stored in the IFA database.",
                 step1ThField: "Field",
                 step1ThDesc: "Description",
@@ -949,9 +1085,9 @@
                 step1DescTeams: "Names of both teams",
                 step1FieldContest: "Contest / Venue",
                 step1DescContest: "Competition or venue name (e.g. \"Men's World Championship 2026\")",
-                step1FieldDiff: "Match Difficulty",
-                step1DescDiff: "Easy, Medium, or Hard — based on match intensity and pressure on the referee",
-                step1Tip: "💡 Complete all fields accurately — they appear in the final report and cannot be changed after export.",
+                step1ValidationTip: "⚠️ All fields are required. The form will not let you proceed to Step 2 until every field is filled in.",
+                step1NavDots: "💡 The dots in the header bar show your current page. Tap any dot to jump directly to that page.",
+                step1Tip: "💡 Complete all fields accurately — they appear in the final report and cannot be changed after submission.",
                 step2Intro: "Each criterion starts at <strong>10 points</strong>. Deduct <strong>1 point per mistake</strong>. The minimum score is 1. Use the <strong>−</strong> and <strong>+</strong> buttons to adjust.",
                 step2hScoring: "Scoring Scale",
                 step2ThScore: "Score",
@@ -990,6 +1126,8 @@
                 step2NotesP1: "Each criterion has an optional <strong>Notes</strong> field — tap the toggle to expand. Notes are included in the exported report. Always add notes when deducting points.",
                 step2NotesP2: "<strong>Voice input 🎤:</strong> Tap the microphone button to start dictation, tap again to stop. Transcribed text is appended to the notes field. Requires microphone permission (Chrome, Edge, Safari).",
                 step2NotesTip: "💡 \"Missed fault call at 6:5 in set 2\" is more useful than \"missed calls\" — be specific.",
+                step3hDiff: "Match Difficulty Level",
+                step3DiffDesc: "Select Easy, Medium, or Hard to reflect the overall pressure and complexity of the match for the referee. This is set on the last page and appears in the final report.",
                 step3hCalc: "Score Calculation",
                 step3Formula: "Weighted sum = (Rules×4 + Leadership×3 + Technical×1 + Balls×1 + Demeanor×3 + Motion×2)\nWeighted average = sum ÷ 14\nScore% = ((average − 1) ÷ 9) × 100",
                 step3hVerdict: "Verdict Conditions",
@@ -1004,7 +1142,7 @@
                 step3ExportWarn: "✅ The evaluation is submitted immediately when you tap Submit.",
                 tips1: "Evaluate in real time or immediately after the match — memory fades quickly.",
                 tips2: "Be specific in notes: \"missed fault call at 6:5 in set 2\" beats \"missed calls\".",
-                tips3: "Use the difficulty level honestly — a referee performing well in a Hard match should be rated accordingly.",
+                tips3: "Set the difficulty level on Step 3 (the last page) — use it honestly. A referee performing well in a Hard match should be rated accordingly.",
                 tips4: "Rules mistakes are weighted ×4 — a single critical error significantly impacts the final score.",
                 tips5: "A score of 6 on any criterion is a borderline pass — more than one such score blocks IT1 and IT2.",
                 tips6: "Voice input works best in a quiet environment — always review the transcription before saving.",
@@ -1033,16 +1171,16 @@
                 tocNotes: "Notizen & Sprache",
                 tocResult: "Schritt 3 — Ergebnis",
                 tocVerdict: "Urteilsbedingungen",
-                tocExport: "Exportieren",
+                tocExport: "Absenden",
                 tocTips: "Tipps & Best Practices",
                 secOverview: "Übersicht",
                 secStep1: "Schritt 1 — Spiel- & Schiedsrichterinfo",
                 secStep2: "Schritt 2 — Kriterienbewertung",
                 secResult: "Schritt 3 — Ergebnis & Export",
                 secTips: "Tipps & Best Practices",
-                overviewP1: "Das IFA-Schiedsrichterbewertungsformular ist eine mobile Web-App zur Bewertung von Faustball-Schiedsrichtern während Spielen. Gib Spieldetails ein, bewerte den Schiedsrichter anhand von 6 gewichteten Kriterien und exportiere das Ergebnis per E-Mail an das IFA-Büro.",
+                overviewP1: "Das IFA-Schiedsrichterbewertungsformular ist eine mobile Web-App zur Bewertung von Faustball-Schiedsrichtern während Spielen. Gib Spieldetails ein, bewerte den Schiedsrichter anhand von 6 gewichteten Kriterien und übermittle das Ergebnis direkt an das IFA-Büro.",
                 overviewP2: "Das Formular ist in 5 Sprachen verfügbar (Englisch, Deutsch, Spanisch, Portugiesisch, Italienisch) — umschalten über die Schaltfläche oben rechts in der Kopfzeile.",
-                overviewTip: "💡 Das Formular speichert deine Wertungen, wenn du vom Ergebnisbildschirm zurücknavigierst. Alle Daten werden mit 🔄 Neue Bewertung zurückgesetzt.",
+                overviewTip: "💡 Das Formular speichert deinen Fortschritt automatisch — Daten bleiben bei Seitenneuladungen und versehentlicher Navigation erhalten. Alle Daten werden mit 🔄 Neue Bewertung zurückgesetzt.",
                 step1Intro: "Füll alle Felder aus, bevor du zur Bewertung fortfährst. Diese Daten erscheinen im Abschlussbericht und werden in der IFA-Datenbank gespeichert.",
                 step1ThField: "Feld",
                 step1ThDesc: "Beschreibung",
@@ -1058,9 +1196,9 @@
                 step1DescTeams: "Namen beider Mannschaften",
                 step1FieldContest: "Wettbewerb / Ort",
                 step1DescContest: "Name des Wettbewerbs oder Austragungsorts (z. B. \"Herren-Weltmeisterschaft 2026\")",
-                step1FieldDiff: "Spielschwierigkeit",
-                step1DescDiff: "Leicht, Mittel oder Schwer — basierend auf der Spielintensität und dem Druck auf den Schiedsrichter",
-                step1Tip: "💡 Füll alle Felder sorgfältig aus — sie erscheinen im Abschlussbericht und können nach dem Export nicht mehr geändert werden.",
+                step1ValidationTip: "⚠️ Alle Felder sind Pflichtfelder. Das Formular lässt dich erst zu Schritt 2 weitergehen, wenn alle Felder ausgefüllt sind.",
+                step1NavDots: "💡 Die Punkte in der Kopfzeile zeigen deine aktuelle Seite an. Tippe auf einen Punkt, um direkt zu dieser Seite zu springen.",
+                step1Tip: "💡 Füll alle Felder sorgfältig aus — sie erscheinen im Abschlussbericht und können nach dem Absenden nicht mehr geändert werden.",
                 step2Intro: "Jedes Kriterium beginnt mit <strong>10 Punkten</strong>. Zieh <strong>1 Punkt pro Fehler</strong> ab. Der Mindestwert beträgt 1. Verwende die Schaltflächen <strong>−</strong> und <strong>+</strong> zur Anpassung.",
                 step2hScoring: "Bewertungsskala",
                 step2ThScore: "Punkte",
@@ -1099,6 +1237,8 @@
                 step2NotesP1: "Jedes Kriterium verfügt über ein optionales <strong>Notizen</strong>-Feld — tippe auf den Schalter, um es zu erweitern. Notizen werden in den exportierten Bericht aufgenommen. Füge bei Punktabzügen stets Notizen hinzu.",
                 step2NotesP2: "<strong>Spracheingabe 🎤:</strong> Tippe auf die Mikrofontaste, um die Diktierfunktion zu starten, und erneut, um sie zu beenden. Der transkribierte Text wird dem Notizfeld hinzugefügt. Erfordert Mikrofonberechtigung (Chrome, Edge, Safari).",
                 step2NotesTip: "💡 \"Fehlende Fehlentscheidung bei 6:5 im 2. Satz\" ist aussagekräftiger als \"fehlende Entscheidungen\" — sei konkret.",
+                step3hDiff: "Spielschwierigkeit",
+                step3DiffDesc: "Wähle Leicht, Mittel oder Schwer, um den Gesamtdruck und die Komplexität des Spiels für den Schiedsrichter widerzuspiegeln. Wird auf der letzten Seite festgelegt und erscheint im Abschlussbericht.",
                 step3hCalc: "Berechnung des Ergebnisses",
                 step3Formula: "Gewichtete Summe = (Regeln×4 + Spielleitung×3 + Technik×1 + Bälle×1 + Auftreten×3 + Bewegung×2)\nGewichteter Durchschnitt = Summe ÷ 14\nErgebnis% = ((Durchschnitt − 1) ÷ 9) × 100",
                 step3hVerdict: "Urteilsbedingungen",
@@ -1113,7 +1253,7 @@
                 step3ExportWarn: "✅ Die Bewertung wird sofort übermittelt, wenn du auf Absenden tippst.",
                 tips1: "Bewerte in Echtzeit oder unmittelbar nach dem Spiel — Erinnerungen verblassen schnell.",
                 tips2: "Sei in den Notizen präzise: \"Fehlende Fehlentscheidung bei 6:5 im 2. Satz\" schlägt \"fehlende Entscheidungen\".",
-                tips3: "Verwende den Schwierigkeitsgrad ehrlich — ein Schiedsrichter, der in einem schweren Spiel gut abschneidet, sollte entsprechend bewertet werden.",
+                tips3: "Lege den Schwierigkeitsgrad auf Schritt 3 (letzte Seite) fest — verwende ihn ehrlich. Ein Schiedsrichter, der in einem schweren Spiel gut abschneidet, sollte entsprechend bewertet werden.",
                 tips4: "Regelfehler werden mit ×4 gewichtet — ein einziger schwerwiegender Fehler wirkt sich erheblich auf das Endergebnis aus.",
                 tips5: "Ein Wert von 6 bei einem Kriterium ist eine Grenzbeurteilung — mehr als ein solcher Wert sperrt IT1 und IT2.",
                 tips6: "Die Spracheingabe funktioniert am besten in einer ruhigen Umgebung — überprüfe die Transkription stets vor dem Speichern.",
@@ -1142,16 +1282,16 @@
                 tocNotes: "Notas y voz",
                 tocResult: "Paso 3 — Resultado",
                 tocVerdict: "Condiciones del veredicto",
-                tocExport: "Exportar",
+                tocExport: "Enviar",
                 tocTips: "Consejos y buenas prácticas",
                 secOverview: "Resumen",
                 secStep1: "Paso 1 — Info del partido y árbitro",
                 secStep2: "Paso 2 — Puntuación de criterios",
                 secResult: "Paso 3 — Resultado y exportación",
                 secTips: "Consejos y buenas prácticas",
-                overviewP1: "El formulario de evaluación de árbitros de la IFA es una aplicación web optimizada para móvil que permite evaluar a los árbitros de fistball durante los partidos. Introduce los datos del partido, puntúa al árbitro en 6 criterios ponderados y exporta el resultado por correo electrónico a la oficina de la IFA.",
+                overviewP1: "El formulario de evaluación de árbitros de la IFA es una aplicación web optimizada para móvil que permite evaluar a los árbitros de fistball durante los partidos. Introduce los datos del partido, puntúa al árbitro en 6 criterios ponderados y envía el resultado directamente a la oficina de la IFA.",
                 overviewP2: "El formulario está disponible en 5 idiomas (inglés, alemán, español, portugués, italiano) — cambia con el botón en la esquina superior derecha del encabezado.",
-                overviewTip: "💡 El formulario recuerda tus puntuaciones si vuelves desde la pantalla de resultados. Todos los datos se restablecen con 🔄 Nueva evaluación.",
+                overviewTip: "💡 El formulario guarda tu progreso automáticamente — los datos persisten al recargar la página o navegar accidentalmente. Todos los datos se restablecen con 🔄 Nueva evaluación.",
                 step1Intro: "Completa todos los campos antes de pasar a la puntuación. Estos datos aparecen en el informe final y se almacenan en la base de datos de la IFA.",
                 step1ThField: "Campo",
                 step1ThDesc: "Descripción",
@@ -1167,9 +1307,9 @@
                 step1DescTeams: "Nombres de ambos equipos",
                 step1FieldContest: "Competición / Sede",
                 step1DescContest: "Nombre de la competición o sede (p. ej. \"Campeonato Mundial Masculino 2026\")",
-                step1FieldDiff: "Dificultad del partido",
-                step1DescDiff: "Fácil, Media o Difícil — según la intensidad del partido y la presión sobre el árbitro",
-                step1Tip: "💡 Completa todos los campos con precisión — aparecen en el informe final y no pueden modificarse tras la exportación.",
+                step1ValidationTip: "⚠️ Todos los campos son obligatorios. El formulario no te permitirá pasar al Paso 2 hasta que todos los campos estén completados.",
+                step1NavDots: "💡 Los puntos en la barra de encabezado muestran tu página actual. Toca cualquier punto para saltar directamente a esa página.",
+                step1Tip: "💡 Completa todos los campos con precisión — aparecen en el informe final y no pueden modificarse tras el envío.",
                 step2Intro: "Cada criterio comienza con <strong>10 puntos</strong>. Deduce <strong>1 punto por error</strong>. La puntuación mínima es 1. Usa los botones <strong>−</strong> y <strong>+</strong> para ajustar.",
                 step2hScoring: "Escala de puntuación",
                 step2ThScore: "Puntuación",
@@ -1208,6 +1348,8 @@
                 step2NotesP1: "Cada criterio tiene un campo opcional de <strong>Notas</strong> — toca el interruptor para expandirlo. Las notas se incluyen en el informe exportado. Añade siempre notas cuando deduzcas puntos.",
                 step2NotesP2: "<strong>Entrada de voz 🎤:</strong> Toca el botón del micrófono para iniciar el dictado y tócalo de nuevo para detenerlo. El texto transcrito se añade al campo de notas. Requiere permiso de micrófono (Chrome, Edge, Safari).",
                 step2NotesTip: "💡 \"Error en la llamada de falta en 6:5 del set 2\" es más útil que \"errores en llamadas\" — sea específico.",
+                step3hDiff: "Nivel de dificultad del partido",
+                step3DiffDesc: "Selecciona Fácil, Media o Difícil para reflejar la presión y complejidad general del partido para el árbitro. Se establece en la última página y aparece en el informe final.",
                 step3hCalc: "Cálculo de la puntuación",
                 step3Formula: "Suma ponderada = (Reglas×4 + Liderazgo×3 + Técnica×1 + Balones×1 + Conducta×3 + Movimiento×2)\nMedia ponderada = suma ÷ 14\nPuntuación% = ((media − 1) ÷ 9) × 100",
                 step3hVerdict: "Condiciones del veredicto",
@@ -1222,7 +1364,7 @@
                 step3ExportWarn: "✅ La evaluación se envía inmediatamente al tocar Enviar.",
                 tips1: "Evalúa en tiempo real o inmediatamente después del partido — la memoria se desvanece rápidamente.",
                 tips2: "Sé específico en las notas: \"error en la llamada de falta en 6:5 del set 2\" supera a \"errores en llamadas\".",
-                tips3: "Usa el nivel de dificultad con honestidad — un árbitro que rinde bien en un partido difícil debe ser calificado en consecuencia.",
+                tips3: "Establece el nivel de dificultad en el Paso 3 (última página) — úsalo con honestidad. Un árbitro que rinde bien en un partido difícil debe ser calificado en consecuencia.",
                 tips4: "Los errores de reglamento se ponderan ×4 — un único error crítico afecta significativamente la puntuación final.",
                 tips5: "Una puntuación de 6 en cualquier criterio es un aprobado justo — más de una bloquea IT1 e IT2.",
                 tips6: "La entrada de voz funciona mejor en un entorno tranquilo — revisa siempre la transcripción antes de guardar.",
@@ -1251,16 +1393,16 @@
                 tocNotes: "Notas e voz",
                 tocResult: "Passo 3 — Resultado",
                 tocVerdict: "Condições do veredicto",
-                tocExport: "Exportar",
+                tocExport: "Enviar",
                 tocTips: "Dicas e boas práticas",
                 secOverview: "Visão geral",
                 secStep1: "Passo 1 — Info da partida e árbitro",
                 secStep2: "Passo 2 — Pontuação de critérios",
                 secResult: "Passo 3 — Resultado e exportação",
                 secTips: "Dicas e boas práticas",
-                overviewP1: "O formulário de avaliação de árbitros da IFA é uma aplicação web optimizada para mobile para avaliar árbitros de fistball durante partidas. Preenche os detalhes da partida, pontua o árbitro em 6 critérios ponderados e exporta o resultado por e-mail para o escritório da IFA.",
+                overviewP1: "O formulário de avaliação de árbitros da IFA é uma aplicação web optimizada para mobile para avaliar árbitros de fistball durante partidas. Preenche os detalhes da partida, pontua o árbitro em 6 critérios ponderados e envia o resultado directamente para o escritório da IFA.",
                 overviewP2: "O formulário funciona em 5 idiomas (inglês, alemão, espanhol, português, italiano) — alterne no canto superior direito do cabeçalho.",
-                overviewTip: "💡 O formulário recorda as tuas pontuações se navegares de volta da tela de resultados. Todos os dados são redefinidos com 🔄 Nova Avaliação.",
+                overviewTip: "💡 O formulário guarda o teu progresso automaticamente — os dados persistem ao recarregar a página ou navegar acidentalmente. Todos os dados são redefinidos com 🔄 Nova Avaliação.",
                 step1Intro: "Preenche todos os campos antes de prosseguir para a pontuação. Estes dados aparecem no relatório final e são armazenados na base de dados da IFA.",
                 step1ThField: "Campo",
                 step1ThDesc: "Descrição",
@@ -1276,9 +1418,9 @@
                 step1DescTeams: "Nomes das duas equipas",
                 step1FieldContest: "Competição / Local",
                 step1DescContest: "Nome da competição ou local (ex.: \"Campeonato Mundial Masculino 2026\")",
-                step1FieldDiff: "Dificuldade da partida",
-                step1DescDiff: "Fácil, Médio ou Difícil — com base na intensidade da partida e na pressão sobre o árbitro",
-                step1Tip: "💡 Preenche todos os campos com precisão — aparecem no relatório final e não podem ser alterados após a exportação.",
+                step1ValidationTip: "⚠️ Todos os campos são obrigatórios. O formulário não te permitirá avançar para o Passo 2 até que todos os campos estejam preenchidos.",
+                step1NavDots: "💡 Os pontos na barra de cabeçalho mostram a tua página actual. Toca em qualquer ponto para saltar directamente para essa página.",
+                step1Tip: "💡 Preenche todos os campos com precisão — aparecem no relatório final e não podem ser alterados após o envio.",
                 step2Intro: "Cada critério começa com <strong>10 pontos</strong>. Deduz <strong>1 ponto por erro</strong>. A pontuação mínima é 1. Usa os botões <strong>−</strong> e <strong>+</strong> para ajustar.",
                 step2hScoring: "Escala de pontuação",
                 step2ThScore: "Pontuação",
@@ -1317,6 +1459,8 @@
                 step2NotesP1: "Cada critério tem um campo opcional de <strong>Notas</strong> — toca no botão para expandir. As notas são incluídas no relatório exportado. Adiciona sempre notas quando deduzires pontos.",
                 step2NotesP2: "<strong>Entrada de voz 🎤:</strong> Toca no botão do microfone para iniciar o ditado e toca novamente para parar. O texto transcrito é adicionado ao campo de notas. Requer permissão de microfone (Chrome, Edge, Safari).",
                 step2NotesTip: "💡 \"Erro de chamada de falta no 6:5 do set 2\" é mais útil do que \"chamadas em falta\" — sê específico.",
+                step3hDiff: "Nível de dificuldade da partida",
+                step3DiffDesc: "Selecciona Fácil, Médio ou Difícil para reflectir a pressão e complexidade geral da partida para o árbitro. É definido na última página e aparece no relatório final.",
                 step3hCalc: "Cálculo da pontuação",
                 step3Formula: "Soma ponderada = (Regras×4 + Liderança×3 + Técnica×1 + Bolas×1 + Postura×3 + Movimentação×2)\nMédia ponderada = soma ÷ 14\nPontuação% = ((média − 1) ÷ 9) × 100",
                 step3hVerdict: "Condições do veredicto",
@@ -1331,7 +1475,7 @@
                 step3ExportWarn: "✅ A avaliação é submetida imediatamente ao tocar em Enviar.",
                 tips1: "Avalia em tempo real ou imediatamente após a partida — a memória esvai-se rapidamente.",
                 tips2: "Sê específico nas notas: \"erro de chamada de falta no 6:5 do set 2\" supera \"chamadas em falta\".",
-                tips3: "Usa o nível de dificuldade com honestidade — um árbitro com bom desempenho numa partida difícil deve ser avaliado em conformidade.",
+                tips3: "Define o nível de dificuldade no Passo 3 (última página) — usa-o com honestidade. Um árbitro com bom desempenho numa partida difícil deve ser avaliado em conformidade.",
                 tips4: "Os erros de regras têm peso ×4 — um único erro crítico impacta significativamente a pontuação final.",
                 tips5: "Uma pontuação de 6 em qualquer critério é um aprovado limite — mais do que um bloqueia IT1 e IT2.",
                 tips6: "A entrada de voz funciona melhor num ambiente silencioso — revê sempre a transcrição antes de guardar.",
@@ -1360,16 +1504,16 @@
                 tocNotes: "Note e voce",
                 tocResult: "Passo 3 — Risultato",
                 tocVerdict: "Condizioni del verdetto",
-                tocExport: "Esportazione",
+                tocExport: "Invio",
                 tocTips: "Consigli e buone pratiche",
                 secOverview: "Panoramica",
                 secStep1: "Passo 1 — Info partita e arbitro",
                 secStep2: "Passo 2 — Valutazione dei criteri",
                 secResult: "Passo 3 — Risultato ed esportazione",
                 secTips: "Consigli e buone pratiche",
-                overviewP1: "Il modulo di valutazione degli arbitri IFA è un'applicazione web ottimizzata per mobile per valutare gli arbitri di fistball durante le partite. Inserisci i dettagli della partita, valuta l'arbitro su 6 criteri ponderati ed esporta il risultato via e-mail all'ufficio IFA.",
+                overviewP1: "Il modulo di valutazione degli arbitri IFA è un'applicazione web ottimizzata per mobile per valutare gli arbitri di fistball durante le partite. Inserisci i dettagli della partita, valuta l'arbitro su 6 criteri ponderati e invia il risultato direttamente all'ufficio IFA.",
                 overviewP2: "Il modulo è disponibile in 5 lingue (inglese, tedesco, spagnolo, portoghese, italiano) — cambia nell'angolo in alto a destra dell'intestazione.",
-                overviewTip: "💡 Il modulo ricorda i tuoi punteggi se torni dalla schermata dei risultati. Tutti i dati vengono azzerati con 🔄 Nuova valutazione.",
+                overviewTip: "💡 Il modulo salva automaticamente i tuoi progressi — i dati persistono al ricaricamento della pagina o alla navigazione accidentale. Tutti i dati vengono azzerati con 🔄 Nuova valutazione.",
                 step1Intro: "Compila tutti i campi prima di procedere alla valutazione. Questi dati compaiono nel report finale e vengono archiviati nel database IFA.",
                 step1ThField: "Campo",
                 step1ThDesc: "Descrizione",
@@ -1385,9 +1529,9 @@
                 step1DescTeams: "Nomi di entrambe le squadre",
                 step1FieldContest: "Competizione / Sede",
                 step1DescContest: "Nome della competizione o della sede (es. \"Campionato Mondiale Maschile 2026\")",
-                step1FieldDiff: "Difficoltà della partita",
-                step1DescDiff: "Facile, Media o Difficile — in base all'intensità della partita e alla pressione sull'arbitro",
-                step1Tip: "💡 Compila tutti i campi con precisione — compaiono nel report finale e non possono essere modificati dopo l'esportazione.",
+                step1ValidationTip: "⚠️ Tutti i campi sono obbligatori. Il modulo non ti permetterà di procedere al Passo 2 finché tutti i campi non sono compilati.",
+                step1NavDots: "💡 I punti nella barra dell'intestazione mostrano la tua pagina corrente. Tocca qualsiasi punto per passare direttamente a quella pagina.",
+                step1Tip: "💡 Compila tutti i campi con precisione — compaiono nel report finale e non possono essere modificati dopo l'invio.",
                 step2Intro: "Ogni criterio parte da <strong>10 punti</strong>. Deduci <strong>1 punto per errore</strong>. Il punteggio minimo è 1. Usa i pulsanti <strong>−</strong> e <strong>+</strong> per regolare.",
                 step2hScoring: "Scala di punteggio",
                 step2ThScore: "Punteggio",
@@ -1426,6 +1570,8 @@
                 step2NotesP1: "Ogni criterio dispone di un campo <strong>Note</strong> opzionale — tocca il pulsante per espanderlo. Le note sono incluse nel report esportato. Aggiungi sempre note quando deduci punti.",
                 step2NotesP2: "<strong>Inserimento vocale 🎤:</strong> Tocca il pulsante del microfono per avviare la dettatura e toccalo di nuovo per fermarla. Il testo trascritto viene aggiunto al campo note. Richiede il permesso del microfono (Chrome, Edge, Safari).",
                 step2NotesTip: "💡 \"Mancata chiamata di fallo sul 6:5 nel set 2\" è più utile di \"chiamate mancate\" — sii specifico.",
+                step3hDiff: "Livello di difficoltà della partita",
+                step3DiffDesc: "Seleziona Facile, Media o Difficile per riflettere la pressione e la complessità generale della partita per l'arbitro. Viene impostato nell'ultima pagina e compare nel report finale.",
                 step3hCalc: "Calcolo del punteggio",
                 step3Formula: "Somma ponderata = (Regole×4 + Direzione×3 + Tecnica×1 + Palloni×1 + Comportamento×3 + Movimento×2)\nMedia ponderata = somma ÷ 14\nPunteggio% = ((media − 1) ÷ 9) × 100",
                 step3hVerdict: "Condizioni del verdetto",
@@ -1440,7 +1586,7 @@
                 step3ExportWarn: "✅ La valutazione viene inoltrata immediatamente toccando Invia.",
                 tips1: "Valuta in tempo reale o immediatamente dopo la partita — la memoria sfuma rapidamente.",
                 tips2: "Sii specifico nelle note: \"mancata chiamata di fallo sul 6:5 nel set 2\" supera \"chiamate mancate\".",
-                tips3: "Usa il livello di difficoltà in modo onesto — un arbitro che si comporta bene in una partita difficile va valutato di conseguenza.",
+                tips3: "Imposta il livello di difficoltà al Passo 3 (ultima pagina) — usalo in modo onesto. Un arbitro che si comporta bene in una partita difficile va valutato di conseguenza.",
                 tips4: "Gli errori sulle regole hanno peso ×4 — un singolo errore critico incide significativamente sul punteggio finale.",
                 tips5: "Un punteggio di 6 su qualsiasi criterio è una sufficienza limite — più di uno blocca IT1 e IT2.",
                 tips6: "L'inserimento vocale funziona meglio in un ambiente silenzioso — controlla sempre la trascrizione prima di salvare.",
