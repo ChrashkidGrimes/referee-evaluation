@@ -121,6 +121,12 @@
             flex-shrink: 0;
         }
 
+        @media (max-width: 479px) {
+            .btn-label { display: none; }
+            #stepCounter { display: none; }
+            .header-logos img { height: 30px; }
+        }
+
         .header-step {
             font-family: 'Oswald', sans-serif;
             font-size: 13px;
@@ -1372,8 +1378,8 @@
                     <option value="pt">PT</option>
                     <option value="it">IT</option>
                 </select>
-                <a href="help.html" class="btn-tour" id="btnHelp" title="Open user manual">? Help</a>
-                <button class="btn-tour" id="btnTour" onclick="startTour()" title="Start guided tour">▶ Tour</button>
+                <a href="help.html" class="btn-tour" id="btnHelp" title="Open user manual">?<span class="btn-label"> Help</span></a>
+                <button class="btn-tour" id="btnTour" onclick="startTour()" title="Start guided tour">▶<span class="btn-label"> Tour</span></button>
                 <button class="btn-dark-toggle" id="darkToggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
             </div>
         </div>
@@ -1705,7 +1711,7 @@
                 exportQualNQ: 'NQ:  Does not meet minimum requirements',
                 exportRemarks: 'Remarks & Hints',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'en-US', btnHelp: '? Help'
+                sttLang: 'en-US', btnHelp: 'Help'
             },
             de: {
                 headerTitle: 'Schiedsrichter-Bewertung', headerSub: 'Internationale Schiedsrichter-Kommission',
@@ -1753,7 +1759,7 @@
                 exportQualNQ: 'NQ:  Erfüllt nicht die Mindestanforderungen',
                 exportRemarks: 'Bemerkungen & Hinweise',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'de-DE', btnHelp: '? Hilfe'
+                sttLang: 'de-DE', btnHelp: 'Hilfe'
             },
             es: {
                 headerTitle: 'Evaluación del Árbitro', headerSub: 'Comisión Internacional de Árbitros',
@@ -1801,7 +1807,7 @@
                 exportQualNQ: 'NQ:  No cumple los requisitos mínimos',
                 exportRemarks: 'Observaciones & Sugerencias',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'es-ES', btnHelp: '? Ayuda'
+                sttLang: 'es-ES', btnHelp: 'Ayuda'
             },
             pt: {
                 headerTitle: 'Avaliação do Árbitro', headerSub: 'Comissão Internacional de Árbitros',
@@ -1849,7 +1855,7 @@
                 exportQualNQ: 'NQ:  Não atende aos requisitos mínimos',
                 exportRemarks: 'Observações & Dicas',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'pt-BR', btnHelp: '? Ajuda'
+                sttLang: 'pt-BR', btnHelp: 'Ajuda'
             },
             it: {
                 headerTitle: "Valutazione dell'Arbitro", headerSub: 'Commissione Internazionale Arbitri',
@@ -1897,7 +1903,7 @@
                 exportQualNQ: 'NQ:  Non soddisfa i requisiti minimi',
                 exportRemarks: 'Osservazioni & Suggerimenti',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'it-IT', btnHelp: '? Guida'
+                sttLang: 'it-IT', btnHelp: 'Guida'
             }
         };
 
@@ -1914,7 +1920,7 @@
             // Header
             document.querySelector('.header-text h1').textContent = t('headerTitle');
             document.querySelector('.header-text p').textContent = t('headerSub');
-            document.getElementById('btnHelp').textContent = t('btnHelp');
+            document.querySelector('#btnHelp .btn-label').textContent = ' ' + t('btnHelp');
 
             // Step 0 – static labels
             document.querySelector('#step-0 .section-eyebrow').textContent = t('step1of3');
