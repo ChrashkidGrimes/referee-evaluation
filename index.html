@@ -1403,7 +1403,7 @@
     <!-- ═══ STEP 0 ═══ -->
     <div class="step active" id="step-0">
         <div class="section-eyebrow">Step 1 of 3</div>
-        <div class="section-title">Match &amp;<br>Referee Info</div>
+        <div class="section-title" id="step0-title">Match &amp;<br>Referee Info</div>
 
         <div class="card">
             <div class="card-title">Evaluator</div>
@@ -1520,6 +1520,7 @@
             <button id="btnNewEval" class="btn btn-danger" onclick="resetForm()" style="width:100%;">🔄 New
                 Evaluation</button>
         </div>
+        <div id="result-page-footer"></div>
     </div>
 
     <script>
@@ -2114,7 +2115,7 @@
         ${cr.warn ? `<div class="crit-help-warn">${cr.warn[currentLang] || cr.warn.en}</div>` : ''}
       </div>
       <div class="crit-desc">${cr.desc[currentLang]}</div>
-      <div class="score-stepper">
+      <div class="score-stepper" id="stepper-${cr.id}">
         <button class="step-btn" id="minus-${cr.id}" onclick="stepScore('${cr.id}',-1)" ${val <= 1 ? 'disabled' : ''}>−</button>
         <div style="flex:1;text-align:center;">
           <div class="score-num ${scoreClass(val)}" id="sv-${cr.id}" style="font-size:52px">${val}</div>
@@ -2124,7 +2125,7 @@
         <button class="step-btn" id="plus-${cr.id}" onclick="stepScore('${cr.id}',1)" ${val >= 10 ? 'disabled' : ''}>+</button>
       </div>
 
-      <div class="notes-toggle" onclick="toggleNotes('${cr.id}')">
+      <div class="notes-toggle" id="notes-toggle-${cr.id}" onclick="toggleNotes('${cr.id}')">
         <span class="notes-toggle-label">${t('notes')}</span>
         ${hasNote ? `<span class="notes-badge">✓</span>` : ''}
         <span class="notes-toggle-arrow${hasNote ? ' open' : ''}" id="arrow-${cr.id}">▾</span>
@@ -2342,7 +2343,8 @@
       <div class="qual-row"><span>${r.verdict === 'IT2' ? '✅' : '⬜'}</span><span>${t('qualIT2')}</span></div>
       <div class="qual-row"><span>${r.verdict === 'NQ' ? '❌' : '⬜'}</span><span>${t('qualNQ')}</span></div>
     </div>
-
+`;
+            document.getElementById('result-page-footer').innerHTML = `
     <div class="ifa-footer">
       <img src="https://ifa.fistball.sport/wp-content/uploads/2025/03/IFA-simple_white_quer.png" alt="IFA"
            onerror="this.outerHTML='<span style=\'font-family:Oswald,sans-serif;font-size:16px;font-weight:700;color:white;\'>IFA</span>'">
@@ -2533,18 +2535,16 @@
         // ══ GUIDED TOUR ══
         const TOUR_TRANSLATIONS = {
             en: {
-                s0_0_title: 'Match & Referee Info',
-                s0_0_body: 'Fill in all fields on this screen before proceeding. The data appears in the exported report and is stored in the IFA database.',
-                s0_1_title: 'Your Name',
-                s0_1_body: 'Enter your full name as the evaluator. This identifies who conducted the evaluation.',
-                s0_2_title: 'Referee\'s Name',
-                s0_2_body: 'Enter the full name of the referee being evaluated, their country code (3 letters), and the match date.',
-                s0_3_title: 'Match Details',
-                s0_3_body: 'Enter team names and the competition/venue. This context matters — a World Championship final differs from a regional league match.',
-                s0_4_title: 'Scoring Method',
-                s0_4_body: 'Each criterion starts at 10 points. Deduct 1 point per observable mistake. Higher weights amplify the impact on the final score.',
-                s0_5_title: 'Continue When Ready',
-                s0_5_body: 'Once all fields are filled, tap Continue to proceed to Criteria Scoring. You can always navigate back to correct details.',
+                s0_0_title: 'Your Name',
+                s0_0_body: 'Enter your full name as the evaluator. This identifies who conducted the evaluation.',
+                s0_1_title: 'Referee\'s Name',
+                s0_1_body: 'Enter the full name of the referee being evaluated, their country code (3 letters), and the match date.',
+                s0_2_title: 'Match Details',
+                s0_2_body: 'Enter team names and the competition/venue. This context matters — a World Championship final differs from a regional league match.',
+                s0_3_title: 'Scoring Method',
+                s0_3_body: 'Each criterion starts at 10 points. Deduct 1 point per observable mistake. Higher weights amplify the impact on the final score.',
+                s0_4_title: 'Continue When Ready',
+                s0_4_body: 'Once all fields are filled, tap Continue to proceed to Criteria Scoring. You can always navigate back to correct details.',
 
                 s1_0_title: 'Rules (×4) — Most Important',
                 s1_0_body: 'This criterion carries the highest weight. A score below 8 automatically prevents IT1 — regardless of the overall percentage.',
@@ -2552,12 +2552,12 @@
                 s1_1_body: 'Each criterion starts at 10. Tap − to deduct 1 point per mistake. The label and colour update in real time.',
                 s1_2_title: 'Tap ? for Guidance',
                 s1_2_body: 'Every criterion has a ? button. Tap it to see exactly what to observe and a list of common deduction examples.',
-                s1_3_title: 'Leadership (×3)',
-                s1_3_body: 'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.',
-                s1_4_title: 'Demeanor (×3)',
-                s1_4_body: 'Observe hand signals, whistle volume, and body language. Is the referee confident and visibly in control?',
-                s1_5_title: 'Notes — Always Add Context',
-                s1_5_body: 'Tap the Notes toggle on any card to explain why you deducted points. Specific notes are valuable feedback for the referee.',
+                s1_3_title: 'Notes — Always Add Context',
+                s1_3_body: 'Tap the Notes toggle on any card to explain why you deducted points. Specific notes are valuable feedback for the referee.',
+                s1_4_title: 'Leadership (×3)',
+                s1_4_body: 'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.',
+                s1_5_title: 'Demeanor (×3)',
+                s1_5_body: 'Observe hand signals, whistle volume, and body language. Is the referee confident and visibly in control?',
 
                 s2_0_title: 'Evaluation Result',
                 s2_0_body: 'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.',
@@ -2570,18 +2570,16 @@
             },
 
             de: {
-                s0_0_title: 'Spiel- & Schiedsrichterinfo',
-                s0_0_body: 'Füll alle Felder auf diesem Bildschirm aus, bevor du fortfährst. Die Daten erscheinen im exportierten Bericht und werden in der IFA-Datenbank gespeichert.',
-                s0_1_title: 'Dein Name',
-                s0_1_body: 'Gib deinen vollständigen Namen als Bewerter ein. Damit wird festgehalten, wer die Bewertung durchgeführt hat.',
-                s0_2_title: 'Name des Schiedsrichters',
-                s0_2_body: 'Gib den vollständigen Namen des zu bewertenden Schiedsrichters, seinen Ländercode (3 Buchstaben) und das Spieldatum ein.',
-                s0_3_title: 'Spieldetails',
-                s0_3_body: 'Gib die Mannschaftsnamen und den Wettbewerb/Ort ein. Der Kontext ist wichtig — ein WM-Finale unterscheidet sich von einem Regionalligaspiel.',
-                s0_4_title: 'Bewertungsmethode',
-                s0_4_body: 'Jedes Kriterium beginnt mit 10 Punkten. Zieh 1 Punkt pro beobachtbarem Fehler ab. Höhere Gewichtungen verstärken den Einfluss auf das Endergebnis.',
-                s0_5_title: 'Bereit? Weiter',
-                s0_5_body: 'Sobald alle Felder ausgefüllt sind, tippe auf Weiter, um zur Kriterienbewertung zu gelangen. Du kannst jederzeit zurücknavigieren, um Details zu korrigieren.',
+                s0_0_title: 'Dein Name',
+                s0_0_body: 'Gib deinen vollständigen Namen als Bewerter ein. Damit wird festgehalten, wer die Bewertung durchgeführt hat.',
+                s0_1_title: 'Name des Schiedsrichters',
+                s0_1_body: 'Gib den vollständigen Namen des zu bewertenden Schiedsrichters, seinen Ländercode (3 Buchstaben) und das Spieldatum ein.',
+                s0_2_title: 'Spieldetails',
+                s0_2_body: 'Gib die Mannschaftsnamen und den Wettbewerb/Ort ein. Der Kontext ist wichtig — ein WM-Finale unterscheidet sich von einem Regionalligaspiel.',
+                s0_3_title: 'Bewertungsmethode',
+                s0_3_body: 'Jedes Kriterium beginnt mit 10 Punkten. Zieh 1 Punkt pro beobachtbarem Fehler ab. Höhere Gewichtungen verstärken den Einfluss auf das Endergebnis.',
+                s0_4_title: 'Bereit? Weiter',
+                s0_4_body: 'Sobald alle Felder ausgefüllt sind, tippe auf Weiter, um zur Kriterienbewertung zu gelangen. Du kannst jederzeit zurücknavigieren, um Details zu korrigieren.',
 
                 s1_0_title: 'Regeln (×4) — Wichtigstes Kriterium',
                 s1_0_body: 'Dieses Kriterium hat die höchste Gewichtung. Ein Wert unter 8 verhindert IT1 automatisch — unabhängig vom Gesamtprozentsatz.',
@@ -2589,12 +2587,12 @@
                 s1_1_body: 'Jedes Kriterium beginnt bei 10. Tippe auf −, um 1 Punkt pro Fehler abzuziehen. Die Bezeichnung und Farbe aktualisieren sich in Echtzeit.',
                 s1_2_title: '? für Hinweise tippen',
                 s1_2_body: 'Jedes Kriterium hat eine ?-Schaltfläche. Tippe darauf, um zu sehen, was genau zu beobachten ist und eine Liste typischer Abzugsbeispiele.',
-                s1_3_title: 'Spielleitung (×3)',
-                s1_3_body: 'Beurteile Strafen, Spielkontrolle, Kommunikation mit Spielern und Trainern sowie die Koordination mit dem zweiten Schiedsrichter.',
-                s1_4_title: 'Auftreten (×3)',
-                s1_4_body: 'Beobachte Handzeichen, Pfifflautstärke und Körpersprache. Wirkt der Schiedsrichter selbstsicher und sichtbar in Kontrolle?',
-                s1_5_title: 'Notizen — Immer Kontext angeben',
-                s1_5_body: 'Tippe auf den Notizen-Schalter einer Karte, um zu erläutern, warum du Punkte abgezogen hast. Konkrete Notizen sind wertvolles Feedback für den Schiedsrichter.',
+                s1_3_title: 'Notizen — Immer Kontext angeben',
+                s1_3_body: 'Tippe auf den Notizen-Schalter einer Karte, um zu erläutern, warum du Punkte abgezogen hast. Konkrete Notizen sind wertvolles Feedback für den Schiedsrichter.',
+                s1_4_title: 'Spielleitung (×3)',
+                s1_4_body: 'Beurteile Strafen, Spielkontrolle, Kommunikation mit Spielern und Trainern sowie die Koordination mit dem zweiten Schiedsrichter.',
+                s1_5_title: 'Auftreten (×3)',
+                s1_5_body: 'Beobachte Handzeichen, Pfifflautstärke und Körpersprache. Wirkt der Schiedsrichter selbstsicher und sichtbar in Kontrolle?',
 
                 s2_0_title: 'Bewertungsergebnis',
                 s2_0_body: 'Das Ergebnis wird aus den gewichteten Summen aller Kriterien berechnet. Ein Prozentsatz und ein Urteil (IT1/IT2/NQ) werden automatisch angezeigt.',
@@ -2607,18 +2605,16 @@
             },
 
             es: {
-                s0_0_title: 'Info del partido y árbitro',
-                s0_0_body: 'Completa todos los campos de esta pantalla antes de continuar. Los datos aparecen en el informe exportado y se almacenan en la base de datos de la IFA.',
-                s0_1_title: 'Tu nombre',
-                s0_1_body: 'Introduce tu nombre completo como evaluador. Esto identifica quién realizó la evaluación.',
-                s0_2_title: 'Nombre del árbitro',
-                s0_2_body: 'Introduce el nombre completo del árbitro evaluado, su código de país (3 letras) y la fecha del partido.',
-                s0_3_title: 'Detalles del partido',
-                s0_3_body: 'Introduce los nombres de los equipos y la competición/sede. El contexto importa — una final del Campeonato Mundial difiere de un partido de liga regional.',
-                s0_4_title: 'Método de puntuación',
-                s0_4_body: 'Cada criterio comienza con 10 puntos. Reste 1 punto por cada error observable. Las ponderaciones más altas amplifican el impacto en la puntuación final.',
-                s0_5_title: 'Cuando estés listo, continúa',
-                s0_5_body: 'Una vez completados todos los campos, toca Continuar para pasar a la puntuación de criterios. Siempre puedes volver atrás para corregir detalles.',
+                s0_0_title: 'Tu nombre',
+                s0_0_body: 'Introduce tu nombre completo como evaluador. Esto identifica quién realizó la evaluación.',
+                s0_1_title: 'Nombre del árbitro',
+                s0_1_body: 'Introduce el nombre completo del árbitro evaluado, su código de país (3 letras) y la fecha del partido.',
+                s0_2_title: 'Detalles del partido',
+                s0_2_body: 'Introduce los nombres de los equipos y la competición/sede. El contexto importa — una final del Campeonato Mundial difiere de un partido de liga regional.',
+                s0_3_title: 'Método de puntuación',
+                s0_3_body: 'Cada criterio comienza con 10 puntos. Reste 1 punto por cada error observable. Las ponderaciones más altas amplifican el impacto en la puntuación final.',
+                s0_4_title: 'Cuando estés listo, continúa',
+                s0_4_body: 'Una vez completados todos los campos, toca Continuar para pasar a la puntuación de criterios. Siempre puedes volver atrás para corregir detalles.',
 
                 s1_0_title: 'Reglas (×4) — Más importante',
                 s1_0_body: 'Este criterio tiene la mayor ponderación. Una puntuación inferior a 8 impide automáticamente IT1, independientemente del porcentaje global.',
@@ -2626,12 +2622,12 @@
                 s1_1_body: 'Cada criterio comienza en 10. Toca − para restar 1 punto por error. La etiqueta y el color se actualizan en tiempo real.',
                 s1_2_title: 'Toca ? para orientación',
                 s1_2_body: 'Cada criterio tiene un botón ?. Tócalo para ver exactamente qué observar y una lista de ejemplos de deducciones habituales.',
-                s1_3_title: 'Liderazgo (×3)',
-                s1_3_body: 'Evalúa sanciones, control del juego, comunicación con jugadores y entrenadores, y coordinación con el segundo árbitro.',
-                s1_4_title: 'Conducta (×3)',
-                s1_4_body: 'Observe las señales manuales, el volumen del silbato y el lenguaje corporal. ¿Es el árbitro seguro y visiblemente en control?',
-                s1_5_title: 'Notas — Añade siempre contexto',
-                s1_5_body: 'Toca el interruptor de Notas en cualquier tarjeta para explicar por qué dedujiste puntos. Las notas específicas son una retroalimentación valiosa para el árbitro.',
+                s1_3_title: 'Notas — Añade siempre contexto',
+                s1_3_body: 'Toca el interruptor de Notas en cualquier tarjeta para explicar por qué dedujiste puntos. Las notas específicas son una retroalimentación valiosa para el árbitro.',
+                s1_4_title: 'Liderazgo (×3)',
+                s1_4_body: 'Evalúa sanciones, control del juego, comunicación con jugadores y entrenadores, y coordinación con el segundo árbitro.',
+                s1_5_title: 'Conducta (×3)',
+                s1_5_body: 'Observe las señales manuales, el volumen del silbato y el lenguaje corporal. ¿Es el árbitro seguro y visiblemente en control?',
 
                 s2_0_title: 'Resultado de la evaluación',
                 s2_0_body: 'La puntuación se calcula a partir de las sumas ponderadas de todos los criterios. Se muestran automáticamente un porcentaje y un veredicto (IT1/IT2/NQ).',
@@ -2644,18 +2640,16 @@
             },
 
             pt: {
-                s0_0_title: 'Info da partida e árbitro',
-                s0_0_body: 'Preenche todos os campos desta tela antes de prosseguir. Os dados aparecem no relatório exportado e são armazenados no banco de dados da IFA.',
-                s0_1_title: 'O teu nome',
-                s0_1_body: 'Insere o teu nome completo como avaliador. Isso identifica quem realizou a avaliação.',
-                s0_2_title: 'Nome do árbitro',
-                s0_2_body: 'Insere o nome completo do árbitro avaliado, o seu código de país (3 letras) e a data da partida.',
-                s0_3_title: 'Detalhes da partida',
-                s0_3_body: 'Insere os nomes das equipas e a competição/local. O contexto importa — uma final do Campeonato Mundial difere de uma partida de liga regional.',
-                s0_4_title: 'Método de pontuação',
-                s0_4_body: 'Cada critério começa com 10 pontos. Deduz 1 ponto por erro observável. Ponderações mais altas amplificam o impacto na pontuação final.',
-                s0_5_title: 'Continua quando estiveres pronto',
-                s0_5_body: 'Quando todos os campos estiverem preenchidos, toca em Continuar para ir à Pontuação de Critérios. Podes sempre voltar para corrigir detalhes.',
+                s0_0_title: 'O teu nome',
+                s0_0_body: 'Insere o teu nome completo como avaliador. Isso identifica quem realizou a avaliação.',
+                s0_1_title: 'Nome do árbitro',
+                s0_1_body: 'Insere o nome completo do árbitro avaliado, o seu código de país (3 letras) e a data da partida.',
+                s0_2_title: 'Detalhes da partida',
+                s0_2_body: 'Insere os nomes das equipas e a competição/local. O contexto importa — uma final do Campeonato Mundial difere de uma partida de liga regional.',
+                s0_3_title: 'Método de pontuação',
+                s0_3_body: 'Cada critério começa com 10 pontos. Deduz 1 ponto por erro observável. Ponderações mais altas amplificam o impacto na pontuação final.',
+                s0_4_title: 'Continua quando estiveres pronto',
+                s0_4_body: 'Quando todos os campos estiverem preenchidos, toca em Continuar para ir à Pontuação de Critérios. Podes sempre voltar para corrigir detalhes.',
 
                 s1_0_title: 'Regras (×4) — Mais importante',
                 s1_0_body: 'Este critério tem a maior ponderação. Uma pontuação abaixo de 8 impede automaticamente o IT1 — independentemente do percentual geral.',
@@ -2663,12 +2657,12 @@
                 s1_1_body: 'Cada critério começa em 10. Toque em − para deduzir 1 ponto por erro. O rótulo e a cor são atualizados em tempo real.',
                 s1_2_title: 'Toque em ? para orientação',
                 s1_2_body: 'Cada critério tem um botão ?. Toque para ver exatamente o que observar e uma lista de exemplos de deduções comuns.',
-                s1_3_title: 'Liderança (×3)',
-                s1_3_body: 'Avalia penalidades, controle do jogo, comunicação com jogadores e treinadores, e coordenação com o segundo árbitro.',
-                s1_4_title: 'Postura (×3)',
-                s1_4_body: 'Observe sinais manuais, volume do apito e linguagem corporal. O árbitro está confiante e visivelmente no controle?',
-                s1_5_title: 'Notas — Adicione sempre contexto',
-                s1_5_body: 'Toque no botão de Notas em qualquer cartão para explicar por que deduziu pontos. Notas específicas são um feedback valioso para o árbitro.',
+                s1_3_title: 'Notas — Adicione sempre contexto',
+                s1_3_body: 'Toque no botão de Notas em qualquer cartão para explicar por que deduziu pontos. Notas específicas são um feedback valioso para o árbitro.',
+                s1_4_title: 'Liderança (×3)',
+                s1_4_body: 'Avalia penalidades, controle do jogo, comunicação com jogadores e treinadores, e coordenação com o segundo árbitro.',
+                s1_5_title: 'Postura (×3)',
+                s1_5_body: 'Observe sinais manuais, volume do apito e linguagem corporal. O árbitro está confiante e visivelmente no controle?',
 
                 s2_0_title: 'Resultado da avaliação',
                 s2_0_body: 'A pontuação é calculada a partir das somas ponderadas de todos os critérios. Um percentual e um veredicto (IT1/IT2/NQ) são exibidos automaticamente.',
@@ -2681,18 +2675,16 @@
             },
 
             it: {
-                s0_0_title: 'Info partita e arbitro',
-                s0_0_body: 'Compila tutti i campi di questa schermata prima di procedere. I dati compaiono nel report esportato e vengono archiviati nel database IFA.',
-                s0_1_title: 'Il tuo nome',
-                s0_1_body: 'Inserisci il tuo nome completo come valutatore. Questo identifica chi ha condotto la valutazione.',
-                s0_2_title: 'Nome dell\'arbitro',
-                s0_2_body: 'Inserisci il nome completo dell\'arbitro valutato, il suo codice paese (3 lettere) e la data della partita.',
-                s0_3_title: 'Dettagli della partita',
-                s0_3_body: 'Inserisci i nomi delle squadre e la competizione/sede. Il contesto è importante — una finale di Campionato del Mondo è ben diversa da una partita di campionato regionale.',
-                s0_4_title: 'Metodo di punteggio',
-                s0_4_body: 'Ogni criterio parte da 10 punti. Deduci 1 punto per ogni errore osservabile. I pesi più alti amplificano l\'impatto sul punteggio finale.',
-                s0_5_title: 'Continua quando sei pronto',
-                s0_5_body: 'Una volta compilati tutti i campi, tocca Continua per passare alla valutazione dei criteri. Puoi sempre tornare indietro per correggere i dettagli.',
+                s0_0_title: 'Il tuo nome',
+                s0_0_body: 'Inserisci il tuo nome completo come valutatore. Questo identifica chi ha condotto la valutazione.',
+                s0_1_title: 'Nome dell\'arbitro',
+                s0_1_body: 'Inserisci il nome completo dell\'arbitro valutato, il suo codice paese (3 lettere) e la data della partita.',
+                s0_2_title: 'Dettagli della partita',
+                s0_2_body: 'Inserisci i nomi delle squadre e la competizione/sede. Il contesto è importante — una finale di Campionato del Mondo è ben diversa da una partita di campionato regionale.',
+                s0_3_title: 'Metodo di punteggio',
+                s0_3_body: 'Ogni criterio parte da 10 punti. Deduci 1 punto per ogni errore osservabile. I pesi più alti amplificano l\'impatto sul punteggio finale.',
+                s0_4_title: 'Continua quando sei pronto',
+                s0_4_body: 'Una volta compilati tutti i campi, tocca Continua per passare alla valutazione dei criteri. Puoi sempre tornare indietro per correggere i dettagli.',
 
                 s1_0_title: 'Regole (×4) — Più importante',
                 s1_0_body: 'Questo criterio ha il peso maggiore. Un punteggio inferiore a 8 impedisce automaticamente IT1, indipendentemente dalla percentuale complessiva.',
@@ -2700,12 +2692,12 @@
                 s1_1_body: 'Ogni criterio parte da 10. Tocca − per detrarre 1 punto per errore. L\'etichetta e il colore si aggiornano in tempo reale.',
                 s1_2_title: 'Tocca ? per la guida',
                 s1_2_body: 'Ogni criterio ha un pulsante ?. Toccalo per vedere esattamente cosa osservare e un elenco di esempi di deduzioni comuni.',
-                s1_3_title: 'Direzione di gara (×3)',
-                s1_3_body: 'Valuta sanzioni, controllo del gioco, comunicazione con giocatori e allenatori, e coordinamento con il secondo arbitro.',
-                s1_4_title: 'Comportamento (×3)',
-                s1_4_body: 'Osserva i segnali manuali, il volume del fischio e il linguaggio del corpo. L\'arbitro è sicuro di sé e visibilmente in controllo?',
-                s1_5_title: 'Note — Aggiungi sempre contesto',
-                s1_5_body: 'Tocca il pulsante Note su qualsiasi scheda per spiegare perché hai detratto punti. Note specifiche sono un feedback prezioso per l\'arbitro.',
+                s1_3_title: 'Note — Aggiungi sempre contesto',
+                s1_3_body: 'Tocca il pulsante Note su qualsiasi scheda per spiegare perché hai detratto punti. Note specifiche sono un feedback prezioso per l\'arbitro.',
+                s1_4_title: 'Direzione di gara (×3)',
+                s1_4_body: 'Valuta sanzioni, controllo del gioco, comunicazione con giocatori e allenatori, e coordinamento con il secondo arbitro.',
+                s1_5_title: 'Comportamento (×3)',
+                s1_5_body: 'Osserva i segnali manuali, il volume del fischio e il linguaggio del corpo. L\'arbitro è sicuro di sé e visibilmente in controllo?',
 
                 s2_0_title: 'Risultato della valutazione',
                 s2_0_body: 'Il punteggio è calcolato dalle somme ponderate di tutti i criteri. Una percentuale e un verdetto (IT1/IT2/NQ) vengono mostrati automaticamente.',
@@ -2720,7 +2712,6 @@
 
         const TOUR_STEPS = {
             0: [
-                { target: 'scoringMethodBox', title: 'Match & Referee Info', body: 'Fill in all fields on this screen before proceeding. The data appears in the exported report and is stored in the IFA database.' },
                 { target: 'evaluatorName', title: 'Your Name', body: 'Enter your full name as the evaluator. This identifies who conducted the evaluation.' },
                 { target: 'refName', title: 'Referee\'s Name', body: 'Enter the full name of the referee being evaluated, their country code (3 letters), and the match date.' },
                 { target: 'teamHome', title: 'Match Details', body: 'Enter team names and the competition/venue. This context matters — a World Championship final differs from a regional league match.' },
@@ -2729,11 +2720,11 @@
             ],
             1: [
                 { target: 'card-rules', title: 'Rules (×4) — Most Important', body: 'This criterion carries the highest weight. A score below 8 automatically prevents IT1 — regardless of the overall percentage.' },
-                { target: 'sv-rules', title: 'Scoring Stepper', body: 'Each criterion starts at 10. Tap − to deduct 1 point per mistake. The label and colour update in real time.' },
+                { target: 'stepper-rules', title: 'Scoring Stepper', body: 'Each criterion starts at 10. Tap − to deduct 1 point per mistake. The label and colour update in real time.' },
                 { target: 'help-btn-rules', title: 'Tap ? for Guidance', body: 'Every criterion has a ? button. Tap it to see exactly what to observe and a list of common deduction examples.' },
+                { target: 'notes-toggle-rules', title: 'Notes — Always Add Context', body: 'Tap the Notes toggle on any card to explain why you deducted points. Specific notes are valuable feedback for the referee.' },
                 { target: 'card-leadership', title: 'Leadership (×3)', body: 'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.' },
-                { target: 'card-demeanor', title: 'Demeanor (×3)', body: 'Observe hand signals, whistle volume, and body language. Is the referee confident and visibly in control?' },
-                { target: 'card-motion', title: 'Notes — Always Add Context', body: 'Tap the Notes toggle on any card to explain why you deducted points. Specific notes are valuable feedback for the referee.', arrow: 'bottom' }
+                { target: 'card-demeanor', title: 'Demeanor (×3)', body: 'Observe hand signals, whistle volume, and body language. Is the referee confident and visibly in control?', arrow: 'bottom' }
             ],
             2: [
                 { target: 'resultContent', title: 'Evaluation Result', body: 'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.' },
