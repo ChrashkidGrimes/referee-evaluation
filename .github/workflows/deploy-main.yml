@@ -20,16 +20,30 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git fetch origin gh-pages || true
-          git worktree add gh-pages-dir gh-pages
+          git fetch origin gh-pages
 
-          rsync -av --delete \
+          # Dateien nach /tmp kopieren
+          mkdir /tmp/deploy-main
+          rsync -av \
             --exclude='.git' \
             --exclude='.github' \
+            --exclude='.claude' \
             --exclude='integration' \
-            ./ gh-pages-dir/
+            ./ /tmp/deploy-main/
 
-          cd gh-pages-dir
+          # gh-pages auschecken
+          git checkout gh-pages
+
+          # Alte Dateien löschen (außer integration-Ordner)
+          find . -maxdepth 1 \
+            ! -name '.git' \
+            ! -name 'integration' \
+            ! -name '.' \
+            -exec rm -rf {} +
+
+          # Neue Dateien kopieren
+          cp -r /tmp/deploy-main/. .
+
           git add -A
           git diff --cached --quiet && echo "Nothing to commit" && exit 0
           git commit -m "Deploy main @ ${{ github.sha }}"
