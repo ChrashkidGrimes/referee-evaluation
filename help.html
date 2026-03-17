@@ -839,17 +839,17 @@
                         </div>
                         <div class="crit-card">
                             <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit4Name">4.
-                                    Balls</span><span class="crit-weight">&#215;1</span></div>
+                                    Demeanor</span><span class="crit-weight">&#215;3</span></div>
                             <p data-i18n="crit4Desc"></p>
                         </div>
                         <div class="crit-card">
                             <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit5Name">5.
-                                    Demeanor</span><span class="crit-weight">&#215;3</span></div>
+                                    Positioning</span><span class="crit-weight">&#215;1</span></div>
                             <p data-i18n="crit5Desc"></p>
                         </div>
                         <div class="crit-card">
-                            <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit6Name">6. Motion
-                                    &amp; Behavior</span><span class="crit-weight">&#215;2</span></div>
+                            <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit6Name">6. Call
+                                    Quality</span><span class="crit-weight">&#215;2</span></div>
                             <p data-i18n="crit6Desc"></p>
                         </div>
                     </div>
@@ -987,8 +987,8 @@ Evaluator fills index.html
                             <tr><td class="field-name">Difficulty</td><td>Difficulty</td><td>Choice: Easy / Medium / Hard</td></tr>
                             <tr><td class="field-name">ScorePercent</td><td>ScorePercent</td><td>Number</td></tr>
                             <tr><td class="field-name">Label</td><td>Label</td><td>Choice: IT1 / IT2 / NQ</td></tr>
-                            <tr><td class="field-name">ScoreRules … ScoreMotion</td><td>(6 columns)</td><td>Number</td></tr>
-                            <tr><td class="field-name">NotesRules … NotesMotion</td><td>(6 columns)</td><td>Multiple lines of text</td></tr>
+                            <tr><td class="field-name">ScoreRules … ScoreCallQuality</td><td>(6 columns)</td><td>Number</td></tr>
+                            <tr><td class="field-name">NotesRules … NotesCallQuality</td><td>(6 columns)</td><td>Multiple lines of text</td></tr>
                             <tr><td class="field-name">Remarks</td><td>Remarks</td><td>Multiple lines of text</td></tr>
                         </tbody>
                     </table>
@@ -1115,12 +1115,12 @@ Evaluator fills index.html
                 crit2Desc: "Penalties, disciplinary control, game control, communication with players & coaches, referee team management.",
                 crit3Name: "3. Technical Mgmt",
                 crit3Desc: "Start & end of match (jerseys, game report, signatures), scoreboards, technical interruptions, unexpected situations.",
-                crit4Name: "4. Balls",
-                crit4Desc: "Approval and management of ball exchanges during the match.",
-                crit5Name: "5. Demeanor",
-                crit5Desc: "Hand signals, whistle volume and clarity, body language and presence on the court.",
-                crit6Name: "6. Motion & Behavior",
-                crit6Desc: "Rally positioning, service positioning, net balls, cognitive aspect: observe → think → act.",
+                crit4Name: "4. Demeanor",
+                crit4Desc: "Gestures, whistle volume and clarity, body language and presence on the court.",
+                crit5Name: "5. Positioning",
+                crit5Desc: "Rally & service positioning, net ball repositioning.",
+                crit6Name: "6. Call Quality",
+                crit6Desc: "Cognitive chain (observe → think → act), marginal calls due to suboptimal viewing angle.",
                 step2WarnRules: "⚠️ <strong>Rules (×4):</strong> A score below 8 automatically disqualifies the referee from IT1, regardless of the overall percentage.",
                 step2hNotes: "Notes & Voice Input",
                 step2NotesP1: "Each criterion has an optional <strong>Notes</strong> field — tap the toggle to expand. Notes are included in the exported report. Always add notes when deducting points.",
@@ -1129,7 +1129,7 @@ Evaluator fills index.html
                 step3hDiff: "Match Difficulty Level",
                 step3DiffDesc: "Select Easy, Medium, or Hard to reflect the overall pressure and complexity of the match for the referee. This is set on the last page and appears in the final report.",
                 step3hCalc: "Score Calculation",
-                step3Formula: "Weighted sum = (Rules×4 + Leadership×3 + Technical×1 + Balls×1 + Demeanor×3 + Motion×2)\nWeighted average = sum ÷ 14\nScore% = ((average − 1) ÷ 9) × 100",
+                step3Formula: "Weighted sum = (Rules×4 + Leadership×3 + Technical×1 + Demeanor×3 + Positioning×1 + CallQuality×2)\nWeighted average = sum ÷ 14\nScore% = ((average − 1) ÷ 9) × 100",
                 step3hVerdict: "Verdict Conditions",
                 step3ThVerdict: "Verdict",
                 step3ThCond: "Conditions",
@@ -1226,12 +1226,12 @@ Evaluator fills index.html
                 crit2Desc: "Strafen, Disziplinkontrolle, Spielkontrolle, Kommunikation mit Spielern & Trainern, Führung des Schiedsrichterteams.",
                 crit3Name: "3. Techn. Management",
                 crit3Desc: "Spielbeginn & -ende (Trikots, Spielbericht, Unterschriften), Anzeigetafeln, technische Unterbrechungen, unvorhergesehene Situationen.",
-                crit4Name: "4. Bälle",
-                crit4Desc: "Genehmigung und Verwaltung von Ballwechseln während des Spiels.",
-                crit5Name: "5. Auftreten",
-                crit5Desc: "Handzeichen, Pfifflautstärke und -klarheit, Körpersprache und Präsenz auf dem Spielfeld.",
-                crit6Name: "6. Bewegung & Verhalten",
-                crit6Desc: "Positionierung im Ballwechsel, Positionierung beim Aufschlag, Netzbälle, kognitiver Aspekt: beobachten → denken → handeln.",
+                crit4Name: "4. Auftreten",
+                crit4Desc: "Gestik, Pfifflautstärke und -klarheit, Körpersprache und Präsenz auf dem Spielfeld.",
+                crit5Name: "5. Positionierung",
+                crit5Desc: "Positionierung im Wechsel & Aufschlag, Netzballneupositionierung.",
+                crit6Name: "6. Entscheidungsqualität",
+                crit6Desc: "Kognitive Kette (beobachten → denken → handeln), Grenzentscheidungen durch suboptimalen Blickwinkel.",
                 step2WarnRules: "⚠️ <strong>Regeln (×4):</strong> Ein Wert unter 8 disqualifiziert den Schiedsrichter automatisch für IT1, unabhängig vom Gesamtprozentsatz.",
                 step2hNotes: "Notizen & Spracheingabe",
                 step2NotesP1: "Jedes Kriterium verfügt über ein optionales <strong>Notizen</strong>-Feld — tippe auf den Schalter, um es zu erweitern. Notizen werden in den exportierten Bericht aufgenommen. Füge bei Punktabzügen stets Notizen hinzu.",
@@ -1240,7 +1240,7 @@ Evaluator fills index.html
                 step3hDiff: "Spielschwierigkeit",
                 step3DiffDesc: "Wähle Leicht, Mittel oder Schwer, um den Gesamtdruck und die Komplexität des Spiels für den Schiedsrichter widerzuspiegeln. Wird auf der letzten Seite festgelegt und erscheint im Abschlussbericht.",
                 step3hCalc: "Berechnung des Ergebnisses",
-                step3Formula: "Gewichtete Summe = (Regeln×4 + Spielleitung×3 + Technik×1 + Bälle×1 + Auftreten×3 + Bewegung×2)\nGewichteter Durchschnitt = Summe ÷ 14\nErgebnis% = ((Durchschnitt − 1) ÷ 9) × 100",
+                step3Formula: "Gewichtete Summe = (Regeln×4 + Spielleitung×3 + Technik×1 + Auftreten×3 + Positionierung×1 + Entscheidungsqualität×2)\nGewichteter Durchschnitt = Summe ÷ 14\nErgebnis% = ((Durchschnitt − 1) ÷ 9) × 100",
                 step3hVerdict: "Urteilsbedingungen",
                 step3ThVerdict: "Urteil",
                 step3ThCond: "Bedingungen",
@@ -1337,12 +1337,12 @@ Evaluator fills index.html
                 crit2Desc: "Sanciones, control disciplinario, control del juego, comunicación con jugadores y entrenadores, gestión del equipo arbitral.",
                 crit3Name: "3. Gestión técnica",
                 crit3Desc: "Inicio y final del partido (camisetas, acta, firmas), marcadores, interrupciones técnicas, situaciones imprevistas.",
-                crit4Name: "4. Balones",
-                crit4Desc: "Aprobación y gestión de los cambios de balón durante el partido.",
-                crit5Name: "5. Conducta",
-                crit5Desc: "Señales manuales, volumen y claridad del silbato, lenguaje corporal y presencia en la cancha.",
-                crit6Name: "6. Movimiento y comportamiento",
-                crit6Desc: "Posicionamiento en el rally, posicionamiento en el saque, bolas en la red, aspecto cognitivo: observar → pensar → actuar.",
+                crit4Name: "4. Conducta",
+                crit4Desc: "Gestos, volumen y claridad del silbato, lenguaje corporal y presencia en la cancha.",
+                crit5Name: "5. Posicionamiento",
+                crit5Desc: "Posición en rally y saque, reposicionamiento en pelotas de red.",
+                crit6Name: "6. Calidad de Decisión",
+                crit6Desc: "Cadena cognitiva (observar → pensar → actuar), decisiones límite por ángulo de visión subóptimo.",
                 step2WarnRules: "⚠️ <strong>Reglas (×4):</strong> Una puntuación inferior a 8 descalifica automáticamente al árbitro para IT1, independientemente del porcentaje global.",
                 step2hNotes: "Notas e introducción por voz",
                 step2NotesP1: "Cada criterio tiene un campo opcional de <strong>Notas</strong> — toca el interruptor para expandirlo. Las notas se incluyen en el informe exportado. Añade siempre notas cuando deduzcas puntos.",
@@ -1351,7 +1351,7 @@ Evaluator fills index.html
                 step3hDiff: "Nivel de dificultad del partido",
                 step3DiffDesc: "Selecciona Fácil, Media o Difícil para reflejar la presión y complejidad general del partido para el árbitro. Se establece en la última página y aparece en el informe final.",
                 step3hCalc: "Cálculo de la puntuación",
-                step3Formula: "Suma ponderada = (Reglas×4 + Liderazgo×3 + Técnica×1 + Balones×1 + Conducta×3 + Movimiento×2)\nMedia ponderada = suma ÷ 14\nPuntuación% = ((media − 1) ÷ 9) × 100",
+                step3Formula: "Suma ponderada = (Reglas×4 + Liderazgo×3 + Técnica×1 + Conducta×3 + Posicionamiento×1 + CalidadDecisión×2)\nMedia ponderada = suma ÷ 14\nPuntuación% = ((media − 1) ÷ 9) × 100",
                 step3hVerdict: "Condiciones del veredicto",
                 step3ThVerdict: "Veredicto",
                 step3ThCond: "Condiciones",
@@ -1448,12 +1448,12 @@ Evaluator fills index.html
                 crit2Desc: "Penalidades, controlo disciplinar, controlo do jogo, comunicação com jogadores e treinadores, gestão da equipa de arbitragem.",
                 crit3Name: "3. Gestão técnica",
                 crit3Desc: "Início e fim da partida (equipamentos, relatório do jogo, assinaturas), marcadores, interrupções técnicas, situações imprevistas.",
-                crit4Name: "4. Bolas",
-                crit4Desc: "Aprovação e gestão das trocas de bola durante a partida.",
-                crit5Name: "5. Postura",
-                crit5Desc: "Sinais manuais, volume e clareza do apito, linguagem corporal e presença no campo.",
-                crit6Name: "6. Movimentação e comportamento",
-                crit6Desc: "Posicionamento no rally, posicionamento no serviço, bolas na rede, aspecto cognitivo: observar → pensar → agir.",
+                crit4Name: "4. Postura",
+                crit4Desc: "Gestos, volume e clareza do apito, linguagem corporal e presença no campo.",
+                crit5Name: "5. Posicionamento",
+                crit5Desc: "Posicionamento no rally e saque, reposicionamento em bolas de rede.",
+                crit6Name: "6. Qualidade de Decisão",
+                crit6Desc: "Cadeia cognitiva (observar → pensar → agir), chamadas marginais por ângulo de visão subótimo.",
                 step2WarnRules: "⚠️ <strong>Regras (×4):</strong> Uma pontuação inferior a 8 desclassifica automaticamente o árbitro para IT1, independentemente da percentagem global.",
                 step2hNotes: "Notas e entrada por voz",
                 step2NotesP1: "Cada critério tem um campo opcional de <strong>Notas</strong> — toca no botão para expandir. As notas são incluídas no relatório exportado. Adiciona sempre notas quando deduzires pontos.",
@@ -1462,7 +1462,7 @@ Evaluator fills index.html
                 step3hDiff: "Nível de dificuldade da partida",
                 step3DiffDesc: "Selecciona Fácil, Médio ou Difícil para reflectir a pressão e complexidade geral da partida para o árbitro. É definido na última página e aparece no relatório final.",
                 step3hCalc: "Cálculo da pontuação",
-                step3Formula: "Soma ponderada = (Regras×4 + Liderança×3 + Técnica×1 + Bolas×1 + Postura×3 + Movimentação×2)\nMédia ponderada = soma ÷ 14\nPontuação% = ((média − 1) ÷ 9) × 100",
+                step3Formula: "Soma ponderada = (Regras×4 + Liderança×3 + Técnica×1 + Postura×3 + Posicionamento×1 + QualidadeDecisão×2)\nMédia ponderada = soma ÷ 14\nPontuação% = ((média − 1) ÷ 9) × 100",
                 step3hVerdict: "Condições do veredicto",
                 step3ThVerdict: "Veredicto",
                 step3ThCond: "Condições",
@@ -1559,12 +1559,12 @@ Evaluator fills index.html
                 crit2Desc: "Sanzioni, controllo disciplinare, controllo del gioco, comunicazione con giocatori e allenatori, gestione del team arbitrale.",
                 crit3Name: "3. Gestione tecnica",
                 crit3Desc: "Inizio e fine partita (maglie, referto, firme), tabelloni segnapunti, interruzioni tecniche, situazioni impreviste.",
-                crit4Name: "4. Palloni",
-                crit4Desc: "Approvazione e gestione dei cambi di pallone durante la partita.",
-                crit5Name: "5. Comportamento",
-                crit5Desc: "Segnali manuali, volume e chiarezza del fischio, linguaggio del corpo e presenza in campo.",
-                crit6Name: "6. Movimento e condotta",
-                crit6Desc: "Posizionamento durante il rally, posizionamento in battuta, palloni in rete, aspetto cognitivo: osservare → pensare → agire.",
+                crit4Name: "4. Comportamento",
+                crit4Desc: "Gesti, volume e chiarezza del fischio, linguaggio del corpo e presenza in campo.",
+                crit5Name: "5. Posizionamento",
+                crit5Desc: "Posizionamento in gioco e al servizio, riposizionamento sulle palle di rete.",
+                crit6Name: "6. Qualità delle Decisioni",
+                crit6Desc: "Catena cognitiva (osservare → pensare → agire), decisioni limite per angolo di visione subottimale.",
                 step2WarnRules: "⚠️ <strong>Regole (×4):</strong> Un punteggio inferiore a 8 squalifica automaticamente l'arbitro per IT1, indipendentemente dalla percentuale complessiva.",
                 step2hNotes: "Note e inserimento vocale",
                 step2NotesP1: "Ogni criterio dispone di un campo <strong>Note</strong> opzionale — tocca il pulsante per espanderlo. Le note sono incluse nel report esportato. Aggiungi sempre note quando deduci punti.",
@@ -1573,7 +1573,7 @@ Evaluator fills index.html
                 step3hDiff: "Livello di difficoltà della partita",
                 step3DiffDesc: "Seleziona Facile, Media o Difficile per riflettere la pressione e la complessità generale della partita per l'arbitro. Viene impostato nell'ultima pagina e compare nel report finale.",
                 step3hCalc: "Calcolo del punteggio",
-                step3Formula: "Somma ponderata = (Regole×4 + Direzione×3 + Tecnica×1 + Palloni×1 + Comportamento×3 + Movimento×2)\nMedia ponderata = somma ÷ 14\nPunteggio% = ((media − 1) ÷ 9) × 100",
+                step3Formula: "Somma ponderata = (Regole×4 + Direzione×3 + Tecnica×1 + Comportamento×3 + Posizionamento×1 + QualitàDecisioni×2)\nMedia ponderata = somma ÷ 14\nPunteggio% = ((media − 1) ÷ 9) × 100",
                 step3hVerdict: "Condizioni del verdetto",
                 step3ThVerdict: "Verdetto",
                 step3ThCond: "Condizioni",

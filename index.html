@@ -1513,7 +1513,7 @@
         </div>
 
         <div class="btn-row">
-            <button class="btn btn-secondary" onclick="goStep(1)">← Edit</button>
+            <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
             <button class="btn btn-accent" id="btn-export" onclick="saveResult()">⬇ Export</button>
         </div>
         <div style="margin-top:56px;">
@@ -1539,24 +1539,66 @@
 
         const CRITERIA = [
             {
-                id: 'rules',
-                name: { en: '1. Rules', de: '1. Regeln', es: '1. Reglas', pt: '1. Regras', it: '1. Regole' },
-                weight: 4,
-                desc: { en: 'Practical application of rules in the match.', de: 'Praktische Anwendung der Regeln im Spiel.', es: 'Aplicación práctica de las reglas en el partido.', pt: 'Aplicação prática das regras na partida.', it: 'Applicazione pratica delle regole nella partita.' },
+                id: 'technical',
+                name: { en: '1. Technical Management', de: '1. Technisches Management', es: '1. Gestión Técnica', pt: '1. Gestão Técnica', it: '1. Gestione Tecnica' },
+                weight: 1,
+                desc: { en: 'Match admin, score boards, technical interruptions, ball management.', de: 'Spieladmin, Anzeigetafeln, technische Unterbrechungen, Ballverwaltung.', es: 'Admin del partido, marcadores, interrupciones técnicas, gestión de balones.', pt: 'Admin da partida, placares, interrupções técnicas, gestão de bolas.', it: 'Admin di gara, tabelloni, interruzioni tecniche, gestione palle.' },
                 help: {
-                    en: 'Watch for wrong fault calls, incorrect point or service awards, and violations that should have been called.',
-                    de: 'Achten auf: falsche Fehlerpfiffe, falsche Punkt- oder Aufschlagvergabe, übersehene Regelverstöße.',
-                    es: 'Observar: silbatos de falta incorrectos, adjudicación incorrecta de puntos o saques, infracciones ignoradas.',
-                    pt: 'Observar: erros de falta incorretos, atribuição incorreta de pontos ou saques, violações ignoradas.',
-                    it: 'Osservare: fischi errati, assegnazione errata di punti o servizi, violazioni ignorate.'
+                    en: 'Administrative and procedural correctness <strong>before, during, and after the match</strong>: jersey check, game report completion and signatures, scoreboard accuracy, handling technical interruptions, and managing unexpected situations such as injuries, extreme weather, or spectators entering the field. Also covers ball approval and management of exchanges according to the rules.',
+                    de: 'Administrative und verfahrenstechnische Korrektheit <strong>vor, während und nach dem Spiel</strong>: Trikotprüfung, Ausfüllen und Unterschreiben des Spielberichts, Genauigkeit der Anzeigetafel, Umgang mit technischen Unterbrechungen und Bewältigung unerwarteter Situationen wie Verletzungen, extremes Wetter oder Zuschauer auf dem Spielfeld. Umfasst auch die Ballgenehmigung und Verwaltung von Ballwechseln gemäß den Regeln.',
+                    es: 'Corrección administrativa y de procedimiento <strong>antes, durante y después del partido</strong>: revisión de camisetas, cumplimentación y firma del acta, exactitud del marcador, manejo de interrupciones técnicas y gestión de situaciones inesperadas como lesiones, condiciones climáticas extremas o espectadores en el campo. También cubre la aprobación de balones y la gestión de cambios según el reglamento.',
+                    pt: 'Correção administrativa e de procedimento <strong>antes, durante e após a partida</strong>: verificação de camisetas, preenchimento e assinaturas do relatório, precisão do placar, manejo de interrupções técnicas e gestão de situações inesperadas como lesões, condições climáticas extremas ou espectadores entrando em campo. Também cobre a aprovação de bolas e gestão de trocas conforme as regras.',
+                    it: 'Correttezza amministrativa e procedurale <strong>prima, durante e dopo la partita</strong>: controllo maglie, compilazione e firme del referto, accuratezza del tabellone, gestione delle interruzioni tecniche e delle situazioni impreviste come infortuni, condizioni meteorologiche estreme o spettatori in campo. Comprende anche l\'approvazione delle palle e la gestione delle sostituzioni secondo il regolamento.'
+                },
+                exLabel: { en: 'Covers', de: 'Beinhaltet', es: 'Incluye', pt: 'Inclui', it: 'Comprende' },
+                examples: {
+                    en: ['Jersey check omitted or incomplete', 'Game report not properly completed or signed', 'Scoreboard not updated correctly', 'Unexpected situation (protest, injury) poorly handled', 'Ball not inspected before approval or wrong ball used without intervention'],
+                    de: ['Trikotprüfung ausgelassen oder unvollständig', 'Spielbericht nicht ordnungsgemäß ausgefüllt oder unterschrieben', 'Anzeigetafel nicht korrekt aktualisiert', 'Unerwartete Situation schlecht gehandhabt', 'Ball vor Genehmigung nicht geprüft oder falscher Ball ohne Eingreifen verwendet'],
+                    es: ['Revisión de camisetas omitida o incompleta', 'Acta no completada o firmada correctamente', 'Marcador no actualizado correctamente', 'Situación inesperada mal gestionada', 'Balón no inspeccionado antes de aprobación o balón incorrecto usado sin intervención'],
+                    pt: ['Verificação de camisetas omitida ou incompleta', 'Relatório não preenchido ou assinado corretamente', 'Placar não atualizado corretamente', 'Situação inesperada mal gerenciada', 'Bola não inspecionada antes da aprovação ou bola incorreta usada sem intervenção'],
+                    it: ['Controllo maglie omesso o incompleto', 'Referto non compilato o firmato correttamente', 'Tabellone non aggiornato correttamente', 'Situazione imprevista gestita male', "Palla non ispezionata prima dell'approvazione o palla errata usata senza intervento"]
+                }
+            },
+            {
+                id: 'callquality',
+                name: { en: '2. Call Quality', de: '2. Entscheidungsqualität', es: '2. Calidad de Decisión', pt: '2. Qualidade de Decisão', it: '2. Qualità delle Decisioni' },
+                weight: 2,
+                desc: { en: 'Cognitive chain (observe → think → act), marginal calls.', de: 'Kognitive Kette (beobachten → denken → handeln), Grenzentscheidungen.', es: 'Cadena cognitiva (observar → pensar → actuar), decisiones límite.', pt: 'Cadeia cognitiva (observar → pensar → agir), chamadas marginais.', it: 'Catena cognitiva (osservare → pensare → agire), decisioni limite.' },
+                help: {
+                    en: 'Assess the full cognitive chain: observe → think → act without delay. Marginal or close calls missed due to a suboptimal viewing angle count here (×2), not in Rules (×4). If a call was borderline and the referee\'s position may have contributed, deduct here.',
+                    de: 'Die vollständige kognitive Kette bewerten: beobachten → denken → ohne Verzögerung handeln. Grenz- oder knappe Entscheidungen, die aufgrund eines suboptimalen Blickwinkels verpasst wurden, zählen hier (×2), nicht bei Regeln (×4). War eine Entscheidung grenzwertig und könnte die Position des Schiedsrichters dazu beigetragen haben, hier abziehen.',
+                    es: 'Evaluar la cadena cognitiva completa: observar → pensar → actuar sin demora. Las decisiones límite o cercanas perdidas por ángulo de visión subóptimo cuentan aquí (×2), no en Reglas (×4). Si una decisión fue límite y la posición del árbitro pudo haber contribuido, deducir aquí.',
+                    pt: 'Avaliar a cadeia cognitiva completa: observar → pensar → agir sem demora. Chamadas marginais ou próximas perdidas por ângulo de visão subótimo contam aqui (×2), não em Regras (×4). Se uma chamada foi limítrofe e a posição do árbitro pode ter contribuído, deduzir aqui.',
+                    it: 'Valutare la catena cognitiva completa: osservare → pensare → agire senza ritardo. Le decisioni limite o ravvicinate mancate a causa di un angolo di visione subottimale contano qui (×2), non in Regole (×4). Se una decisione era borderline e la posizione dell\'arbitro può aver contribuito, detrarre qui.'
                 },
                 exLabel: { en: 'Common deductions', de: 'Häufige Abzüge', es: 'Deducciones comunes', pt: 'Deduções comuns', it: 'Deduzioni comuni' },
                 examples: {
-                    en: ['Wrong fault call (in/out, net, foot fault)', 'Incorrect point or service award', 'Misapplication of timeout or substitution rule', 'Ignoring a violation that should have been called'],
-                    de: ['Falscher Fehlerpfiff (In/Out, Netz, Fußfehler)', 'Falsche Punkt- oder Aufschlagvergabe', 'Falsche Anwendung der Auszeit- oder Auswechslungsregel', 'Übersehener Regelverstoß'],
-                    es: ['Silbato de falta incorrecto (In/Out, red, falta de pie)', 'Adjudicación incorrecta de punto o saque', 'Aplicación incorrecta de tiempo muerto o sustitución', 'Infracción ignorada que debía sancionarse'],
-                    pt: ['Erro de falta incorreto (In/Out, rede, falta de pé)', 'Atribuição incorreta de ponto ou saque', 'Aplicação incorreta de tempo morto ou substituição', 'Violação ignorada que deveria ser marcada'],
-                    it: ['Fischio di fallo errato (In/Out, rete, fallo di piede)', 'Assegnazione errata di punto o servizio', 'Applicazione errata del timeout o della sostituzione', 'Violazione ignorata che andava sanzionata']
+                    en: ['Wrong position → marginal call missed (in/out, net): deduct here, not in Rules', 'Slow reaction: called too late after observing a fault', 'Inconsistent net ball decisions', 'Borderline out call affected by bad viewing angle'],
+                    de: ['Falsche Position → Grenzentscheidung verpasst (rein/raus, Netz): hier abziehen, nicht bei Regeln', 'Langsame Reaktion: Pfiff zu spät nach Fehlerbeobachtung', 'Inkonsistente Netzballentscheidungen', 'Grenzwertige Aus-Entscheidung durch schlechten Blickwinkel'],
+                    es: ['Posición incorrecta → decisión límite perdida (dentro/fuera, red): deducir aquí, no en Reglas', 'Reacción lenta: silbato demasiado tarde tras observar una falta', 'Decisiones inconsistentes sobre bola en red', 'Decisión límite de fuera afectada por mal ángulo de visión'],
+                    pt: ['Posição errada → chamada marginal perdida (dentro/fora, rede): deduzir aqui, não em Regras', 'Reação lenta: apitou tarde após observar uma falta', 'Decisões inconsistentes sobre bola na rede', 'Chamada limite de fora afetada por mau ângulo de visão'],
+                    it: ['Posizione errata → decisione limite mancata (dentro/fuori, rete): detrarre qui, non in Regole', 'Reazione lenta: fischiato in ritardo dopo aver osservato un errore', 'Decisioni inconsistenti sulle palle di rete', 'Decisione borderline di fuori influenzata da cattiva angolazione']
+                }
+            },
+            {
+                id: 'rules',
+                name: { en: '3. Rules', de: '3. Regeln', es: '3. Reglas', pt: '3. Regras', it: '3. Regole' },
+                weight: 4,
+                desc: { en: 'Practical application of rules in the match.', de: 'Praktische Anwendung der Regeln im Spiel.', es: 'Aplicación práctica de las reglas en el partido.', pt: 'Aplicação prática das regras na partida.', it: 'Applicazione pratica delle regole nella partita.' },
+                help: {
+                    en: 'Deduct only for clear, unambiguous violations: an obvious fault not called, wrong point or service award, misapplied timeout/substitution rule. <strong>Close or marginal calls where the referee\'s viewing angle or position played a role belong in criterion 2 (Call Quality), not here.</strong>',
+                    de: 'Nur für eindeutige Regelverstöße abziehen: ein offensichtlicher Fehler nicht gepfiffen, falsche Punkt- oder Aufschlagvergabe, falsch angewandte Auszeit-/Auswechslungsregel. <strong>Grenz- oder knappe Entscheidungen, bei denen der Blickwinkel oder die Position des Schiedsrichters eine Rolle gespielt hat, gehören zu Kriterium 2 (Entscheidungsqualität), nicht hierher.</strong>',
+                    es: 'Deducir solo por infracciones claras e inequívocas: una falta obvia no pitada, adjudicación incorrecta de punto o saque, regla de tiempo muerto/sustitución mal aplicada. <strong>Las decisiones límite o cercanas en las que el ángulo de visión o la posición del árbitro jugaron un papel pertenecen al criterio 2 (Calidad de Decisión), no aquí.</strong>',
+                    pt: 'Deduzir apenas por violações claras e inequívocas: uma falta óbvia não marcada, atribuição incorreta de ponto ou saque, regra de tempo morto/substituição mal aplicada. <strong>Chamadas marginais ou próximas em que o ângulo de visão ou a posição do árbitro desempenhou um papel pertencem ao critério 2 (Qualidade de Decisão), não aqui.</strong>',
+                    it: 'Detrarre solo per violazioni chiare e inequivocabili: un fallo ovvio non fischiato, assegnazione errata di punto o servizio, regola del timeout/sostituzione mal applicata. <strong>Le decisioni limite o ravvicinate in cui l\'angolo di visione o la posizione dell\'arbitro ha avuto un ruolo appartengono al criterio 2 (Qualità delle Decisioni), non qui.</strong>'
+                },
+                exLabel: { en: 'Common deductions', de: 'Häufige Abzüge', es: 'Deducciones comunes', pt: 'Deduções comuns', it: 'Deduzioni comuni' },
+                examples: {
+                    en: ['Clear fault not called (obvious in/out, clear net touch, unambiguous foot fault)', 'Wrong point or service award', 'Misapplication of timeout or substitution rule', 'Close call missed due to bad angle → assess in criterion 2 (Call Quality), not here'],
+                    de: ['Eindeutiger Fehler nicht gepfiffen (offensichtlich In/Out, klare Netzberührung, eindeutiger Fußfehler)', 'Falsche Punkt- oder Aufschlagvergabe', 'Falsche Anwendung der Auszeit- oder Auswechslungsregel', 'Knappe Entscheidung wegen schlechtem Winkel verpasst → bei Kriterium 2 (Entscheidungsqualität) bewerten, nicht hier'],
+                    es: ['Falta clara no pitada (In/Out obvio, toque de red claro, falta de pie inequívoca)', 'Adjudicación incorrecta de punto o saque', 'Aplicación incorrecta de tiempo muerto o sustitución', 'Decisión cercana perdida por mal ángulo → evaluar en criterio 2 (Calidad de Decisión), no aquí'],
+                    pt: ['Falta clara não marcada (In/Out óbvio, toque de rede claro, falta de pé inequívoca)', 'Atribuição incorreta de ponto ou saque', 'Aplicação incorreta de tempo morto ou substituição', 'Chamada próxima perdida por mau ângulo → avaliar no critério 2 (Qualidade de Decisão), não aqui'],
+                    it: ['Fallo chiaro non fischiato (In/Out ovvio, tocco di rete chiaro, fallo di piede inequivocabile)', 'Assegnazione errata di punto o servizio', 'Applicazione errata del timeout o della sostituzione', 'Decisione ravvicinata mancata per cattiva angolazione → valutare nel criterio 2 (Qualità delle Decisioni), non qui']
                 },
                 warn: {
                     en: '⚠️ Rules score below 8 automatically blocks IT1 — regardless of the overall percentage.',
@@ -1568,15 +1610,15 @@
             },
             {
                 id: 'leadership',
-                name: { en: '2. Leadership Performance', de: '2. Führungsleistung', es: '2. Liderazgo', pt: '2. Desempenho de Liderança', it: '2. Prestazione di Leadership' },
+                name: { en: '4. Leadership Performance', de: '4. Führungsleistung', es: '4. Liderazgo', pt: '4. Desempenho de Liderança', it: '4. Prestazione di Leadership' },
                 weight: 3,
-                desc: { en: 'Penalties, disciplinary control, game control, communication with players & coaches, referee team management.', de: 'Strafen, Disziplinkontrolle, Spielkontrolle, Kommunikation mit Spielern & Trainern, Management des Schiedsrichterteams.', es: 'Sanciones, control disciplinario, control del juego, comunicación con jugadores y entrenadores, gestión del equipo arbitral.', pt: 'Penalidades, controle disciplinar, controle do jogo, comunicação com jogadores e treinadores, gestão da equipe de arbitragem.', it: 'Sanzioni, controllo disciplinare, controllo del gioco, comunicazione con giocatori e allenatori, gestione della squadra arbitrale.' },
+                desc: { en: 'Penalties, game control (area & people), communication with players & coaches, referee team management.', de: 'Strafen, Spielkontrolle (Bereich & Personen), Kommunikation mit Spielern & Trainern, Schiedsrichterteam-Management.', es: 'Sanciones, control del juego (área y personas), comunicación con jugadores y entrenadores, gestión del equipo arbitral.', pt: 'Penalidades, controle do jogo (área e pessoas), comunicação com jogadores e treinadores, gestão da equipe de arbitragem.', it: 'Sanzioni, controllo del gioco (area e persone), comunicazione con giocatori e allenatori, gestione della squadra arbitrale.' },
                 help: {
-                    en: 'How effectively the referee controls the game and manages all parties — players, coaches, and the referee team.',
-                    de: 'Wie effektiv der Schiedsrichter das Spiel kontrolliert und alle Beteiligten führt.',
-                    es: 'Qué tan efectivamente el árbitro controla el partido y gestiona a todos los involucrados.',
-                    pt: 'Quão efetivamente o árbitro controla o jogo e gerencia todos os envolvidos.',
-                    it: 'Quanto efficacemente l’arbitro controlla il gioco e gestisce tutti i soggetti coinvolti.'
+                    en: 'How effectively the referee controls the match and leads all parties: consistently applying penalties, maintaining discipline, managing the playing area and people around it, communicating clearly with the captain and coaches, and coordinating the referee team (line referees, recording clerk).',
+                    de: 'Wie effektiv der Schiedsrichter das Spiel kontrolliert und alle Beteiligten führt: konsequente Anwendung von Strafen, Aufrechterhaltung der Disziplin, Verwaltung des Spielbereichs und der Personen, klare Kommunikation mit Kapitän und Trainern sowie Koordination des Schiedsrichterteams (Linienrichter, Protokollführer).',
+                    es: 'Qué tan efectivamente el árbitro controla el partido y lidera a todos los involucrados: aplicando sanciones de forma consistente, manteniendo la disciplina, gestionando el área de juego y las personas, comunicándose claramente con el capitán y los entrenadores, y coordinando al equipo arbitral (árbitros de línea, anotador).',
+                    pt: 'Quão efetivamente o árbitro controla a partida e lidera todos os envolvidos: aplicando penalidades de forma consistente, mantendo a disciplina, gerenciando a área de jogo e as pessoas, comunicando-se claramente com o capitão e os treinadores, e coordenando a equipe de arbitragem (árbitros de linha, anotador).',
+                    it: 'Quanto efficacemente l\'arbitro controlla la partita e guida tutte le parti: applicando sanzioni con coerenza, mantenendo la disciplina, gestendo l\'area di gioco e le persone, comunicando chiaramente con il capitano e gli allenatori, e coordinando la squadra arbitrale (giudici di linea, segretario).'
                 },
                 exLabel: { en: 'Covers', de: 'Beinhaltet', es: 'Incluye', pt: 'Inclui', it: 'Comprende' },
                 examples: {
@@ -1588,89 +1630,47 @@
                 }
             },
             {
-                id: 'technical',
-                name: { en: '3. Technical Management', de: '3. Technisches Management', es: '3. Gestión Técnica', pt: '3. Gestão Técnica', it: '3. Gestione Tecnica' },
-                weight: 1,
-                desc: { en: 'Start & end of match (jerseys, game report, signatures), score boards, technical interruptions, unexpected situations.', de: 'Beginn & Ende des Spiels (Trikots, Spielbericht, Unterschriften), Anzeigetafeln, technische Unterbrechungen, unerwartete Situationen.', es: 'Inicio y fin del partido (camisetas, acta, firmas), marcadores, interrupciones técnicas, situaciones inesperadas.', pt: 'Início e fim da partida (camisetas, relatório, assinaturas), placares, interrupções técnicas, situações inesperadas.', it: 'Inizio e fine partita (maglie, referto, firme), tabelloni, interruzioni tecniche, situazioni impreviste.' },
-                help: {
-                    en: 'Administrative and procedural correctness <strong>before, during, and after the match</strong>.',
-                    de: 'Administrative und verfahrenstechnische Korrektheit <strong>vor, während und nach dem Spiel</strong>.',
-                    es: 'Corrección administrativa y de procedimiento <strong>antes, durante y después del partido</strong>.',
-                    pt: 'Correção administrativa e de procedimento <strong>antes, durante e após a partida</strong>.',
-                    it: 'Correttezza amministrativa e procedurale <strong>prima, durante e dopo la partita</strong>.'
-                },
-                exLabel: { en: 'Covers', de: 'Beinhaltet', es: 'Incluye', pt: 'Inclui', it: 'Comprende' },
-                examples: {
-                    en: ['Jersey check omitted or incomplete', 'Game report not properly completed or signed', 'Scoreboard not updated correctly', 'Unexpected situation (protest, injury) poorly handled'],
-                    de: ['Trikotprüfung ausgelassen oder unvollständig', 'Spielbericht nicht ordnungsgemäß ausgefüllt oder unterschrieben', 'Anzeigetafel nicht korrekt aktualisiert', 'Unerwartete Situation schlecht gehandhabt'],
-                    es: ['Revisión de camisetas omitida o incompleta', 'Acta no completada o firmada correctamente', 'Marcador no actualizado correctamente', 'Situación inesperada mal gestionada'],
-                    pt: ['Verificação de camisetas omitida ou incompleta', 'Relatório não preenchido ou assinado corretamente', 'Placar não atualizado corretamente', 'Situação inesperada mal gerenciada'],
-                    it: ['Controllo maglie omesso o incompleto', 'Referto non compilato o firmato correttamente', 'Tabellone non aggiornato correttamente', 'Situazione imprevista gestita male']
-                }
-            },
-            {
-                id: 'balls',
-                name: { en: '4. Balls', de: '4. Bälle', es: '4. Balones', pt: '4. Bolas', it: '4. Palle' },
-                weight: 1,
-                desc: { en: 'Approval and management (exchanges).', de: 'Genehmigung und Verwaltung (Wechsel).', es: 'Aprobación y gestión (cambios).', pt: 'Aprovação e gestão (substituições).', it: 'Approvazione e gestione (sostituzioni).' },
-                help: {
-                    en: 'Approval and management of ball exchanges according to the rules.',
-                    de: 'Genehmigung und Verwaltung von Ballwechseln gemäß den Regeln.',
-                    es: 'Aprobación y gestión de cambios de balón según el reglamento.',
-                    pt: 'Aprovação e gestão das trocas de bola conforme as regras.',
-                    it: 'Approvazione e gestione delle sostituzioni di palla secondo il regolamento.'
-                },
-                exLabel: { en: 'Common deductions', de: 'Häufige Abzüge', es: 'Deducciones comunes', pt: 'Deduções comuns', it: 'Deduzioni comuni' },
-                examples: {
-                    en: ['Ball not inspected before approval', 'Exchange allowed without proper check', 'Delay in approving or rejecting a ball change', 'Wrong ball used without intervention'],
-                    de: ['Ball vor Genehmigung nicht geprüft', 'Wechsel ohne ordentliche Kontrolle zugelassen', 'Verzögerung bei Genehmigung oder Ablehnung', 'Falscher Ball ohne Eingreifen verwendet'],
-                    es: ['Balón no inspeccionado antes de aprobación', 'Cambio permitido sin revisión adecuada', 'Demora en aprobar o rechazar cambio', 'Balón incorrecto usado sin intervención'],
-                    pt: ['Bola não inspecionada antes da aprovação', 'Troca permitida sem verificação adequada', 'Atraso na aprovação ou rejeição da troca', 'Bola incorreta usada sem intervenção'],
-                    it: ["Palla non ispezionata prima dell'approvazione", "Sostituzione consentita senza adeguato controllo", "Ritardo nell'approvazione o rifiuto del cambio", "Palla errata usata senza intervento"]
-                }
-            },
-            {
                 id: 'demeanor',
                 name: { en: "5. Referee's Demeanor", de: '5. Auftreten des Schiedsrichters', es: '5. Comportamiento del Árbitro', pt: '5. Comportamento do Árbitro', it: "5. Comportamento dell'Arbitro" },
                 weight: 3,
-                desc: { en: 'Hand signals, whistle volume, body language.', de: 'Handzeichen, Pfifflautstärke, Körpersprache.', es: 'Señales manuales, volumen del silbato, lenguaje corporal.', pt: 'Sinais manuais, volume do apito, linguagem corporal.', it: 'Segnali manuali, volume del fischietto, linguaggio del corpo.' },
+                desc: { en: 'Gestures, whistle volume, body language.', de: 'Gestik, Pfifflautstärke, Körpersprache.', es: 'Gestos, volumen del silbato, lenguaje corporal.', pt: 'Gestos, volume do apito, linguagem corporal.', it: 'Gesti, volume del fischietto, linguaggio del corpo.' },
                 help: {
-                    en: 'Observe hand signals, whistle use, and body language. Is the referee visibly confident and in control?',
-                    de: 'Handzeichen, Pfiffgebung und Körpersprache beobachten. Wirkt der SR sichtlich sicher und in Kontrolle?',
-                    es: 'Observar señales manuales, uso del silbato y lenguaje corporal. ¿El árbitro parece seguro y en control?',
-                    pt: 'Observar sinais manuais, uso do apito e linguagem corporal. O árbitro parece confiante e no controle?',
-                    it: "Osservare segnali manuali, fischietto e linguaggio del corpo. L'arbitro appare sicuro e in controllo?"
+                    en: 'Observe gestures, whistle use, and body language. Is the referee visibly confident and in control?',
+                    de: 'Gestik, Pfiffgebung und Körpersprache beobachten. Wirkt der SR sichtlich sicher und in Kontrolle?',
+                    es: 'Observar gestos, uso del silbato y lenguaje corporal. ¿El árbitro parece seguro y en control?',
+                    pt: 'Observar gestos, uso do apito e linguagem corporal. O árbitro parece confiante e no controle?',
+                    it: "Osservare gesti, fischietto e linguaggio del corpo. L'arbitro appare sicuro e in controllo?"
                 },
                 exLabel: { en: 'Common deductions', de: 'Häufige Abzüge', es: 'Deducciones comunes', pt: 'Deduções comuns', it: 'Deduzioni comuni' },
                 examples: {
-                    en: ['Hand signal missing, late, or incorrect', 'Whistle too weak or hesitant', 'Passive or uncertain body language', 'Visible loss of composure or authority'],
-                    de: ['Handzeichen fehlend, zu spät oder falsch', 'Pfiff zu schwach oder zögerlich', 'Passive oder unsichere Körpersprache', 'Sichtbarer Verlust von Autorität'],
-                    es: ['Señal manual ausente, tardía o incorrecta', 'Silbato demasiado débil o dubitativo', 'Lenguaje corporal pasivo o inseguro', 'Pérdida visible de compostura o autoridad'],
-                    pt: ['Sinal manual ausente, atrasado ou incorreto', 'Apito muito fraco ou hesitante', 'Linguagem corporal passiva ou insegura', 'Perda visível de compostura ou autoridade'],
-                    it: ['Segnale mancante, in ritardo o errato', 'Fischietto troppo debole o esitante', 'Linguaggio del corpo passivo o incerto', 'Perdita visibile di compostezza o autorità']
+                    en: ['Gesture missing, late, or incorrect', 'Whistle too weak or hesitant', 'Passive or uncertain body language', 'Visible loss of composure or authority'],
+                    de: ['Geste fehlend, zu spät oder falsch', 'Pfiff zu schwach oder zögerlich', 'Passive oder unsichere Körpersprache', 'Sichtbarer Verlust von Autorität'],
+                    es: ['Gesto ausente, tardío o incorrecto', 'Silbato demasiado débil o dubitativo', 'Lenguaje corporal pasivo o inseguro', 'Pérdida visible de compostura o autoridad'],
+                    pt: ['Gesto ausente, atrasado ou incorreto', 'Apito muito fraco ou hesitante', 'Linguagem corporal passiva ou insegura', 'Perda visível de compostura ou autoridade'],
+                    it: ['Gesto mancante, in ritardo o errato', 'Fischietto troppo debole o esitante', 'Linguaggio del corpo passivo o incerto', 'Perdita visibile di compostezza o autorità']
                 }
             },
             {
-                id: 'motion',
-                name: { en: '6. Proper Motion & Technical Behavior', de: '6. Bewegung & Technisches Verhalten', es: '6. Movimiento & Comportamiento Técnico', pt: '6. Movimento & Comportamento Técnico', it: '6. Movimento & Comportamento Tecnico' },
-                weight: 2,
-                desc: { en: 'Rally positioning, service positioning, net balls, cognitive aspect (observe → think → act).', de: 'Positionierung beim Ballwechsel, Positionierung beim Aufschlag, Netzbälle, kognitiver Aspekt (beobachten → denken → handeln).', es: 'Posicionamiento en el rally, posicionamiento en el saque, pelotas de red, aspecto cognitivo (observar → pensar → actuar).', pt: 'Posicionamento no rally, posicionamento no saque, bolas na rede, aspecto cognitivo (observar → pensar → agir).', it: 'Posizionamento in gioco, posizionamento al servizio, palle di rete, aspetto cognitivo (osservare → pensare → agire).' },
+                id: 'positioning',
+                name: { en: '6. Positioning', de: '6. Positionierung', es: '6. Posicionamiento', pt: '6. Posicionamento', it: '6. Posizionamento' },
+                weight: 1,
+                desc: { en: 'Rally & service positioning, net ball repositioning.', de: 'Positionierung im Wechsel & Aufschlag, Netzballneupositionierung.', es: 'Posición en rally y saque, reposicionamiento en pelotas de red.', pt: 'Posicionamento no rally e saque, reposicionamento em bolas de rede.', it: 'Posizionamento in gioco e al servizio, riposizionamento sulle palle di rete.' },
                 help: {
-                    en: 'Evaluate positioning, net ball decisions, and the cognitive chain: observe → think → act.',
-                    de: 'Positionierung, Netzballentscheidungen und die kognitive Kette bewerten: beobachten → denken → handeln.',
-                    es: 'Evaluar el posicionamiento, decisiones de bola en red y la cadena cognitiva: observar → pensar → actuar.',
-                    pt: 'Avaliar posicionamento, bolas na rede e a cadeia cognitiva: observar → pensar → agir.',
-                    it: 'Valutare il posizionamento, le palle di rete e la catena cognitiva: osservare → pensare → agire.'
+                    en: 'Evaluate the referee\'s positioning during play — same side as the ball, facing the opposite side. Check service positioning relative to the service players\' line. Assess net ball decisions (quick repositioning to the best angle).',
+                    de: 'Die Positionierung des Schiedsrichters im Spiel bewerten — auf derselben Seite wie der Ball, zur anderen Seite gewandt. Aufschlagpositionierung relativ zur Linie der Aufschlagspieler prüfen. Netzballentscheidungen bewerten (schnelle Neupositionierung im besten Winkel).',
+                    es: 'Evaluar el posicionamiento del árbitro durante el juego — mismo lado que el balón, mirando hacia el lado contrario. Verificar el posicionamiento en el saque respecto a la línea de los jugadores que sirven. Evaluar las decisiones sobre pelotas en red (reposicionamiento rápido en el mejor ángulo).',
+                    pt: 'Avaliar o posicionamento do árbitro durante o jogo — mesmo lado da bola, voltado para o lado oposto. Verificar o posicionamento no saque em relação à linha dos jogadores de saque. Avaliar as decisões sobre bolas na rede (reposicionamento rápido no melhor ângulo).',
+                    it: 'Valutare il posizionamento dell\'arbitro durante il gioco — stesso lato della palla, rivolto verso il lato opposto. Verificare il posizionamento al servizio rispetto alla linea dei giocatori al servizio. Valutare le decisioni sulle palle di rete (riposizionamento rapido nel miglior angolo).'
                 },
                 exLabel: { en: 'Common deductions', de: 'Häufige Abzüge', es: 'Deducciones comunes', pt: 'Deduções comuns', it: 'Deduzioni comuni' },
                 examples: {
-                    en: ['Wrong position during rally — call missed due to bad angle', 'Not in position at service — late or wrong spot', 'Inconsistent net ball decisions', 'Slow reaction: called too late after observing a fault'],
-                    de: ['Falsche Position im Wechsel — Pfiff wegen schlechtem Blickwinkel verspasst', 'Nicht rechtzeitig in Aufschlagposition', 'Inkonsistente Netzballentscheidungen', 'Langsame Reaktion: Pfiff zu spät nach Fehlerbeobachtung'],
-                    es: ['Posición incorrecta en rally — llamada perdida por ángulo', 'No en posición al saque', 'Decisiones inconsistentes sobre bola en red', 'Reacción lenta: silbato demasiado tarde'],
-                    pt: ['Posição errada no rally — chamada perdida por ângulo', 'Fora de posição no saque', 'Decisões inconsistentes sobre bola na rede', 'Reação lenta: apitou tarde após observar uma falta'],
-                    it: ['Posizione errata durante il gioco — chiamata mancata per angolazione', 'Non in posizione al servizio', 'Decisioni inconsistenti sulle palle di rete', 'Reazione lenta: fischiato in ritardo']
+                    en: ['Wrong position during rally', 'Not in position at service — late or wrong spot', 'Slow repositioning for net ball decision', 'Positioning on wrong side of the field'],
+                    de: ['Falsche Position im Wechsel', 'Nicht rechtzeitig in Aufschlagposition', 'Langsame Neupositionierung für Netzballentscheidung', 'Auf der falschen Feldseite positioniert'],
+                    es: ['Posición incorrecta en rally', 'No en posición al saque — tarde o lugar incorrecto', 'Reposicionamiento lento para pelota de red', 'Posicionado en el lado incorrecto del campo'],
+                    pt: ['Posição errada no rally', 'Fora de posição no saque — tarde ou local errado', 'Reposicionamento lento para bola na rede', 'Posicionado no lado errado do campo'],
+                    it: ['Posizione errata durante il gioco', 'Non in posizione al servizio — in ritardo o posto sbagliato', 'Riposizionamento lento per palla di rete', 'Posizionato sul lato sbagliato del campo']
                 }
-            }
+            },
         ];
         const TOTAL_WEIGHT = CRITERIA.reduce((s, c) => s + c.weight, 0);
         let currentLang = localStorage.getItem('ifa-lang') || 'en';
@@ -1693,7 +1693,7 @@
                 scoringMethod: 'SCORING METHOD',
                 scoringDesc: 'Each criterion starts at <strong>10 points</strong>. Deduct 1 point per mistake. Higher weight = more impact on total score.',
                 btnContinue: 'Continue →', btnBack: '← Back', btnResults: 'Results →',
-                btnEdit: '← Edit', btnExport: '✉ Submit', btnNewEval: '🔄 New Evaluation',
+                btnEdit: '← Back', btnExport: '✉ Submit', btnNewEval: '🔄 New Evaluation',
                 scoreExcellent: 'Excellent', scoreGood: 'Good', scoreInconstant: 'Inconstant', scorePoor: 'Poor', scoreCritical: 'Critical',
                 eachMistake: 'Each mistake: −1 pt', helpWhatToAssess: 'What to assess', weight: 'Weight',
                 notes: '📝 Notes', recording: '🔴 Recording… tap mic to stop',
@@ -1741,7 +1741,7 @@
                 scoringMethod: 'BEWERTUNGSMETHODE',
                 scoringDesc: 'Jedes Kriterium startet bei <strong>10 Punkten</strong>. Jeder Fehler: −1 Pkt. Höhere Gewichtung = größerer Einfluss auf Gesamtergebnis.',
                 btnContinue: 'Weiter →', btnBack: '← Zurück', btnResults: 'Ergebnisse →',
-                btnEdit: '← Bearbeiten', btnExport: '✉ Absenden', btnNewEval: '🔄 Neue Bewertung',
+                btnEdit: '← Zurück', btnExport: '✉ Absenden', btnNewEval: '🔄 Neue Bewertung',
                 scoreExcellent: 'Ausgezeichnet', scoreGood: 'Gut', scoreInconstant: 'Inkonstant', scorePoor: 'Schwach', scoreCritical: 'Kritisch',
                 eachMistake: 'Jeder Fehler: −1 Pkt.', helpWhatToAssess: 'Was zu bewerten', weight: 'Gewicht',
                 notes: '📝 Notizen', recording: '🔴 Aufnahme… Mikrofon tippen zum Stoppen',
@@ -1789,7 +1789,7 @@
                 scoringMethod: 'MÉTODO DE PUNTUACIÓN',
                 scoringDesc: 'Cada criterio comienza en <strong>10 puntos</strong>. Cada error: −1 pt. Mayor peso = mayor impacto en la puntuación total.',
                 btnContinue: 'Continuar →', btnBack: '← Atrás', btnResults: 'Resultados →',
-                btnEdit: '← Editar', btnExport: '✉ Enviar', btnNewEval: '🔄 Nueva Evaluación',
+                btnEdit: '← Atrás', btnExport: '✉ Enviar', btnNewEval: '🔄 Nueva Evaluación',
                 scoreExcellent: 'Excelente', scoreGood: 'Bueno', scoreInconstant: 'Inconstante', scorePoor: 'Deficiente', scoreCritical: 'Crítico',
                 eachMistake: 'Cada error: −1 pt', helpWhatToAssess: 'Qué evaluar', weight: 'Peso',
                 notes: '📝 Notas', recording: '🔴 Grabando… toque el mic para detener',
@@ -1837,7 +1837,7 @@
                 scoringMethod: 'MÉTODO DE PONTUAÇÃO',
                 scoringDesc: 'Cada critério começa em <strong>10 pontos</strong>. Cada erro: −1 pt. Maior peso = maior impacto na pontuação total.',
                 btnContinue: 'Continuar →', btnBack: '← Voltar', btnResults: 'Resultados →',
-                btnEdit: '← Editar', btnExport: '✉ Enviar', btnNewEval: '🔄 Nova Avaliação',
+                btnEdit: '← Voltar', btnExport: '✉ Enviar', btnNewEval: '🔄 Nova Avaliação',
                 scoreExcellent: 'Excelente', scoreGood: 'Bom', scoreInconstant: 'Inconstante', scorePoor: 'Fraco', scoreCritical: 'Crítico',
                 eachMistake: 'Cada erro: −1 pt', helpWhatToAssess: 'O que avaliar', weight: 'Peso',
                 notes: '📝 Notas', recording: '🔴 Gravando… toque o mic para parar',
@@ -1885,7 +1885,7 @@
                 scoringMethod: 'METODO DI PUNTEGGIO',
                 scoringDesc: 'Ogni criterio inizia da <strong>10 punti</strong>. Ogni errore: −1 pt. Peso maggiore = impatto maggiore sul punteggio totale.',
                 btnContinue: 'Continua →', btnBack: '← Indietro', btnResults: 'Risultati →',
-                btnEdit: '← Modifica', btnExport: '✉ Invia', btnNewEval: '🔄 Nuova Valutazione',
+                btnEdit: '← Indietro', btnExport: '✉ Invia', btnNewEval: '🔄 Nuova Valutazione',
                 scoreExcellent: 'Eccellente', scoreGood: 'Buono', scoreInconstant: 'Incostante', scorePoor: 'Scarso', scoreCritical: 'Critico',
                 eachMistake: 'Ogni errore: −1 pt', helpWhatToAssess: 'Cosa valutare', weight: 'Peso',
                 notes: '📝 Note', recording: '🔴 Registrazione… tocca il mic per fermare',
@@ -2429,15 +2429,15 @@
                 score_rules: scores['rules'] || 10,
                 score_leadership: scores['leadership'] || 10,
                 score_technical: scores['technical'] || 10,
-                score_balls: scores['balls'] || 10,
                 score_demeanor: scores['demeanor'] || 10,
-                score_motion: scores['motion'] || 10,
+                score_positioning: scores['positioning'] || 10,
+                score_callquality: scores['callquality'] || 10,
                 notes_rules: notes['rules'] || '-',
                 notes_leadership: notes['leadership'] || '-',
                 notes_technical: notes['technical'] || '-',
-                notes_balls: notes['balls'] || '-',
                 notes_demeanor: notes['demeanor'] || '-',
-                notes_motion: notes['motion'] || '-',
+                notes_positioning: notes['positioning'] || '-',
+                notes_callquality: notes['callquality'] || '-',
                 remarks: remarksHints.trim() || '-'
             };
             const subject = 'REFEREE_EVAL: ' + name + ' - ' + date;
@@ -2557,7 +2557,7 @@
                 s1_4_title: 'Leadership (×3)',
                 s1_4_body: 'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.',
                 s1_5_title: 'Demeanor (×3)',
-                s1_5_body: 'Observe hand signals, whistle volume, and body language. Is the referee confident and visibly in control?',
+                s1_5_body: 'Observe gestures, whistle volume, and body language. Is the referee confident and visibly in control?',
 
                 s2_0_title: 'Evaluation Result',
                 s2_0_body: 'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.',
@@ -2592,7 +2592,7 @@
                 s1_4_title: 'Spielleitung (×3)',
                 s1_4_body: 'Beurteile Strafen, Spielkontrolle, Kommunikation mit Spielern und Trainern sowie die Koordination mit dem zweiten Schiedsrichter.',
                 s1_5_title: 'Auftreten (×3)',
-                s1_5_body: 'Beobachte Handzeichen, Pfifflautstärke und Körpersprache. Wirkt der Schiedsrichter selbstsicher und sichtbar in Kontrolle?',
+                s1_5_body: 'Beobachte Gestik, Pfifflautstärke und Körpersprache. Wirkt der Schiedsrichter selbstsicher und sichtbar in Kontrolle?',
 
                 s2_0_title: 'Bewertungsergebnis',
                 s2_0_body: 'Das Ergebnis wird aus den gewichteten Summen aller Kriterien berechnet. Ein Prozentsatz und ein Urteil (IT1/IT2/NQ) werden automatisch angezeigt.',
@@ -2724,7 +2724,7 @@
                 { target: 'help-btn-rules', title: 'Tap ? for Guidance', body: 'Every criterion has a ? button. Tap it to see exactly what to observe and a list of common deduction examples.' },
                 { target: 'notes-toggle-rules', title: 'Notes — Always Add Context', body: 'Tap the Notes toggle on any card to explain why you deducted points. Specific notes are valuable feedback for the referee.' },
                 { target: 'card-leadership', title: 'Leadership (×3)', body: 'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.' },
-                { target: 'card-demeanor', title: 'Demeanor (×3)', body: 'Observe hand signals, whistle volume, and body language. Is the referee confident and visibly in control?', arrow: 'bottom' }
+                { target: 'card-demeanor', title: 'Demeanor (×3)', body: 'Observe gestures, whistle volume, and body language. Is the referee confident and visibly in control?', arrow: 'bottom' }
             ],
             2: [
                 { target: 'resultContent', title: 'Evaluation Result', body: 'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.' },
