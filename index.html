@@ -2100,7 +2100,7 @@
             lines.push('', t('exportFooter'));
             const subject = encodeURIComponent(t('exportHeader') + ' — ' + name + ' — ' + date);
             const body = encodeURIComponent(lines.join('\n'));
-            window.location.href = 'mailto:' + encodeURIComponent(email) + '?subject=' + subject + '&body=' + body;
+            window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
         }
 
         function autoResizeTextarea(ta) {
