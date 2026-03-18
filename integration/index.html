@@ -551,7 +551,9 @@
             padding: 10px 44px 10px 12px;
             outline: none;
             resize: none;
-            height: 80px;
+            height: auto;
+            min-height: 80px;
+            overflow: hidden;
             line-height: 1.5;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
@@ -1362,6 +1364,34 @@
         [data-theme="dark"] .qual-header {
             background: var(--ifa-gray2);
         }
+
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            /* Always print in light theme */
+            [data-theme="dark"] {
+                --ifa-gray: #F4F6F9 !important;
+                --ifa-gray2: #E8ECF0 !important;
+                --ifa-border: #C8D4E0 !important;
+                --ifa-text: #1a2a3a !important;
+                --ifa-muted: #6b7f99 !important;
+                --ifa-card: white !important;
+            }
+            [data-theme="dark"] .warn-box { background: initial !important; }
+            [data-theme="dark"] .breakdown-row.row-warn { background: rgba(208, 2, 27, 0.08) !important; }
+            [data-theme="dark"] .qual-header { background: var(--ifa-gray2) !important; }
+            [data-theme="dark"] .notes-textarea, [data-theme="dark"] .text-input { color: #1a2a3a !important; }
+            .header, #step-0, #step-1, #tour-backdrop,
+            #step-2 .section-eyebrow, #step-2 .section-title,
+            #difficultyCard, #refEmailCard, #step-2 .btn-row, #btnNewEval, #result-page-footer {
+                display: none !important;
+            }
+            #step-2 > div[style*="margin-top:56px"] { display: none !important; }
+            body { background: white !important; }
+            main { padding: 0 !important; }
+            .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+            #remarksHints, .mic-btn { display: none !important; }
+            #remarksHintsPrint { display: block !important; }
+        }
     </style>
 </head>
 
@@ -1486,7 +1516,7 @@
         <div class="section-title">Evaluation<br>Result</div>
         <div id="resultContent"></div>
 
-        <div class="card" style="margin-top:18px;">
+        <div class="card" id="difficultyCard" style="margin-top:18px;">
             <div class="field">
                 <label id="labelDifficulty">Match Difficulty Level</label>
                 <div class="diff-group">
@@ -1497,7 +1527,7 @@
             </div>
         </div>
 
-        <div class="card" style="margin-top:18px;">
+        <div class="card" id="remarksCard" style="margin-top:18px;">
             <div id="remarksTitle"
                 style="font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ifa-muted);margin-bottom:10px;">
                 💬 Remarks &amp; Hints</div>
@@ -1507,8 +1537,24 @@
                 <textarea class="notes-textarea" id="remarksHints"
                     placeholder="Enter overall feedback, remarks and hints for the referee…" rows="5"
                     oninput="syncRemarks()"></textarea>
+                <div id="remarksHintsPrint" style="display:none;white-space:pre-wrap;font-family:'Roboto',sans-serif;font-size:14px;line-height:1.5;padding:10px 12px;word-break:break-word;"></div>
                 <button class="mic-btn" id="mic-remarks" onclick="toggleRecording('remarks')"
                     title="Voice input">🎤</button>
+            </div>
+        </div>
+
+
+        <div class="card" id="refEmailCard" style="margin-top:18px;">
+            <div id="refEmailTitle"
+                style="font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ifa-muted);margin-bottom:10px;">
+                📧 Referee Copy</div>
+            <div id="refEmailSub" style="font-size:12px;color:var(--ifa-muted);margin-bottom:8px;">Send the evaluation results directly to the referee</div>
+            <div class="field" style="margin-bottom:10px;">
+                <input type="email" id="refEmail" class="text-input" placeholder="Referee's email address">
+            </div>
+            <div class="btn-row" style="margin-top:0;">
+                <button class="btn btn-secondary" onclick="downloadPDF()" id="btn-pdf">📄 PDF</button>
+                <button class="btn btn-primary" onclick="sendToReferee()" id="btn-send-ref">📧 Send to Referee</button>
             </div>
         </div>
 
@@ -1724,7 +1770,10 @@
                 exportQualNQ: 'NQ:  Does not meet minimum requirements',
                 exportRemarks: 'Remarks & Hints',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'en-US', btnHelp: 'Help', validationError: 'Please fill in all fields before continuing.'
+                sttLang: 'en-US', btnHelp: 'Help', validationError: 'Please fill in all fields before continuing.',
+                refEmailTitle: '📧 Referee Copy', refEmailSub: 'Send the evaluation results directly to the referee',
+                phRefEmail: 'Referee\'s email address', btnSendToRef: '📧 Send to Referee', btnPdf: '📄 PDF',
+                sendToRefEmpty: 'Please enter the referee\'s email address.'
             },
             de: {
                 headerTitle: 'Schiedsrichter-Bewertung', headerSub: 'Internationale Schiedsrichter-Kommission',
@@ -1772,7 +1821,10 @@
                 exportQualNQ: 'NQ:  Erfüllt nicht die Mindestanforderungen',
                 exportRemarks: 'Bemerkungen & Hinweise',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'de-DE', btnHelp: 'Hilfe', validationError: 'Bitte alle Felder ausfüllen, bevor du weiter gehst.'
+                sttLang: 'de-DE', btnHelp: 'Hilfe', validationError: 'Bitte alle Felder ausfüllen, bevor du weiter gehst.',
+                refEmailTitle: '📧 Kopie für den Schiedsrichter', refEmailSub: 'Bewertungsergebnis direkt an den Schiedsrichter senden',
+                phRefEmail: 'E-Mail des Schiedsrichters', btnSendToRef: '📧 An Schiedsrichter senden', btnPdf: '📄 PDF',
+                sendToRefEmpty: 'Bitte E-Mail-Adresse des Schiedsrichters eingeben.'
             },
             es: {
                 headerTitle: 'Evaluación del Árbitro', headerSub: 'Comisión Internacional de Árbitros',
@@ -1820,7 +1872,10 @@
                 exportQualNQ: 'NQ:  No cumple los requisitos mínimos',
                 exportRemarks: 'Observaciones & Sugerencias',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'es-ES', btnHelp: 'Ayuda', validationError: 'Por favor, completa todos los campos antes de continuar.'
+                sttLang: 'es-ES', btnHelp: 'Ayuda', validationError: 'Por favor, completa todos los campos antes de continuar.',
+                refEmailTitle: '📧 Copia para el Árbitro', refEmailSub: 'Enviar los resultados directamente al árbitro',
+                phRefEmail: 'Correo electrónico del árbitro', btnSendToRef: '📧 Enviar al Árbitro', btnPdf: '📄 PDF',
+                sendToRefEmpty: 'Por favor, ingresa el correo del árbitro.'
             },
             pt: {
                 headerTitle: 'Avaliação do Árbitro', headerSub: 'Comissão Internacional de Árbitros',
@@ -1868,7 +1923,10 @@
                 exportQualNQ: 'NQ:  Não atende aos requisitos mínimos',
                 exportRemarks: 'Observações & Dicas',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'pt-BR', btnHelp: 'Ajuda', validationError: 'Por favor, preenche todos os campos antes de continuar.'
+                sttLang: 'pt-BR', btnHelp: 'Ajuda', validationError: 'Por favor, preenche todos os campos antes de continuar.',
+                refEmailTitle: '📧 Cópia para o Árbitro', refEmailSub: 'Enviar os resultados diretamente para o árbitro',
+                phRefEmail: 'E-mail do árbitro', btnSendToRef: '📧 Enviar ao Árbitro', btnPdf: '📄 PDF',
+                sendToRefEmpty: 'Por favor, insira o e-mail do árbitro.'
             },
             it: {
                 headerTitle: "Valutazione dell'Arbitro", headerSub: 'Commissione Internazionale Arbitri',
@@ -1916,7 +1974,10 @@
                 exportQualNQ: 'NQ:  Non soddisfa i requisiti minimi',
                 exportRemarks: 'Osservazioni & Suggerimenti',
                 exportFooter: 'International Fistball Association | ifa.fistball.sport',
-                sttLang: 'it-IT', btnHelp: 'Guida', validationError: 'Per favore, compila tutti i campi prima di continuare.'
+                sttLang: 'it-IT', btnHelp: 'Guida', validationError: 'Per favore, compila tutti i campi prima di continuare.',
+                refEmailTitle: '📧 Copia per l\'Arbitro', refEmailSub: 'Inviare i risultati direttamente all\'arbitro',
+                phRefEmail: 'Indirizzo email dell\'arbitro', btnSendToRef: '📧 Invia all\'Arbitro', btnPdf: '📄 PDF',
+                sendToRefEmpty: 'Inserire l\'indirizzo email dell\'arbitro.'
             }
         };
 
@@ -1984,14 +2045,75 @@
             document.querySelector('#step-2 .btn-accent').textContent = t('btnExport');
             const bne = document.getElementById('btnNewEval');
             if (bne) bne.textContent = t('btnNewEval');
+            const ret = document.getElementById('refEmailTitle');
+            if (ret) ret.textContent = t('refEmailTitle');
+            const res = document.getElementById('refEmailSub');
+            if (res) res.textContent = t('refEmailSub');
+            const rei = document.getElementById('refEmail');
+            if (rei) rei.placeholder = t('phRefEmail');
+            const bsr = document.getElementById('btn-send-ref');
+            if (bsr) bsr.textContent = t('btnSendToRef');
+            const bpdf = document.getElementById('btn-pdf');
+            if (bpdf) bpdf.textContent = t('btnPdf');
 
             // Rebuild dynamic content if on those steps
             if (currentStep === 1) buildCriteria();
             if (currentStep === 2) renderResult();
         }
 
+        function downloadPDF() {
+            window.print();
+        }
+
+        function sendToReferee() {
+            const email = document.getElementById('refEmail').value.trim();
+            if (!email) { alert(t('sendToRefEmpty')); return; }
+            const r = computeResult();
+            const name = document.getElementById('refName').value || '-';
+            const country = (document.getElementById('country').value || '').toUpperCase();
+            const date = document.getElementById('matchDate').value || '-';
+            const place = document.getElementById('place').value || '-';
+            const home = document.getElementById('teamHome').value || '-';
+            const away = document.getElementById('teamAway').value || '-';
+            const difficulty = selectedDiff ? t('diff' + selectedDiff) : '-';
+            const remarks = remarksHints.trim() || '-';
+            const verdict = r.verdict === 'IT1' ? t('verdictIT1') : r.verdict === 'IT2' ? t('verdictIT2') : t('verdictNQ');
+            let lines = [
+                t('exportHeader'), '',
+                t('exportReferee') + ': ' + name + ' (' + country + ')',
+                t('exportDate') + ': ' + date,
+                t('exportPlace') + ': ' + place,
+                t('exportTeams') + ': ' + home + ' vs. ' + away,
+                t('exportDifficulty') + ': ' + difficulty, '',
+                t('exportBreakdown') + ':'
+            ];
+            CRITERIA.forEach(c => {
+                const s = scores[c.id] || 10;
+                const n = notes[c.id] ? ' — ' + notes[c.id] : '';
+                lines.push('  ' + c.name[currentLang] + ': ' + s + '/10' + n);
+            });
+            lines.push('', t('exportPct') + ': ' + r.pctD + '%');
+            lines.push(t('exportVerdict') + ': ' + verdict);
+            if (remarks !== '-') {
+                lines.push('', t('exportRemarks') + ':', remarks);
+            }
+            lines.push('', t('exportFooter'));
+            const subject = encodeURIComponent(t('exportHeader') + ' — ' + name + ' — ' + date);
+            const body = encodeURIComponent(lines.join('\n'));
+            window.location.href = 'mailto:' + encodeURIComponent(email) + '?subject=' + subject + '&body=' + body;
+        }
+
+        function autoResizeTextarea(ta) {
+            if (!ta) return;
+            ta.style.height = 'auto';
+            ta.style.height = ta.scrollHeight + 'px';
+        }
+
         function syncRemarks() {
             remarksHints = document.getElementById('remarksHints').value;
+            autoResizeTextarea(document.getElementById('remarksHints'));
+            const mp = document.getElementById('remarksHintsPrint');
+            if (mp) mp.textContent = remarksHints;
             saveState();
         }
         let activeRecognition = null, activeRecordingId = null;
@@ -2050,6 +2172,9 @@
                 }
                 if (s.currentStep === 2) {
                     document.getElementById('remarksHints').value = remarksHints;
+                    autoResizeTextarea(document.getElementById('remarksHints'));
+                    const mp = document.getElementById('remarksHintsPrint');
+                    if (mp) mp.textContent = remarksHints;
                     renderResult();
                 }
                 currentStep = s.currentStep || 0;
@@ -2149,6 +2274,8 @@
     `;
                 container.appendChild(div);
             });
+            // Resize any pre-filled notes textareas
+            container.querySelectorAll('.notes-textarea').forEach(autoResizeTextarea);
         }
 
         function stepScore(id, delta) {
@@ -2169,7 +2296,9 @@
         }
 
         function saveNote(id) {
-            notes[id] = document.getElementById('notes-' + id).value;
+            const noteTa = document.getElementById('notes-' + id);
+            notes[id] = noteTa.value;
+            autoResizeTextarea(noteTa);
             // update badge
             const toggle = document.querySelector(`#card-${id} .notes-toggle`);
             const existing = toggle.querySelector('.notes-badge');
@@ -2189,6 +2318,7 @@
             const isOpen = area.classList.contains('open');
             area.classList.toggle('open', !isOpen);
             arrow.classList.toggle('open', !isOpen);
+            if (!isOpen) autoResizeTextarea(document.getElementById('notes-' + id));
         }
 
         // ── Speech-to-text ──
@@ -2299,7 +2429,7 @@
             const bdRows = CRITERIA.map(c => {
                 const s = scores[c.id] || 10;
                 const w = s < 6 ? ' row-warn' : '';
-                const n = notes[c.id] ? `<div class="breakdown-row-note">💬 ${escapeHtml(notes[c.id])}</div>` : '';
+                const n = notes[c.id] ? `<div class="breakdown-row-note">💬 ${escapeHtml(notes[c.id]).replace(/\n/g, '<br>')}</div>` : '';
                 return `<div class="breakdown-row${w}">
       <div class="breakdown-row-left">
         <div class="breakdown-row-label">${c.name[currentLang]} <span style="font-size:10px;color:var(--ifa-muted)">(×${c.weight})</span></div>
@@ -2319,12 +2449,12 @@
       </div>
       <div class="result-name">${escapeHtml(name)}</div>
       <div class="result-meta">${escapeHtml(country)} · ${selectedDiff ? t('diff' + selectedDiff) : '—'} · ${date}</div>
-      ${document.getElementById('evaluatorName').value ? `<div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:10px;position:relative;z-index:1;">${t('exportEvaluator')}: ${escapeHtml(document.getElementById('evaluatorName').value)}</div>` : ''}
       <div class="result-score-big">${r.pctD}%</div>
       <div class="verdict-pill ${vpClass}">${vpText}</div>
     </div>
 
     <div class="chips-row">
+      ${document.getElementById('evaluatorName').value ? `<div class="chip"><div class="chip-label">${t('exportEvaluator')}</div><div class="chip-value" style="font-size:12px">${escapeHtml(document.getElementById('evaluatorName').value)}</div></div>` : ''}
       <div class="chip"><div class="chip-label">${t('labelPlace')}</div><div class="chip-value" style="font-size:12px">${escapeHtml(place)}</div></div>
       ${(document.getElementById('teamHome').value || document.getElementById('teamAway').value) ? `<div class="chip"><div class="chip-label">${t('labelTeams')}</div><div class="chip-value" style="font-size:11px">${escapeHtml(document.getElementById('teamHome').value || '?')} vs ${escapeHtml(document.getElementById('teamAway').value || '?')}</div></div>` : ''}
       <div class="chip"><div class="chip-label">${t('labelDifficulty')}</div><div class="chip-value">${selectedDiff ? t('diff' + selectedDiff) : '—'}</div></div>
@@ -2466,7 +2596,7 @@
         function resetForm(skipConfirm = false) {
             if (!skipConfirm && !confirm(t('confirmReset'))) return;
             scores = {}; notes = {}; selectedDiff = ''; remarksHints = '';
-            ['refName', 'country', 'place', 'evaluatorName', 'remarksHints', 'teamHome', 'teamAway'].forEach(id => document.getElementById(id).value = '');
+            ['refName', 'country', 'place', 'evaluatorName', 'remarksHints', 'teamHome', 'teamAway', 'refEmail'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('matchDate').value = new Date().toISOString().slice(0, 10);
             document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
             localStorage.removeItem('ifa-eval-state');
