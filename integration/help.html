@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFA Referee Evaluation — User Manual</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --ifa-blue: #003A70;
+            --ifa-blue-mid: #005098;
+            --ifa-blue-light: #0069B4;
+            --ifa-accent: #009FE3;
+            --ifa-gray: #F4F6F9;
+            --ifa-gray2: #E8ECF0;
+            --ifa-border: #C8D4E0;
+            --ifa-text: #1a2a3a;
+            --ifa-muted: #6b7f99;
+            --ifa-card: white;
+            --danger: #D0021B;
+            --success: #1B7B34;
+            --radius: 10px;
+        }
+
+        [data-theme="dark"] {
+            color-scheme: dark;
+            --ifa-gray: #0e1420;
+            --ifa-gray2: #1a2435;
+            --ifa-border: #283650;
+            --ifa-text: #dce6f2;
+            --ifa-muted: #7a90ad;
+            --ifa-card: #16202e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--ifa-gray);
+            color: var(--ifa-text);
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(160deg, var(--ifa-blue) 0%, var(--ifa-blue-mid) 100%);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: 0 3px 16px rgba(0, 58, 112, 0.35);
+        }
+
+        .header-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px 12px;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-text h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .header-text p {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .header-badge {
+            background: rgba(0, 159, 227, 0.25);
+            border: 1px solid rgba(0, 159, 227, 0.4);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.85);
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 5px 12px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .btn-dark {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px 8px;
+            flex-shrink: 0;
+        }
+
+        .lang-sel {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 4px 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .lang-sel option {
+            background: var(--ifa-blue);
+            color: white;
+        }
+
+        /* LAYOUT */
+        .layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 0;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 16px 60px;
+        }
+
+        @media(max-width:760px) {
+            .layout {
+                grid-template-columns: 1fr;
+                padding: 16px 12px 60px;
+            }
+
+            .toc {
+                display: none;
+            }
+        }
+
+        /* TOC */
+        .toc {
+            position: sticky;
+            top: 80px;
+            align-self: start;
+            padding-right: 20px;
+        }
+
+        .toc-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--ifa-accent);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-list li {
+            margin-bottom: 2px;
+        }
+
+        .toc-list a {
+            display: block;
+            font-size: 12px;
+            color: var(--ifa-muted);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-left: 2px solid var(--ifa-border);
+            border-radius: 0 4px 4px 0;
+            transition: all 0.15s;
+        }
+
+        .toc-list a:hover,
+        .toc-list a.active {
+            color: var(--ifa-blue-light);
+            border-left-color: var(--ifa-accent);
+            background: rgba(0, 159, 227, 0.07);
+        }
+
+        .toc-list .toc-sub {
+            padding-left: 20px;
+            font-size: 11px;
+        }
+
+        /* CONTENT */
+        .content {
+            min-width: 0;
+        }
+
+        .content section {
+            margin-bottom: 10px;
+        }
+
+        .section-anchor {
+            display: block;
+            height: 80px;
+            margin-top: -80px;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* SECTION HEADER / COLLAPSIBLE */
+        .sec-toggle {
+            width: 100%;
+            background: var(--ifa-card);
+            border: 1.5px solid var(--ifa-border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            transition: border-color 0.15s;
+            touch-action: manipulation;
+        }
+
+        .sec-toggle:hover {
+            border-color: var(--ifa-accent);
+        }
+
+        .sec-toggle[aria-expanded="true"] {
+            border-radius: var(--radius) var(--radius) 0 0;
+            border-bottom-color: var(--ifa-gray2);
+        }
+
+        .sec-num {
+            background: var(--ifa-blue);
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sec-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ifa-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+        }
+
+        .sec-chevron {
+            color: var(--ifa-muted);
+            font-size: 16px;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .sec-toggle[aria-expanded="true"] .sec-chevron {
+            transform: rotate(180deg);
+        }
+
+        .sec-body {
+            background: var(--ifa-card);
+            border: 1.5px solid var(--ifa-border);
+            border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            padding: 16px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .sec-body.open {
+            display: block;
+            animation: fadeIn 0.18s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* TEXT STYLES */
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ifa-blue-light);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--ifa-gray2);
+        }
+
+        p {
+            font-size: 14px;
+            color: var(--ifa-text);
+            margin-bottom: 10px;
+            line-height: 1.65;
+        }
+
+        .tip {
+            background: rgba(0, 159, 227, 0.08);
+            border-left: 3px solid var(--ifa-accent);
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .warn {
+            background: #FFF5F5;
+            border-left: 3px solid var(--danger);
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        [data-theme="dark"] .warn {
+            background: rgba(208, 2, 27, 0.1);
+        }
+
+        /* SCORE TABLE */
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        .score-table th {
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--ifa-muted);
+            padding: 6px 10px;
+            border-bottom: 1.5px solid var(--ifa-border);
+            text-align: left;
+        }
+
+        .score-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--ifa-gray2);
+        }
+
+        .score-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .row-excellent td {
+            background: rgba(27, 123, 52, 0.07);
+        }
+
+        .row-good td {
+            background: rgba(0, 105, 180, 0.06);
+        }
+
+        .row-inconstant td {
+            background: rgba(0, 159, 227, 0.06);
+        }
+
+        .row-poor td {
+            background: rgba(208, 130, 2, 0.07);
+        }
+
+        .row-critical td {
+            background: rgba(208, 2, 27, 0.07);
+        }
+
+        .badge-score {
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .badge-score.ex {
+            color: var(--success);
+        }
+
+        .badge-score.go {
+            color: var(--ifa-blue-light);
+        }
+
+        .badge-score.in {
+            color: #007a99;
+        }
+
+        .badge-score.po {
+            color: #b05a00;
+        }
+
+        .badge-score.cr {
+            color: var(--danger);
+        }
+
+        /* CRITERIA CARDS */
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        @media(max-width:500px) {
+            .criteria-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .crit-card {
+            background: var(--ifa-gray);
+            border: 1.5px solid var(--ifa-border);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .crit-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .crit-card-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ifa-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .crit-weight {
+            background: var(--ifa-blue);
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .crit-card p {
+            font-size: 12px;
+            color: var(--ifa-muted);
+            margin-bottom: 0;
+        }
+
+        /* VERDICT TABLE */
+        .verdict-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .verdict-table th {
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--ifa-muted);
+            padding: 6px 10px;
+            border-bottom: 1.5px solid var(--ifa-border);
+            text-align: left;
+        }
+
+        .verdict-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid var(--ifa-gray2);
+        }
+
+        .verdict-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .vbadge {
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 5px;
+            color: white;
+            display: inline-block;
+        }
+
+        .vb-it1 {
+            background: var(--success);
+        }
+
+        .vb-it2 {
+            background: var(--ifa-blue-light);
+        }
+
+        .vb-nq {
+            background: var(--danger);
+        }
+
+        /* FORMULA BOX */
+        .formula-box {
+            background: var(--ifa-gray2);
+            border: 1px solid var(--ifa-border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-family: monospace;
+            font-size: 13px;
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        /* FIELD TABLE */
+        .field-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .field-table th {
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--ifa-muted);
+            padding: 6px 10px;
+            border-bottom: 1.5px solid var(--ifa-border);
+            text-align: left;
+        }
+
+        .field-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--ifa-gray2);
+            vertical-align: top;
+        }
+
+        .field-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .field-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ifa-blue);
+            white-space: nowrap;
+        }
+
+        /* MOBILE NAV */
+        .mobile-nav {
+            display: none;
+            padding: 10px 12px;
+            background: var(--ifa-card);
+            border-bottom: 1px solid var(--ifa-border);
+            overflow-x: auto;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+
+        @media(max-width:760px) {
+            .mobile-nav {
+                display: flex;
+            }
+        }
+
+        .mobile-nav a {
+            flex-shrink: 0;
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--ifa-muted);
+            text-decoration: none;
+            padding: 5px 12px;
+            border: 1px solid var(--ifa-border);
+            border-radius: 20px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .mobile-nav a.active {
+            background: var(--ifa-blue);
+            color: white;
+            border-color: var(--ifa-blue);
+        }
+
+        .admin-pre {
+            background: var(--ifa-gray2);
+            border: 1px solid var(--ifa-border);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            overflow-x: auto;
+            padding: 12px 14px;
+            white-space: pre;
+            margin: 10px 0 14px;
+        }
+
+        .admin-note {
+            background: rgba(208, 2, 27, 0.07);
+            border-left: 3px solid var(--danger);
+            border-radius: 0 6px 6px 0;
+            font-size: 13px;
+            padding: 8px 12px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="header-main">
+            <div class="header-text">
+                <h1 data-i18n="headerTitle">User Manual</h1>
+                <p data-i18n="headerSub">IFA Referee Evaluation</p>
+            </div>
+            <span class="header-badge" data-i18n="badgeHelp">Help</span>
+            <a href="index.html" class="btn-back" data-i18n="btnBack">&#8592; Form</a>
+            <select id="langSelect" class="lang-sel" onchange="setHelpLang(this.value)">
+                <option value="en">EN</option>
+                <option value="de">DE</option>
+                <option value="es">ES</option>
+                <option value="pt">PT</option>
+                <option value="it">IT</option>
+            </select>
+            <button class="btn-dark" onclick="toggleDark()" id="darkBtn">&#127769;</button>
+        </div>
+    </div>
+
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="#overview" class="active" data-i18n="navOverview">Overview</a>
+        <a href="#step1" data-i18n="navStep1">Step 1</a>
+        <a href="#step2" data-i18n="navStep2">Step 2</a>
+        <a href="#scoring" data-i18n="navScoring">Scoring</a>
+        <a href="#criteria" data-i18n="navCriteria">Criteria</a>
+        <a href="#result" data-i18n="navResult">Result</a>
+        <a href="#tips" data-i18n="navTips">Tips</a>
+        <a href="#admin">Admin</a>
+    </nav>
+
+    <div class="layout">
+        <!-- TOC -->
+        <nav class="toc">
+            <div class="toc-title" data-i18n="tocTitle">Contents</div>
+            <ul class="toc-list">
+                <li><a href="#overview" data-i18n="navOverview">Overview</a></li>
+                <li><a href="#step1" data-i18n="tocStep1">Step 1 &#8212; Match Info</a></li>
+                <li><a href="#step2" data-i18n="tocStep2">Step 2 &#8212; Scoring</a></li>
+                <li><a href="#scoring" class="toc-sub" data-i18n="tocScoringScale">Scoring Scale</a></li>
+                <li><a href="#criteria" class="toc-sub" data-i18n="toc6Criteria">The 6 Criteria</a></li>
+                <li><a href="#notes" class="toc-sub" data-i18n="tocNotes">Notes &amp; Voice</a></li>
+                <li><a href="#result" data-i18n="tocResult">Step 3 &#8212; Result</a></li>
+                <li><a href="#verdict" class="toc-sub" data-i18n="tocVerdict">Verdict Conditions</a></li>
+                <li><a href="#export" class="toc-sub" data-i18n="tocExport">Exporting</a></li>
+                <li><a href="#tips" data-i18n="tocTips">Tips &amp; Best Practices</a></li>
+                <li><a href="#admin">Administrator Guide</a></li>
+            </ul>
+        </nav>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <span class="section-anchor" id="overview"></span>
+            <section>
+                <button class="sec-toggle" onclick="toggle(this)" aria-expanded="true">
+                    <div class="sec-num">&#9733;</div>
+                    <div class="sec-label" data-i18n="secOverview">Overview</div>
+                    <div class="sec-chevron">&#9662;</div>
+                </button>
+                <div class="sec-body open">
+                    <p data-i18n="overviewP1"></p>
+                    <p data-i18n="overviewP2"></p>
+                    <div class="tip" data-i18n="overviewTip"></div>
+                </div>
+            </section>
+
+            <span class="section-anchor" id="step1"></span>
+            <section>
+                <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
+                    <div class="sec-num">1</div>
+                    <div class="sec-label" data-i18n="secStep1">Step 1 &#8212; Match &amp; Referee Info</div>
+                    <div class="sec-chevron">&#9662;</div>
+                </button>
+                <div class="sec-body">
+                    <p data-i18n="step1Intro"></p>
+                    <table class="field-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="step1ThField">Field</th>
+                                <th data-i18n="step1ThDesc">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="field-name" data-i18n="step1FieldEvaluator">Evaluator Name</td>
+                                <td data-i18n="step1DescEvaluator"></td>
+                            </tr>
+                            <tr>
+                                <td class="field-name" data-i18n="step1FieldReferee">Referee Name</td>
+                                <td data-i18n="step1DescReferee"></td>
+                            </tr>
+                            <tr>
+                                <td class="field-name" data-i18n="step1FieldCountry">Country Code</td>
+                                <td data-i18n="step1DescCountry"></td>
+                            </tr>
+                            <tr>
+                                <td class="field-name" data-i18n="step1FieldDate">Date</td>
+                                <td data-i18n="step1DescDate"></td>
+                            </tr>
+                            <tr>
+                                <td class="field-name" data-i18n="step1FieldTeams">Home / Away Team</td>
+                                <td data-i18n="step1DescTeams"></td>
+                            </tr>
+                            <tr>
+                                <td class="field-name" data-i18n="step1FieldContest">Contest / Venue</td>
+                                <td data-i18n="step1DescContest"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="tip" data-i18n="step1ValidationTip"></div>
+                    <p style="margin-top:10px;font-size:14px;" data-i18n="step1NavDots"></p>
+                    <div class="tip" data-i18n="step1Tip"></div>
+                </div>
+            </section>
+
+            <span class="section-anchor" id="step2"></span>
+            <section>
+                <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
+                    <div class="sec-num">2</div>
+                    <div class="sec-label" data-i18n="secStep2">Step 2 &#8212; Criteria Scoring</div>
+                    <div class="sec-chevron">&#9662;</div>
+                </button>
+                <div class="sec-body">
+                    <p data-i18n-html="step2Intro"></p>
+
+                    <span class="section-anchor" id="scoring"></span>
+                    <h2 data-i18n="step2hScoring">Scoring Scale</h2>
+                    <table class="score-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="step2ThScore">Score</th>
+                                <th data-i18n="step2ThLabel">Label</th>
+                                <th data-i18n="step2ThMeaning">Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-excellent">
+                                <td><span class="badge-score ex" data-i18n="step2ScoreEx">9&#8211;10</span></td>
+                                <td><strong data-i18n="step2LabelEx">Excellent</strong></td>
+                                <td data-i18n="step2MeanEx"></td>
+                            </tr>
+                            <tr class="row-good">
+                                <td><span class="badge-score go" data-i18n="step2ScoreGo">7&#8211;8</span></td>
+                                <td><strong data-i18n="step2LabelGo">Good</strong></td>
+                                <td data-i18n="step2MeanGo"></td>
+                            </tr>
+                            <tr class="row-inconstant">
+                                <td><span class="badge-score in" data-i18n="step2ScoreIn">5&#8211;6</span></td>
+                                <td><strong data-i18n="step2LabelIn">Inconstant</strong></td>
+                                <td data-i18n="step2MeanIn"></td>
+                            </tr>
+                            <tr class="row-poor">
+                                <td><span class="badge-score po" data-i18n="step2ScorePo">3&#8211;4</span></td>
+                                <td><strong data-i18n="step2LabelPo">Poor</strong></td>
+                                <td data-i18n="step2MeanPo"></td>
+                            </tr>
+                            <tr class="row-critical">
+                                <td><span class="badge-score cr" data-i18n="step2ScoreCr">1&#8211;2</span></td>
+                                <td><strong data-i18n="step2LabelCr">Critical</strong></td>
+                                <td data-i18n="step2MeanCr"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <span class="section-anchor" id="criteria"></span>
+                    <h2 data-i18n="step2h6Crit">The 6 Criteria</h2>
+                    <div class="criteria-grid">
+                        <div class="crit-card">
+                            <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit1Name">1.
+                                    Rules</span><span class="crit-weight">&#215;4</span></div>
+                            <p data-i18n="crit1Desc"></p>
+                        </div>
+                        <div class="crit-card">
+                            <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit2Name">2.
+                                    Leadership</span><span class="crit-weight">&#215;3</span></div>
+                            <p data-i18n="crit2Desc"></p>
+                        </div>
+                        <div class="crit-card">
+                            <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit3Name">3. Technical
+                                    Mgmt</span><span class="crit-weight">&#215;1</span></div>
+                            <p data-i18n="crit3Desc"></p>
+                        </div>
+                        <div class="crit-card">
+                            <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit4Name">4.
+                                    Demeanor</span><span class="crit-weight">&#215;3</span></div>
+                            <p data-i18n="crit4Desc"></p>
+                        </div>
+                        <div class="crit-card">
+                            <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit5Name">5.
+                                    Positioning</span><span class="crit-weight">&#215;1</span></div>
+                            <p data-i18n="crit5Desc"></p>
+                        </div>
+                        <div class="crit-card">
+                            <div class="crit-card-top"><span class="crit-card-name" data-i18n="crit6Name">6. Call
+                                    Quality</span><span class="crit-weight">&#215;2</span></div>
+                            <p data-i18n="crit6Desc"></p>
+                        </div>
+                    </div>
+
+                    <div class="warn" data-i18n-html="step2WarnRules"></div>
+
+                    <span class="section-anchor" id="notes"></span>
+                    <h2 data-i18n="step2hNotes">Notes &amp; Voice Input</h2>
+                    <p data-i18n-html="step2NotesP1"></p>
+                    <p data-i18n-html="step2NotesP2"></p>
+                    <div class="tip" data-i18n="step2NotesTip"></div>
+                </div>
+            </section>
+
+            <span class="section-anchor" id="result"></span>
+            <section>
+                <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
+                    <div class="sec-num">3</div>
+                    <div class="sec-label" data-i18n="secResult">Step 3 &#8212; Result &amp; Export</div>
+                    <div class="sec-chevron">&#9662;</div>
+                </button>
+                <div class="sec-body">
+                    <h2 data-i18n="step3hDiff">Match Difficulty Level</h2>
+                    <p data-i18n="step3DiffDesc"></p>
+
+                    <h2 data-i18n="step3hCalc">Score Calculation</h2>
+                    <div class="formula-box" id="formulaBox"></div>
+
+                    <span class="section-anchor" id="verdict"></span>
+                    <h2 data-i18n="step3hVerdict">Verdict Conditions</h2>
+                    <table class="verdict-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="step3ThVerdict">Verdict</th>
+                                <th data-i18n="step3ThCond">Conditions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="vbadge vb-it1">IT1</span></td>
+                                <td data-i18n="step3CondIT1"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="vbadge vb-it2">IT2</span></td>
+                                <td data-i18n="step3CondIT2"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="vbadge vb-nq">NQ</span></td>
+                                <td data-i18n="step3CondNQ"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <span class="section-anchor" id="export"></span>
+                    <h2 data-i18n="step3hExport">Exporting</h2>
+                    <p data-i18n-html="step3ExportP1"></p>
+                    <p data-i18n-html="step3ExportP2"></p>
+                    <div class="warn" data-i18n="step3ExportWarn"></div>
+                </div>
+            </section>
+
+            <span class="section-anchor" id="tips"></span>
+            <section>
+                <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
+                    <div class="sec-num">&#10003;</div>
+                    <div class="sec-label" data-i18n="secTips">Tips &amp; Best Practices</div>
+                    <div class="sec-chevron">&#9662;</div>
+                </button>
+                <div class="sec-body">
+                    <ul id="tipsList" style="padding-left:18px;font-size:14px;line-height:2;"></ul>
+                </div>
+            </section>
+
+            <span class="section-anchor" id="admin"></span>
+            <section>
+                <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
+                    <div class="sec-num">&#9881;</div>
+                    <div class="sec-label">Administrator Guide</div>
+                    <div class="sec-chevron">&#9662;</div>
+                </button>
+                <div class="sec-body">
+                    <p style="font-size:13px;color:var(--ifa-muted);margin-bottom:16px;">Technical reference for the IFA administrator. This section is in English only.</p>
+
+                    <h2>Architecture Overview</h2>
+                    <p>There are two submission paths depending on how <code>index.html</code> is opened:</p>
+                    <pre class="admin-pre">── Primary path (index.html embedded in fistball.org iframe) ────────
+
+Evaluator fills index.html
+        │
+        ▼
+  Tap ✉ Submit
+        │
+        ▼
+  window.postMessage → parent fistball.org page receives payload
+  (parent handles storage / further processing)
+
+── Fallback path (index.html opened standalone) ─────────────────────
+
+Evaluator fills index.html
+        │
+        ▼
+  Tap ✉ Submit
+        │
+        ▼
+  mailto: link opens email client
+  (body contains JSON payload)
+        │
+        ▼
+  Power Automate flow (email trigger)
+  ├── Parse JSON from email body
+  └── Create item in SharePoint List</pre>
+
+                    <h2>Component Reference</h2>
+                    <table class="field-table">
+                        <thead><tr><th>Component</th><th>Details</th></tr></thead>
+                        <tbody>
+                            <tr><td class="field-name">SharePoint site</td><td>https://ifafistball.sharepoint.com/sites/referee</td></tr>
+                            <tr><td class="field-name">SharePoint list</td><td>RefereeEvaluations</td></tr>
+                            <tr><td class="field-name">Evaluation form URL</td><td>…/SiteAssets/index.html</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>Step 1 — SharePoint List Setup</h2>
+                    <p>In the SharePoint site, create a new List called exactly <strong>RefereeEvaluations</strong>. The <code>Title</code> column is built-in — rename its display name to <em>Evaluator</em> (internal name stays <code>Title</code>).</p>
+                    <table class="field-table" style="margin-top:10px;">
+                        <thead><tr><th>Display name</th><th>Internal name</th><th>Type</th></tr></thead>
+                        <tbody>
+                            <tr><td class="field-name">Evaluator</td><td>Title</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Referee</td><td>Referee</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Country</td><td>Country</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Date</td><td>Date</td><td>Date only</td></tr>
+                            <tr><td class="field-name">Contest</td><td>Contest</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Home</td><td>Home</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Away</td><td>Away</td><td>Single line of text</td></tr>
+                            <tr><td class="field-name">Difficulty</td><td>Difficulty</td><td>Choice: Easy / Medium / Hard</td></tr>
+                            <tr><td class="field-name">ScorePercent</td><td>ScorePercent</td><td>Number</td></tr>
+                            <tr><td class="field-name">Label</td><td>Label</td><td>Choice: IT1 / IT2 / NQ</td></tr>
+                            <tr><td class="field-name">ScoreRules … ScoreCallQuality</td><td>(6 columns)</td><td>Number</td></tr>
+                            <tr><td class="field-name">NotesRules … NotesCallQuality</td><td>(6 columns)</td><td>Multiple lines of text</td></tr>
+                            <tr><td class="field-name">Remarks</td><td>Remarks</td><td>Multiple lines of text</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>Step 2 — Power Automate Flow</h2>
+                    <div class="admin-note">⚠️ This flow is only triggered when <code>index.html</code> is opened standalone. When embedded in the fistball.org iframe, submission uses <code>postMessage</code> and bypasses this flow entirely.</div>
+                    <p style="margin-top:10px;font-size:14px;">Trigger: <strong>When a new email arrives (V3)</strong> — Office 365 Outlook, filtered to the evaluation mailbox.</p>
+                    <p style="font-size:14px;margin-top:8px;"><strong>Step 1 — Compose: Extract JSON</strong></p>
+                    <pre class="admin-pre">substring(
+  body('Get_email')?['body'],
+  indexOf(body('Get_email')?['body'], '{&amp;quot;'),
+  sub(
+    lastIndexOf(body('Get_email')?['body'], '&amp;quot;}'),
+    indexOf(body('Get_email')?['body'], '{&amp;quot;')
+  )
+)</pre>
+                    <p style="font-size:13px;color:var(--ifa-muted);">Uses <code>{&amp;quot;</code> (not <code>{</code>) to skip CSS curly braces in the HTML-encoded email body.</p>
+                    <p style="font-size:14px;margin-top:8px;"><strong>Step 2 — Compose: Decode HTML entities</strong> — chain <code>replace()</code> calls to convert <code>&amp;quot;</code> → <code>"</code>, <code>&amp;amp;</code> → <code>&amp;</code>, <code>&amp;lt;</code> → <code>&lt;</code>, <code>&amp;gt;</code> → <code>&gt;</code>, <code>&amp;#39;</code> → <code>'</code>.</p>
+                    <p style="font-size:14px;margin-top:8px;"><strong>Step 3 — Parse JSON</strong> — use the decoded output. Click <em>Generate from sample</em> with a real exported evaluation JSON to build the schema. Re-generate if new fields are added.</p>
+                    <p style="font-size:14px;margin-top:8px;"><strong>Step 4 — Create item in SharePoint</strong> — site: referee, list: RefereeEvaluations. Map all Parse JSON output fields to the corresponding SharePoint columns.</p>
+
+                    <h2>Step 3 — SharePoint File Hosting</h2>
+                    <p style="font-size:14px;">Upload <code>index.html</code> and <code>help.html</code> to <strong>Site contents → SiteAssets</strong>. Navigate into the file and copy the URL from the address bar (not the sharing link) to get the direct executable URL.</p>
+                    <div class="admin-note" style="margin-top:8px;">If the page loads but nothing happens, the site may have <strong>NoScript</strong> enabled. Fix: <code>Set-SPOSite -Identity … -DenyAddAndCustomizePages $false</code></div>
+
+                    <h2>Step 4 — Updating Files</h2>
+                    <p style="font-size:14px;">Upload the new version to SiteAssets — SharePoint replaces the existing file. Users may need to clear cache (<kbd>Ctrl+Shift+R</kbd>). No changes to the list or flow are needed for UI updates. If the email payload structure changes, regenerate the Parse JSON schema from a sample.</p>
+
+                    <h2>Troubleshooting</h2>
+                    <table class="field-table" style="margin-top:8px;">
+                        <thead><tr><th>Symptom</th><th>Cause &amp; Fix</th></tr></thead>
+                        <tbody>
+                            <tr><td class="field-name">Power Automate: "Invalid JavaScript property identifier character: -"</td><td>Compose formula found a CSS <code>{</code> before the JSON. Search for <code>{&amp;quot;</code> instead of <code>{</code>.</td></tr>
+                            <tr><td class="field-name">Power Automate: "Schema validation failed"</td><td>Payload has new fields. Regenerate schema via <em>Generate from sample</em>.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>Maintenance Notes</h2>
+                    <ul style="font-size:14px;line-height:2;padding-left:20px;margin-top:8px;">
+                        <li><strong>List permissions:</strong> Inherited from the SharePoint site. Adjust if tighter access control is needed.</li>
+                        <li><strong>Power Automate licence:</strong> Uses standard connectors only (Office 365 Outlook, SharePoint). A standard M365 Business licence is sufficient.</li>
+                    </ul>
+                </div>
+            </section>
+
+        </div><!-- /content -->
+    </div><!-- /layout -->
+
+    <script>
+        const HELP_T = {
+            en: {
+                pageTitle: "IFA Referee Evaluation — User Manual",
+                headerTitle: "User Manual",
+                headerSub: "IFA Referee Evaluation",
+                badgeHelp: "Help",
+                btnBack: "← Form",
+                navOverview: "Overview",
+                navStep1: "Step 1",
+                navStep2: "Step 2",
+                navScoring: "Scoring",
+                navCriteria: "Criteria",
+                navResult: "Result",
+                navTips: "Tips",
+                tocTitle: "Contents",
+                tocStep1: "Step 1 — Match Info",
+                tocStep2: "Step 2 — Scoring",
+                tocScoringScale: "Scoring Scale",
+                toc6Criteria: "The 6 Criteria",
+                tocNotes: "Notes & Voice",
+                tocResult: "Step 3 — Result",
+                tocVerdict: "Verdict Conditions",
+                tocExport: "Submitting",
+                tocTips: "Tips & Best Practices",
+                secOverview: "Overview",
+                secStep1: "Step 1 — Match & Referee Info",
+                secStep2: "Step 2 — Criteria Scoring",
+                secResult: "Step 3 — Result & Export",
+                secTips: "Tips & Best Practices",
+                overviewP1: "The IFA Referee Evaluation form is a mobile-first web app for evaluating fistball referees during matches. Fill in match details, score the referee across 6 weighted criteria, and submit the result to the IFA office.",
+                overviewP2: "The form works in 5 languages (English, German, Spanish, Portuguese, Italian) — toggle in the top-right corner of the header.",
+                overviewTip: "💡 The form saves your progress automatically — data persists across page reloads and accidental navigation. All data is reset with 🔄 New Evaluation.",
+                step1Intro: "Fill in all fields before proceeding to scoring. This data appears in the final report and is stored in the IFA database.",
+                step1ThField: "Field",
+                step1ThDesc: "Description",
+                step1FieldEvaluator: "Evaluator Name",
+                step1DescEvaluator: "Your full name as the person conducting this evaluation",
+                step1FieldReferee: "Referee Name",
+                step1DescReferee: "Full name of the referee being evaluated",
+                step1FieldCountry: "Country Code",
+                step1DescCountry: "Three-letter code (e.g. GER, BRA, AUT)",
+                step1FieldDate: "Date",
+                step1DescDate: "Date of the match",
+                step1FieldTeams: "Home / Away Team",
+                step1DescTeams: "Names of both teams",
+                step1FieldContest: "Contest / Venue",
+                step1DescContest: "Competition or venue name (e.g. \"Men's World Championship 2026\")",
+                step1ValidationTip: "⚠️ All fields are required. The form will not let you proceed to Step 2 until every field is filled in.",
+                step1NavDots: "💡 The dots in the header bar show your current page. Tap any dot to jump directly to that page.",
+                step1Tip: "💡 Complete all fields accurately — they appear in the final report and cannot be changed after submission.",
+                step2Intro: "Each criterion starts at <strong>10 points</strong>. Deduct <strong>1 point per mistake</strong>. The minimum score is 1. Use the <strong>−</strong> and <strong>+</strong> buttons to adjust.",
+                step2hScoring: "Scoring Scale",
+                step2ThScore: "Score",
+                step2ThLabel: "Label",
+                step2ThMeaning: "Meaning",
+                step2ScoreEx: "9–10",
+                step2LabelEx: "Excellent",
+                step2MeanEx: "No or negligible errors",
+                step2ScoreGo: "7–8",
+                step2LabelGo: "Good",
+                step2MeanGo: "Minor, isolated errors",
+                step2ScoreIn: "5–6",
+                step2LabelIn: "Inconstant",
+                step2MeanIn: "Noticeable, recurring errors",
+                step2ScorePo: "3–4",
+                step2LabelPo: "Poor",
+                step2MeanPo: "Significant errors affecting the match",
+                step2ScoreCr: "1–2",
+                step2LabelCr: "Critical",
+                step2MeanCr: "Severe errors, unacceptable performance",
+                step2h6Crit: "The 6 Criteria",
+                crit1Name: "1. Rules",
+                crit1Desc: "Practical application of the rules during the match. Highest weight — any significant rule mistake carries major impact.",
+                crit2Name: "2. Leadership",
+                crit2Desc: "Penalties, disciplinary control, game control, communication with players & coaches, referee team management.",
+                crit3Name: "3. Technical Mgmt",
+                crit3Desc: "Start & end of match (jerseys, game report, signatures), scoreboards, technical interruptions, unexpected situations.",
+                crit4Name: "4. Demeanor",
+                crit4Desc: "Gestures, whistle volume and clarity, body language and presence on the court.",
+                crit5Name: "5. Positioning",
+                crit5Desc: "Rally & service positioning, net ball repositioning.",
+                crit6Name: "6. Call Quality",
+                crit6Desc: "Cognitive chain (observe → think → act), marginal calls due to suboptimal viewing angle.",
+                step2WarnRules: "⚠️ <strong>Rules (×4):</strong> A score below 8 automatically disqualifies the referee from IT1, regardless of the overall percentage.",
+                step2hNotes: "Notes & Voice Input",
+                step2NotesP1: "Each criterion has an optional <strong>Notes</strong> field — tap the toggle to expand. Notes are included in the exported report. Always add notes when deducting points.",
+                step2NotesP2: "<strong>Voice input 🎤:</strong> Tap the microphone button to start dictation, tap again to stop. Transcribed text is appended to the notes field. Requires microphone permission (Chrome, Edge, Safari).",
+                step2NotesTip: "💡 \"Missed fault call at 6:5 in set 2\" is more useful than \"missed calls\" — be specific.",
+                step3hDiff: "Match Difficulty Level",
+                step3DiffDesc: "Select Easy, Medium, or Hard to reflect the overall pressure and complexity of the match for the referee. This is set on the last page and appears in the final report.",
+                step3hCalc: "Score Calculation",
+                step3Formula: "Weighted sum = (Rules×4 + Leadership×3 + Technical×1 + Demeanor×3 + Positioning×1 + CallQuality×2)\nWeighted average = sum ÷ 14\nScore% = ((average − 1) ÷ 9) × 100",
+                step3hVerdict: "Verdict Conditions",
+                step3ThVerdict: "Verdict",
+                step3ThCond: "Conditions",
+                step3CondIT1: "Score ≥ 90% · No criterion below 6 · At most 1 criterion exactly at 6 · Rules score ≥ 8",
+                step3CondIT2: "Score ≥ 85% · No criterion below 6 · At most 1 criterion exactly at 6",
+                step3CondNQ: "Does not meet IT1 or IT2 requirements",
+                step3hExport: "Exporting",
+                step3ExportP1: "Before exporting, hold a <strong>brief feedback session with the referee</strong> — discuss observations, strengths, and deductions. Add any insights from that conversation to the <strong>Remarks</strong> field.",
+                step3ExportP2: "Tap <strong>✉ Submit</strong> to send the evaluation directly to the IFA office. The data is transmitted automatically — no further action needed.",
+                step3ExportWarn: "✅ The evaluation is submitted immediately when you tap Submit.",
+                tips1: "Evaluate in real time or immediately after the match — memory fades quickly.",
+                tips2: "Be specific in notes: \"missed fault call at 6:5 in set 2\" beats \"missed calls\".",
+                tips3: "Set the difficulty level on Step 3 (the last page) — use it honestly. A referee performing well in a Hard match should be rated accordingly.",
+                tips4: "Rules mistakes are weighted ×4 — a single critical error significantly impacts the final score.",
+                tips5: "A score of 6 on any criterion is a borderline pass — more than one such score blocks IT1 and IT2.",
+                tips6: "Voice input works best in a quiet environment — always review the transcription before saving.",
+                tips7: "After the match, hold a <strong>short feedback session with the referee</strong> before exporting and add observations to the Overall Remarks field.",
+                tips8: "Tap <strong>🔄 New Evaluation</strong> on the result screen to reset all fields for the next referee."
+            },
+
+            de: {
+                pageTitle: "IFA Schiedsrichterbewertung — Benutzerhandbuch",
+                headerTitle: "Benutzerhandbuch",
+                headerSub: "IFA Schiedsrichterbewertung",
+                badgeHelp: "Hilfe",
+                btnBack: "← Formular",
+                navOverview: "Übersicht",
+                navStep1: "Schritt 1",
+                navStep2: "Schritt 2",
+                navScoring: "Bewertung",
+                navCriteria: "Kriterien",
+                navResult: "Ergebnis",
+                navTips: "Tipps",
+                tocTitle: "Inhalt",
+                tocStep1: "Schritt 1 — Spielinfo",
+                tocStep2: "Schritt 2 — Bewertung",
+                tocScoringScale: "Bewertungsskala",
+                toc6Criteria: "Die 6 Kriterien",
+                tocNotes: "Notizen & Sprache",
+                tocResult: "Schritt 3 — Ergebnis",
+                tocVerdict: "Urteilsbedingungen",
+                tocExport: "Absenden",
+                tocTips: "Tipps & Best Practices",
+                secOverview: "Übersicht",
+                secStep1: "Schritt 1 — Spiel- & Schiedsrichterinfo",
+                secStep2: "Schritt 2 — Kriterienbewertung",
+                secResult: "Schritt 3 — Ergebnis & Export",
+                secTips: "Tipps & Best Practices",
+                overviewP1: "Das IFA-Schiedsrichterbewertungsformular ist eine mobile Web-App zur Bewertung von Faustball-Schiedsrichtern während Spielen. Gib Spieldetails ein, bewerte den Schiedsrichter anhand von 6 gewichteten Kriterien und übermittle das Ergebnis direkt an das IFA-Büro.",
+                overviewP2: "Das Formular ist in 5 Sprachen verfügbar (Englisch, Deutsch, Spanisch, Portugiesisch, Italienisch) — umschalten über die Schaltfläche oben rechts in der Kopfzeile.",
+                overviewTip: "💡 Das Formular speichert deinen Fortschritt automatisch — Daten bleiben bei Seitenneuladungen und versehentlicher Navigation erhalten. Alle Daten werden mit 🔄 Neue Bewertung zurückgesetzt.",
+                step1Intro: "Füll alle Felder aus, bevor du zur Bewertung fortfährst. Diese Daten erscheinen im Abschlussbericht und werden in der IFA-Datenbank gespeichert.",
+                step1ThField: "Feld",
+                step1ThDesc: "Beschreibung",
+                step1FieldEvaluator: "Name des Bewerters",
+                step1DescEvaluator: "Dein vollständiger Name als die Person, die diese Bewertung durchführt",
+                step1FieldReferee: "Name des Schiedsrichters",
+                step1DescReferee: "Vollständiger Name des zu bewertenden Schiedsrichters",
+                step1FieldCountry: "Ländercode",
+                step1DescCountry: "Dreistelliger Code (z. B. GER, BRA, AUT)",
+                step1FieldDate: "Datum",
+                step1DescDate: "Datum des Spiels",
+                step1FieldTeams: "Heim- / Auswärtsteam",
+                step1DescTeams: "Namen beider Mannschaften",
+                step1FieldContest: "Wettbewerb / Ort",
+                step1DescContest: "Name des Wettbewerbs oder Austragungsorts (z. B. \"Herren-Weltmeisterschaft 2026\")",
+                step1ValidationTip: "⚠️ Alle Felder sind Pflichtfelder. Das Formular lässt dich erst zu Schritt 2 weitergehen, wenn alle Felder ausgefüllt sind.",
+                step1NavDots: "💡 Die Punkte in der Kopfzeile zeigen deine aktuelle Seite an. Tippe auf einen Punkt, um direkt zu dieser Seite zu springen.",
+                step1Tip: "💡 Füll alle Felder sorgfältig aus — sie erscheinen im Abschlussbericht und können nach dem Absenden nicht mehr geändert werden.",
+                step2Intro: "Jedes Kriterium beginnt mit <strong>10 Punkten</strong>. Zieh <strong>1 Punkt pro Fehler</strong> ab. Der Mindestwert beträgt 1. Verwende die Schaltflächen <strong>−</strong> und <strong>+</strong> zur Anpassung.",
+                step2hScoring: "Bewertungsskala",
+                step2ThScore: "Punkte",
+                step2ThLabel: "Bezeichnung",
+                step2ThMeaning: "Bedeutung",
+                step2ScoreEx: "9–10",
+                step2LabelEx: "Ausgezeichnet",
+                step2MeanEx: "Keine oder vernachlässigbare Fehler",
+                step2ScoreGo: "7–8",
+                step2LabelGo: "Gut",
+                step2MeanGo: "Geringe, vereinzelte Fehler",
+                step2ScoreIn: "5–6",
+                step2LabelIn: "Inkonstant",
+                step2MeanIn: "Auffällige, wiederkehrende Fehler",
+                step2ScorePo: "3–4",
+                step2LabelPo: "Schwach",
+                step2MeanPo: "Erhebliche Fehler mit Auswirkungen auf das Spiel",
+                step2ScoreCr: "1–2",
+                step2LabelCr: "Kritisch",
+                step2MeanCr: "Schwerwiegende Fehler, inakzeptable Leistung",
+                step2h6Crit: "Die 6 Kriterien",
+                crit1Name: "1. Regeln",
+                crit1Desc: "Praktische Anwendung der Regeln während des Spiels. Höchste Gewichtung — jeder erhebliche Regelfehler hat großen Einfluss.",
+                crit2Name: "2. Spielleitung",
+                crit2Desc: "Strafen, Disziplinkontrolle, Spielkontrolle, Kommunikation mit Spielern & Trainern, Führung des Schiedsrichterteams.",
+                crit3Name: "3. Techn. Management",
+                crit3Desc: "Spielbeginn & -ende (Trikots, Spielbericht, Unterschriften), Anzeigetafeln, technische Unterbrechungen, unvorhergesehene Situationen.",
+                crit4Name: "4. Auftreten",
+                crit4Desc: "Gestik, Pfifflautstärke und -klarheit, Körpersprache und Präsenz auf dem Spielfeld.",
+                crit5Name: "5. Positionierung",
+                crit5Desc: "Positionierung im Wechsel & Aufschlag, Netzballneupositionierung.",
+                crit6Name: "6. Entscheidungsqualität",
+                crit6Desc: "Kognitive Kette (beobachten → denken → handeln), Grenzentscheidungen durch suboptimalen Blickwinkel.",
+                step2WarnRules: "⚠️ <strong>Regeln (×4):</strong> Ein Wert unter 8 disqualifiziert den Schiedsrichter automatisch für IT1, unabhängig vom Gesamtprozentsatz.",
+                step2hNotes: "Notizen & Spracheingabe",
+                step2NotesP1: "Jedes Kriterium verfügt über ein optionales <strong>Notizen</strong>-Feld — tippe auf den Schalter, um es zu erweitern. Notizen werden in den exportierten Bericht aufgenommen. Füge bei Punktabzügen stets Notizen hinzu.",
+                step2NotesP2: "<strong>Spracheingabe 🎤:</strong> Tippe auf die Mikrofontaste, um die Diktierfunktion zu starten, und erneut, um sie zu beenden. Der transkribierte Text wird dem Notizfeld hinzugefügt. Erfordert Mikrofonberechtigung (Chrome, Edge, Safari).",
+                step2NotesTip: "💡 \"Fehlende Fehlentscheidung bei 6:5 im 2. Satz\" ist aussagekräftiger als \"fehlende Entscheidungen\" — sei konkret.",
+                step3hDiff: "Spielschwierigkeit",
+                step3DiffDesc: "Wähle Leicht, Mittel oder Schwer, um den Gesamtdruck und die Komplexität des Spiels für den Schiedsrichter widerzuspiegeln. Wird auf der letzten Seite festgelegt und erscheint im Abschlussbericht.",
+                step3hCalc: "Berechnung des Ergebnisses",
+                step3Formula: "Gewichtete Summe = (Regeln×4 + Spielleitung×3 + Technik×1 + Auftreten×3 + Positionierung×1 + Entscheidungsqualität×2)\nGewichteter Durchschnitt = Summe ÷ 14\nErgebnis% = ((Durchschnitt − 1) ÷ 9) × 100",
+                step3hVerdict: "Urteilsbedingungen",
+                step3ThVerdict: "Urteil",
+                step3ThCond: "Bedingungen",
+                step3CondIT1: "Ergebnis ≥ 90% · Kein Kriterium unter 6 · Höchstens 1 Kriterium genau bei 6 · Regelwertung ≥ 8",
+                step3CondIT2: "Ergebnis ≥ 85% · Kein Kriterium unter 6 · Höchstens 1 Kriterium genau bei 6",
+                step3CondNQ: "Erfüllt weder IT1- noch IT2-Anforderungen",
+                step3hExport: "Exportieren",
+                step3ExportP1: "Führe vor dem Export eine <strong>kurze Rückmeldung mit dem Schiedsrichter</strong> durch — besprich Beobachtungen, Stärken und Abzüge. Füge Erkenntnisse aus diesem Gespräch in das Feld <strong>Bemerkungen</strong> ein.",
+                step3ExportP2: "Tippe auf <strong>✉ Absenden</strong>, um die Bewertung direkt an das IFA-Büro zu übermitteln. Die Daten werden automatisch übertragen — kein weiterer Schritt erforderlich.",
+                step3ExportWarn: "✅ Die Bewertung wird sofort übermittelt, wenn du auf Absenden tippst.",
+                tips1: "Bewerte in Echtzeit oder unmittelbar nach dem Spiel — Erinnerungen verblassen schnell.",
+                tips2: "Sei in den Notizen präzise: \"Fehlende Fehlentscheidung bei 6:5 im 2. Satz\" schlägt \"fehlende Entscheidungen\".",
+                tips3: "Lege den Schwierigkeitsgrad auf Schritt 3 (letzte Seite) fest — verwende ihn ehrlich. Ein Schiedsrichter, der in einem schweren Spiel gut abschneidet, sollte entsprechend bewertet werden.",
+                tips4: "Regelfehler werden mit ×4 gewichtet — ein einziger schwerwiegender Fehler wirkt sich erheblich auf das Endergebnis aus.",
+                tips5: "Ein Wert von 6 bei einem Kriterium ist eine Grenzbeurteilung — mehr als ein solcher Wert sperrt IT1 und IT2.",
+                tips6: "Die Spracheingabe funktioniert am besten in einer ruhigen Umgebung — überprüfe die Transkription stets vor dem Speichern.",
+                tips7: "Führe nach dem Spiel eine <strong>kurze Rückmeldung mit dem Schiedsrichter</strong> durch, bevor du exportierst, und füge Beobachtungen in das Feld \u201EAllgemeine Bemerkungen\u201C ein.",
+    tips8: "Tippe auf dem Ergebnisbildschirm auf <strong>🔄 Neue Bewertung</strong>, um alle Felder für den nächsten Schiedsrichter zurückzusetzen."
+  },
+
+            es: {
+                pageTitle: "Evaluación de Árbitros IFA — Manual de usuario",
+                headerTitle: "Manual de usuario",
+                headerSub: "Evaluación de Árbitros IFA",
+                badgeHelp: "Ayuda",
+                btnBack: "← Formulario",
+                navOverview: "Resumen",
+                navStep1: "Paso 1",
+                navStep2: "Paso 2",
+                navScoring: "Puntuación",
+                navCriteria: "Criterios",
+                navResult: "Resultado",
+                navTips: "Consejos",
+                tocTitle: "Contenido",
+                tocStep1: "Paso 1 — Info del partido",
+                tocStep2: "Paso 2 — Puntuación",
+                tocScoringScale: "Escala de puntuación",
+                toc6Criteria: "Los 6 criterios",
+                tocNotes: "Notas y voz",
+                tocResult: "Paso 3 — Resultado",
+                tocVerdict: "Condiciones del veredicto",
+                tocExport: "Enviar",
+                tocTips: "Consejos y buenas prácticas",
+                secOverview: "Resumen",
+                secStep1: "Paso 1 — Info del partido y árbitro",
+                secStep2: "Paso 2 — Puntuación de criterios",
+                secResult: "Paso 3 — Resultado y exportación",
+                secTips: "Consejos y buenas prácticas",
+                overviewP1: "El formulario de evaluación de árbitros de la IFA es una aplicación web optimizada para móvil que permite evaluar a los árbitros de fistball durante los partidos. Introduce los datos del partido, puntúa al árbitro en 6 criterios ponderados y envía el resultado directamente a la oficina de la IFA.",
+                overviewP2: "El formulario está disponible en 5 idiomas (inglés, alemán, español, portugués, italiano) — cambia con el botón en la esquina superior derecha del encabezado.",
+                overviewTip: "💡 El formulario guarda tu progreso automáticamente — los datos persisten al recargar la página o navegar accidentalmente. Todos los datos se restablecen con 🔄 Nueva evaluación.",
+                step1Intro: "Completa todos los campos antes de pasar a la puntuación. Estos datos aparecen en el informe final y se almacenan en la base de datos de la IFA.",
+                step1ThField: "Campo",
+                step1ThDesc: "Descripción",
+                step1FieldEvaluator: "Nombre del evaluador",
+                step1DescEvaluator: "Tu nombre completo como persona que realiza esta evaluación",
+                step1FieldReferee: "Nombre del árbitro",
+                step1DescReferee: "Nombre completo del árbitro evaluado",
+                step1FieldCountry: "Código de país",
+                step1DescCountry: "Código de tres letras (p. ej. GER, BRA, AUT)",
+                step1FieldDate: "Fecha",
+                step1DescDate: "Fecha del partido",
+                step1FieldTeams: "Equipo local / visitante",
+                step1DescTeams: "Nombres de ambos equipos",
+                step1FieldContest: "Competición / Sede",
+                step1DescContest: "Nombre de la competición o sede (p. ej. \"Campeonato Mundial Masculino 2026\")",
+                step1ValidationTip: "⚠️ Todos los campos son obligatorios. El formulario no te permitirá pasar al Paso 2 hasta que todos los campos estén completados.",
+                step1NavDots: "💡 Los puntos en la barra de encabezado muestran tu página actual. Toca cualquier punto para saltar directamente a esa página.",
+                step1Tip: "💡 Completa todos los campos con precisión — aparecen en el informe final y no pueden modificarse tras el envío.",
+                step2Intro: "Cada criterio comienza con <strong>10 puntos</strong>. Deduce <strong>1 punto por error</strong>. La puntuación mínima es 1. Usa los botones <strong>−</strong> y <strong>+</strong> para ajustar.",
+                step2hScoring: "Escala de puntuación",
+                step2ThScore: "Puntuación",
+                step2ThLabel: "Etiqueta",
+                step2ThMeaning: "Significado",
+                step2ScoreEx: "9–10",
+                step2LabelEx: "Excelente",
+                step2MeanEx: "Sin errores o errores despreciables",
+                step2ScoreGo: "7–8",
+                step2LabelGo: "Bien",
+                step2MeanGo: "Errores menores y aislados",
+                step2ScoreIn: "5–6",
+                step2LabelIn: "Inconstante",
+                step2MeanIn: "Errores notables y recurrentes",
+                step2ScorePo: "3–4",
+                step2LabelPo: "Deficiente",
+                step2MeanPo: "Errores significativos que afectan al partido",
+                step2ScoreCr: "1–2",
+                step2LabelCr: "Crítico",
+                step2MeanCr: "Errores graves, rendimiento inaceptable",
+                step2h6Crit: "Los 6 criterios",
+                crit1Name: "1. Reglas",
+                crit1Desc: "Aplicación práctica de las reglas durante el partido. Mayor ponderación — cualquier error significativo de reglamento tiene gran impacto.",
+                crit2Name: "2. Liderazgo",
+                crit2Desc: "Sanciones, control disciplinario, control del juego, comunicación con jugadores y entrenadores, gestión del equipo arbitral.",
+                crit3Name: "3. Gestión técnica",
+                crit3Desc: "Inicio y final del partido (camisetas, acta, firmas), marcadores, interrupciones técnicas, situaciones imprevistas.",
+                crit4Name: "4. Conducta",
+                crit4Desc: "Gestos, volumen y claridad del silbato, lenguaje corporal y presencia en la cancha.",
+                crit5Name: "5. Posicionamiento",
+                crit5Desc: "Posición en rally y saque, reposicionamiento en pelotas de red.",
+                crit6Name: "6. Calidad de Decisión",
+                crit6Desc: "Cadena cognitiva (observar → pensar → actuar), decisiones límite por ángulo de visión subóptimo.",
+                step2WarnRules: "⚠️ <strong>Reglas (×4):</strong> Una puntuación inferior a 8 descalifica automáticamente al árbitro para IT1, independientemente del porcentaje global.",
+                step2hNotes: "Notas e introducción por voz",
+                step2NotesP1: "Cada criterio tiene un campo opcional de <strong>Notas</strong> — toca el interruptor para expandirlo. Las notas se incluyen en el informe exportado. Añade siempre notas cuando deduzcas puntos.",
+                step2NotesP2: "<strong>Entrada de voz 🎤:</strong> Toca el botón del micrófono para iniciar el dictado y tócalo de nuevo para detenerlo. El texto transcrito se añade al campo de notas. Requiere permiso de micrófono (Chrome, Edge, Safari).",
+                step2NotesTip: "💡 \"Error en la llamada de falta en 6:5 del set 2\" es más útil que \"errores en llamadas\" — sea específico.",
+                step3hDiff: "Nivel de dificultad del partido",
+                step3DiffDesc: "Selecciona Fácil, Media o Difícil para reflejar la presión y complejidad general del partido para el árbitro. Se establece en la última página y aparece en el informe final.",
+                step3hCalc: "Cálculo de la puntuación",
+                step3Formula: "Suma ponderada = (Reglas×4 + Liderazgo×3 + Técnica×1 + Conducta×3 + Posicionamiento×1 + CalidadDecisión×2)\nMedia ponderada = suma ÷ 14\nPuntuación% = ((media − 1) ÷ 9) × 100",
+                step3hVerdict: "Condiciones del veredicto",
+                step3ThVerdict: "Veredicto",
+                step3ThCond: "Condiciones",
+                step3CondIT1: "Puntuación ≥ 90% · Ningún criterio por debajo de 6 · Como máximo 1 criterio exactamente en 6 · Puntuación de Reglas ≥ 8",
+                step3CondIT2: "Puntuación ≥ 85% · Ningún criterio por debajo de 6 · Como máximo 1 criterio exactamente en 6",
+                step3CondNQ: "No cumple los requisitos de IT1 ni IT2",
+                step3hExport: "Exportar",
+                step3ExportP1: "Antes de exportar, mantén una <strong>breve sesión de retroalimentación con el árbitro</strong> — comenta observaciones, puntos fuertes y deducciones. Añade las conclusiones de esa conversación en el campo <strong>Observaciones</strong>.",
+                step3ExportP2: "Toca <strong>✉ Enviar</strong> para transmitir la evaluación directamente a la oficina de la IFA. Los datos se envían automáticamente — no se requiere ninguna acción adicional.",
+                step3ExportWarn: "✅ La evaluación se envía inmediatamente al tocar Enviar.",
+                tips1: "Evalúa en tiempo real o inmediatamente después del partido — la memoria se desvanece rápidamente.",
+                tips2: "Sé específico en las notas: \"error en la llamada de falta en 6:5 del set 2\" supera a \"errores en llamadas\".",
+                tips3: "Establece el nivel de dificultad en el Paso 3 (última página) — úsalo con honestidad. Un árbitro que rinde bien en un partido difícil debe ser calificado en consecuencia.",
+                tips4: "Los errores de reglamento se ponderan ×4 — un único error crítico afecta significativamente la puntuación final.",
+                tips5: "Una puntuación de 6 en cualquier criterio es un aprobado justo — más de una bloquea IT1 e IT2.",
+                tips6: "La entrada de voz funciona mejor en un entorno tranquilo — revisa siempre la transcripción antes de guardar.",
+                tips7: "Tras el partido, celebra una <strong>breve sesión de retroalimentación con el árbitro</strong> antes de exportar y añade las observaciones al campo Observaciones generales.",
+                tips8: "Toca <strong>🔄 Nueva evaluación</strong> en la pantalla de resultados para restablecer todos los campos para el siguiente árbitro."
+            },
+
+            pt: {
+                pageTitle: "Avaliação de Árbitros IFA — Manual do utilizador",
+                headerTitle: "Manual do utilizador",
+                headerSub: "Avaliação de Árbitros IFA",
+                badgeHelp: "Ajuda",
+                btnBack: "← Formulário",
+                navOverview: "Visão geral",
+                navStep1: "Passo 1",
+                navStep2: "Passo 2",
+                navScoring: "Pontuação",
+                navCriteria: "Critérios",
+                navResult: "Resultado",
+                navTips: "Dicas",
+                tocTitle: "Conteúdo",
+                tocStep1: "Passo 1 — Info da partida",
+                tocStep2: "Passo 2 — Pontuação",
+                tocScoringScale: "Escala de pontuação",
+                toc6Criteria: "Os 6 critérios",
+                tocNotes: "Notas e voz",
+                tocResult: "Passo 3 — Resultado",
+                tocVerdict: "Condições do veredicto",
+                tocExport: "Enviar",
+                tocTips: "Dicas e boas práticas",
+                secOverview: "Visão geral",
+                secStep1: "Passo 1 — Info da partida e árbitro",
+                secStep2: "Passo 2 — Pontuação de critérios",
+                secResult: "Passo 3 — Resultado e exportação",
+                secTips: "Dicas e boas práticas",
+                overviewP1: "O formulário de avaliação de árbitros da IFA é uma aplicação web optimizada para mobile para avaliar árbitros de fistball durante partidas. Preenche os detalhes da partida, pontua o árbitro em 6 critérios ponderados e envia o resultado directamente para o escritório da IFA.",
+                overviewP2: "O formulário funciona em 5 idiomas (inglês, alemão, espanhol, português, italiano) — alterne no canto superior direito do cabeçalho.",
+                overviewTip: "💡 O formulário guarda o teu progresso automaticamente — os dados persistem ao recarregar a página ou navegar acidentalmente. Todos os dados são redefinidos com 🔄 Nova Avaliação.",
+                step1Intro: "Preenche todos os campos antes de prosseguir para a pontuação. Estes dados aparecem no relatório final e são armazenados na base de dados da IFA.",
+                step1ThField: "Campo",
+                step1ThDesc: "Descrição",
+                step1FieldEvaluator: "Nome do avaliador",
+                step1DescEvaluator: "O teu nome completo como pessoa que realizas esta avaliação",
+                step1FieldReferee: "Nome do árbitro",
+                step1DescReferee: "Nome completo do árbitro avaliado",
+                step1FieldCountry: "Código de país",
+                step1DescCountry: "Código de três letras (ex.: GER, BRA, AUT)",
+                step1FieldDate: "Data",
+                step1DescDate: "Data da partida",
+                step1FieldTeams: "Equipa casa / visitante",
+                step1DescTeams: "Nomes das duas equipas",
+                step1FieldContest: "Competição / Local",
+                step1DescContest: "Nome da competição ou local (ex.: \"Campeonato Mundial Masculino 2026\")",
+                step1ValidationTip: "⚠️ Todos os campos são obrigatórios. O formulário não te permitirá avançar para o Passo 2 até que todos os campos estejam preenchidos.",
+                step1NavDots: "💡 Os pontos na barra de cabeçalho mostram a tua página actual. Toca em qualquer ponto para saltar directamente para essa página.",
+                step1Tip: "💡 Preenche todos os campos com precisão — aparecem no relatório final e não podem ser alterados após o envio.",
+                step2Intro: "Cada critério começa com <strong>10 pontos</strong>. Deduz <strong>1 ponto por erro</strong>. A pontuação mínima é 1. Usa os botões <strong>−</strong> e <strong>+</strong> para ajustar.",
+                step2hScoring: "Escala de pontuação",
+                step2ThScore: "Pontuação",
+                step2ThLabel: "Etiqueta",
+                step2ThMeaning: "Significado",
+                step2ScoreEx: "9–10",
+                step2LabelEx: "Excelente",
+                step2MeanEx: "Sem erros ou erros negligenciáveis",
+                step2ScoreGo: "7–8",
+                step2LabelGo: "Bom",
+                step2MeanGo: "Erros menores e isolados",
+                step2ScoreIn: "5–6",
+                step2LabelIn: "Inconstante",
+                step2MeanIn: "Erros notáveis e recorrentes",
+                step2ScorePo: "3–4",
+                step2LabelPo: "Fraco",
+                step2MeanPo: "Erros significativos que afectam a partida",
+                step2ScoreCr: "1–2",
+                step2LabelCr: "Crítico",
+                step2MeanCr: "Erros graves, desempenho inaceitável",
+                step2h6Crit: "Os 6 critérios",
+                crit1Name: "1. Regras",
+                crit1Desc: "Aplicação prática das regras durante a partida. Maior peso — qualquer erro significativo de regulamento tem grande impacto.",
+                crit2Name: "2. Liderança",
+                crit2Desc: "Penalidades, controlo disciplinar, controlo do jogo, comunicação com jogadores e treinadores, gestão da equipa de arbitragem.",
+                crit3Name: "3. Gestão técnica",
+                crit3Desc: "Início e fim da partida (equipamentos, relatório do jogo, assinaturas), marcadores, interrupções técnicas, situações imprevistas.",
+                crit4Name: "4. Postura",
+                crit4Desc: "Gestos, volume e clareza do apito, linguagem corporal e presença no campo.",
+                crit5Name: "5. Posicionamento",
+                crit5Desc: "Posicionamento no rally e saque, reposicionamento em bolas de rede.",
+                crit6Name: "6. Qualidade de Decisão",
+                crit6Desc: "Cadeia cognitiva (observar → pensar → agir), chamadas marginais por ângulo de visão subótimo.",
+                step2WarnRules: "⚠️ <strong>Regras (×4):</strong> Uma pontuação inferior a 8 desclassifica automaticamente o árbitro para IT1, independentemente da percentagem global.",
+                step2hNotes: "Notas e entrada por voz",
+                step2NotesP1: "Cada critério tem um campo opcional de <strong>Notas</strong> — toca no botão para expandir. As notas são incluídas no relatório exportado. Adiciona sempre notas quando deduzires pontos.",
+                step2NotesP2: "<strong>Entrada de voz 🎤:</strong> Toca no botão do microfone para iniciar o ditado e toca novamente para parar. O texto transcrito é adicionado ao campo de notas. Requer permissão de microfone (Chrome, Edge, Safari).",
+                step2NotesTip: "💡 \"Erro de chamada de falta no 6:5 do set 2\" é mais útil do que \"chamadas em falta\" — sê específico.",
+                step3hDiff: "Nível de dificuldade da partida",
+                step3DiffDesc: "Selecciona Fácil, Médio ou Difícil para reflectir a pressão e complexidade geral da partida para o árbitro. É definido na última página e aparece no relatório final.",
+                step3hCalc: "Cálculo da pontuação",
+                step3Formula: "Soma ponderada = (Regras×4 + Liderança×3 + Técnica×1 + Postura×3 + Posicionamento×1 + QualidadeDecisão×2)\nMédia ponderada = soma ÷ 14\nPontuação% = ((média − 1) ÷ 9) × 100",
+                step3hVerdict: "Condições do veredicto",
+                step3ThVerdict: "Veredicto",
+                step3ThCond: "Condições",
+                step3CondIT1: "Pontuação ≥ 90% · Nenhum critério abaixo de 6 · No máximo 1 critério exactamente em 6 · Pontuação de Regras ≥ 8",
+                step3CondIT2: "Pontuação ≥ 85% · Nenhum critério abaixo de 6 · No máximo 1 critério exactamente em 6",
+                step3CondNQ: "Não cumpre os requisitos de IT1 ou IT2",
+                step3hExport: "Exportar",
+                step3ExportP1: "Antes de exportar, realiza uma <strong>breve sessão de feedback com o árbitro</strong> — discute observações, pontos fortes e deduções. Adiciona as conclusões dessa conversa ao campo <strong>Observações</strong>.",
+                step3ExportP2: "Toca em <strong>✉ Enviar</strong> para transmitir a avaliação diretamente para o escritório da IFA. Os dados são enviados automaticamente — nenhuma ação adicional necessária.",
+                step3ExportWarn: "✅ A avaliação é submetida imediatamente ao tocar em Enviar.",
+                tips1: "Avalia em tempo real ou imediatamente após a partida — a memória esvai-se rapidamente.",
+                tips2: "Sê específico nas notas: \"erro de chamada de falta no 6:5 do set 2\" supera \"chamadas em falta\".",
+                tips3: "Define o nível de dificuldade no Passo 3 (última página) — usa-o com honestidade. Um árbitro com bom desempenho numa partida difícil deve ser avaliado em conformidade.",
+                tips4: "Os erros de regras têm peso ×4 — um único erro crítico impacta significativamente a pontuação final.",
+                tips5: "Uma pontuação de 6 em qualquer critério é um aprovado limite — mais do que um bloqueia IT1 e IT2.",
+                tips6: "A entrada de voz funciona melhor num ambiente silencioso — revê sempre a transcrição antes de guardar.",
+                tips7: "Após a partida, realiza uma <strong>breve sessão de feedback com o árbitro</strong> antes de exportar e adiciona as observações ao campo Observações gerais.",
+                tips8: "Toca em <strong>🔄 Nova Avaliação</strong> na tela de resultados para redefinir todos os campos para o próximo árbitro."
+            },
+
+            it: {
+                pageTitle: "Valutazione Arbitri IFA — Manuale utente",
+                headerTitle: "Manuale utente",
+                headerSub: "Valutazione Arbitri IFA",
+                badgeHelp: "Guida",
+                btnBack: "← Modulo",
+                navOverview: "Panoramica",
+                navStep1: "Passo 1",
+                navStep2: "Passo 2",
+                navScoring: "Punteggio",
+                navCriteria: "Criteri",
+                navResult: "Risultato",
+                navTips: "Consigli",
+                tocTitle: "Contenuto",
+                tocStep1: "Passo 1 — Info partita",
+                tocStep2: "Passo 2 — Punteggio",
+                tocScoringScale: "Scala di punteggio",
+                toc6Criteria: "I 6 criteri",
+                tocNotes: "Note e voce",
+                tocResult: "Passo 3 — Risultato",
+                tocVerdict: "Condizioni del verdetto",
+                tocExport: "Invio",
+                tocTips: "Consigli e buone pratiche",
+                secOverview: "Panoramica",
+                secStep1: "Passo 1 — Info partita e arbitro",
+                secStep2: "Passo 2 — Valutazione dei criteri",
+                secResult: "Passo 3 — Risultato ed esportazione",
+                secTips: "Consigli e buone pratiche",
+                overviewP1: "Il modulo di valutazione degli arbitri IFA è un'applicazione web ottimizzata per mobile per valutare gli arbitri di fistball durante le partite. Inserisci i dettagli della partita, valuta l'arbitro su 6 criteri ponderati e invia il risultato direttamente all'ufficio IFA.",
+                overviewP2: "Il modulo è disponibile in 5 lingue (inglese, tedesco, spagnolo, portoghese, italiano) — cambia nell'angolo in alto a destra dell'intestazione.",
+                overviewTip: "💡 Il modulo salva automaticamente i tuoi progressi — i dati persistono al ricaricamento della pagina o alla navigazione accidentale. Tutti i dati vengono azzerati con 🔄 Nuova valutazione.",
+                step1Intro: "Compila tutti i campi prima di procedere alla valutazione. Questi dati compaiono nel report finale e vengono archiviati nel database IFA.",
+                step1ThField: "Campo",
+                step1ThDesc: "Descrizione",
+                step1FieldEvaluator: "Nome del valutatore",
+                step1DescEvaluator: "Il tuo nome completo come persona che conduce questa valutazione",
+                step1FieldReferee: "Nome dell'arbitro",
+                step1DescReferee: "Nome completo dell'arbitro valutato",
+                step1FieldCountry: "Codice paese",
+                step1DescCountry: "Codice di tre lettere (es. GER, BRA, AUT)",
+                step1FieldDate: "Data",
+                step1DescDate: "Data della partita",
+                step1FieldTeams: "Squadra casa / ospite",
+                step1DescTeams: "Nomi di entrambe le squadre",
+                step1FieldContest: "Competizione / Sede",
+                step1DescContest: "Nome della competizione o della sede (es. \"Campionato Mondiale Maschile 2026\")",
+                step1ValidationTip: "⚠️ Tutti i campi sono obbligatori. Il modulo non ti permetterà di procedere al Passo 2 finché tutti i campi non sono compilati.",
+                step1NavDots: "💡 I punti nella barra dell'intestazione mostrano la tua pagina corrente. Tocca qualsiasi punto per passare direttamente a quella pagina.",
+                step1Tip: "💡 Compila tutti i campi con precisione — compaiono nel report finale e non possono essere modificati dopo l'invio.",
+                step2Intro: "Ogni criterio parte da <strong>10 punti</strong>. Deduci <strong>1 punto per errore</strong>. Il punteggio minimo è 1. Usa i pulsanti <strong>−</strong> e <strong>+</strong> per regolare.",
+                step2hScoring: "Scala di punteggio",
+                step2ThScore: "Punteggio",
+                step2ThLabel: "Etichetta",
+                step2ThMeaning: "Significato",
+                step2ScoreEx: "9–10",
+                step2LabelEx: "Eccellente",
+                step2MeanEx: "Nessun errore o errori trascurabili",
+                step2ScoreGo: "7–8",
+                step2LabelGo: "Buono",
+                step2MeanGo: "Errori minori e isolati",
+                step2ScoreIn: "5–6",
+                step2LabelIn: "Incostante",
+                step2MeanIn: "Errori evidenti e ricorrenti",
+                step2ScorePo: "3–4",
+                step2LabelPo: "Scarso",
+                step2MeanPo: "Errori significativi che influenzano la partita",
+                step2ScoreCr: "1–2",
+                step2LabelCr: "Critico",
+                step2MeanCr: "Errori gravi, prestazione inaccettabile",
+                step2h6Crit: "I 6 criteri",
+                crit1Name: "1. Regole",
+                crit1Desc: "Applicazione pratica delle regole durante la partita. Peso massimo — qualsiasi errore significativo di regolamento ha grande impatto.",
+                crit2Name: "2. Direzione di gara",
+                crit2Desc: "Sanzioni, controllo disciplinare, controllo del gioco, comunicazione con giocatori e allenatori, gestione del team arbitrale.",
+                crit3Name: "3. Gestione tecnica",
+                crit3Desc: "Inizio e fine partita (maglie, referto, firme), tabelloni segnapunti, interruzioni tecniche, situazioni impreviste.",
+                crit4Name: "4. Comportamento",
+                crit4Desc: "Gesti, volume e chiarezza del fischio, linguaggio del corpo e presenza in campo.",
+                crit5Name: "5. Posizionamento",
+                crit5Desc: "Posizionamento in gioco e al servizio, riposizionamento sulle palle di rete.",
+                crit6Name: "6. Qualità delle Decisioni",
+                crit6Desc: "Catena cognitiva (osservare → pensare → agire), decisioni limite per angolo di visione subottimale.",
+                step2WarnRules: "⚠️ <strong>Regole (×4):</strong> Un punteggio inferiore a 8 squalifica automaticamente l'arbitro per IT1, indipendentemente dalla percentuale complessiva.",
+                step2hNotes: "Note e inserimento vocale",
+                step2NotesP1: "Ogni criterio dispone di un campo <strong>Note</strong> opzionale — tocca il pulsante per espanderlo. Le note sono incluse nel report esportato. Aggiungi sempre note quando deduci punti.",
+                step2NotesP2: "<strong>Inserimento vocale 🎤:</strong> Tocca il pulsante del microfono per avviare la dettatura e toccalo di nuovo per fermarla. Il testo trascritto viene aggiunto al campo note. Richiede il permesso del microfono (Chrome, Edge, Safari).",
+                step2NotesTip: "💡 \"Mancata chiamata di fallo sul 6:5 nel set 2\" è più utile di \"chiamate mancate\" — sii specifico.",
+                step3hDiff: "Livello di difficoltà della partita",
+                step3DiffDesc: "Seleziona Facile, Media o Difficile per riflettere la pressione e la complessità generale della partita per l'arbitro. Viene impostato nell'ultima pagina e compare nel report finale.",
+                step3hCalc: "Calcolo del punteggio",
+                step3Formula: "Somma ponderata = (Regole×4 + Direzione×3 + Tecnica×1 + Comportamento×3 + Posizionamento×1 + QualitàDecisioni×2)\nMedia ponderata = somma ÷ 14\nPunteggio% = ((media − 1) ÷ 9) × 100",
+                step3hVerdict: "Condizioni del verdetto",
+                step3ThVerdict: "Verdetto",
+                step3ThCond: "Condizioni",
+                step3CondIT1: "Punteggio ≥ 90% · Nessun criterio sotto 6 · Al massimo 1 criterio esattamente a 6 · Punteggio Regole ≥ 8",
+                step3CondIT2: "Punteggio ≥ 85% · Nessun criterio sotto 6 · Al massimo 1 criterio esattamente a 6",
+                step3CondNQ: "Non soddisfa i requisiti IT1 o IT2",
+                step3hExport: "Esportazione",
+                step3ExportP1: "Prima di esportare, tieni una <strong>breve sessione di feedback con l'arbitro</strong> — discuti osservazioni, punti di forza e deduzioni. Aggiungi le considerazioni emerse da quella conversazione nel campo <strong>Osservazioni</strong>.",
+                step3ExportP2: "Tocca <strong>✉ Invia</strong> per trasmettere la valutazione direttamente all'ufficio IFA. I dati vengono inviati automaticamente — non è necessaria alcuna azione aggiuntiva.",
+                step3ExportWarn: "✅ La valutazione viene inoltrata immediatamente toccando Invia.",
+                tips1: "Valuta in tempo reale o immediatamente dopo la partita — la memoria sfuma rapidamente.",
+                tips2: "Sii specifico nelle note: \"mancata chiamata di fallo sul 6:5 nel set 2\" supera \"chiamate mancate\".",
+                tips3: "Imposta il livello di difficoltà al Passo 3 (ultima pagina) — usalo in modo onesto. Un arbitro che si comporta bene in una partita difficile va valutato di conseguenza.",
+                tips4: "Gli errori sulle regole hanno peso ×4 — un singolo errore critico incide significativamente sul punteggio finale.",
+                tips5: "Un punteggio di 6 su qualsiasi criterio è una sufficienza limite — più di uno blocca IT1 e IT2.",
+                tips6: "L'inserimento vocale funziona meglio in un ambiente silenzioso — controlla sempre la trascrizione prima di salvare.",
+                tips7: "Dopo la partita, tieni una <strong>breve sessione di feedback con l'arbitro</strong> prima di esportare e aggiungi le osservazioni nel campo Osservazioni generali.",
+                tips8: "Tocca <strong>🔄 Nuova valutazione</strong> nella schermata dei risultati per azzerare tutti i campi per il prossimo arbitro."
+            }
+        };
+
+        let currentLang = localStorage.getItem('ifa-lang') || 'en';
+
+        function th(key) {
+            const lang = HELP_T[currentLang] || HELP_T.en;
+            return lang[key] !== undefined ? lang[key] : (HELP_T.en[key] || key);
+        }
+
+        function applyTranslations() {
+            const lang = HELP_T[currentLang] || HELP_T.en;
+            document.title = th('pageTitle');
+            document.documentElement.lang = currentLang;
+
+            // textContent elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                el.textContent = th(el.dataset.i18n);
+            });
+
+            // innerHTML elements (contain <strong> etc)
+            document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                el.innerHTML = th(el.dataset.i18nHtml);
+            });
+
+            // Formula box (newlines → <br>)
+            const fb = document.getElementById('formulaBox');
+            if (fb) fb.innerHTML = th('step3Formula').replace(/\n/g, '<br>');
+
+            // Tips list
+            const tl = document.getElementById('tipsList');
+            if (tl) {
+                tl.innerHTML = ['tips1', 'tips2', 'tips3', 'tips4', 'tips5', 'tips6', 'tips7', 'tips8']
+                    .map(k => `<li>${th(k)}</li>`).join('');
+            }
+        }
+
+        function setHelpLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('ifa-lang', lang);
+            applyTranslations();
+        }
+
+        function toggle(btn) {
+            const body = btn.nextElementSibling;
+            const open = body.classList.contains('open');
+            body.classList.toggle('open', !open);
+            btn.setAttribute('aria-expanded', String(!open));
+        }
+
+        function toggleDark() {
+            const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', dark ? '' : 'dark');
+            document.getElementById('darkBtn').textContent = dark ? '\u{1F319}' : '\u2600\uFE0F';
+            localStorage.setItem('ifa-theme', dark ? 'light' : 'dark');
+        }
+
+        // Init
+        if (localStorage.getItem('ifa-theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('darkBtn').textContent = '\u2600\uFE0F';
+        }
+        document.getElementById('langSelect').value = currentLang;
+        applyTranslations();
+
+        // Expand section when nav link is clicked, then scroll to it
+        document.querySelectorAll('.mobile-nav a, .toc-list a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.getAttribute('href').slice(1);
+                const anchor = document.getElementById(id);
+                if (!anchor) return;
+
+                // Find which section to expand
+                let section = anchor.nextElementSibling; // top-level: <section> is right after anchor
+                if (!section || section.tagName !== 'SECTION') {
+                    section = anchor.closest('section'); // sub-anchor inside a sec-body
+                }
+                if (section) {
+                    const btn = section.querySelector('.sec-toggle');
+                    if (btn && btn.getAttribute('aria-expanded') === 'false') toggle(btn);
+                }
+
+                // Scroll after expansion so height is correct
+                requestAnimationFrame(() => {
+                    const headerH = document.querySelector('.header').offsetHeight;
+                    const mobileNavH = document.querySelector('.mobile-nav').offsetHeight || 0;
+                    const offset = headerH + mobileNavH + 8;
+                    const top = anchor.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                });
+            });
+        });
+
+        // Highlight active TOC link on scroll
+        const anchors = document.querySelectorAll('.section-anchor');
+        const tocLinks = document.querySelectorAll('.toc-list a, .mobile-nav a');
+        function onScroll() {
+            let current = '';
+            anchors.forEach(a => { if (window.scrollY >= a.offsetTop - 100) current = a.id; });
+            tocLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+    </script>
+</body>
+
+</html>
