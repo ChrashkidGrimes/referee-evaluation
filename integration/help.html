@@ -677,6 +677,7 @@
     <nav class="mobile-nav" id="mobileNav">
         <a href="#overview" class="active" data-i18n="navOverview">Overview</a>
         <a href="#step1" data-i18n="navStep1">Step 1</a>
+        <a href="#checklist" data-i18n="navChecklist">Checklist</a>
         <a href="#step2" data-i18n="navStep2">Step 2</a>
         <a href="#scoring" data-i18n="navScoring">Scoring</a>
         <a href="#criteria" data-i18n="navCriteria">Criteria</a>
@@ -692,7 +693,8 @@
             <ul class="toc-list">
                 <li><a href="#overview" data-i18n="navOverview">Overview</a></li>
                 <li><a href="#step1" data-i18n="tocStep1">Step 1 &#8212; Match Info</a></li>
-                <li><a href="#step2" data-i18n="tocStep2">Step 2 &#8212; Scoring</a></li>
+                <li><a href="#checklist" data-i18n="tocChecklist">Step 2 &#8212; Checklist</a></li>
+                <li><a href="#step2" data-i18n="tocStep2">Step 3 &#8212; Scoring</a></li>
                 <li><a href="#scoring" class="toc-sub" data-i18n="tocScoringScale">Scoring Scale</a></li>
                 <li><a href="#criteria" class="toc-sub" data-i18n="toc6Criteria">The 6 Criteria</a></li>
                 <li><a href="#notes" class="toc-sub" data-i18n="tocNotes">Notes &amp; Voice</a></li>
@@ -762,6 +764,10 @@
                                 <td class="field-name" data-i18n="step1FieldContest">Contest / Venue</td>
                                 <td data-i18n="step1DescContest"></td>
                             </tr>
+                            <tr>
+                                <td class="field-name" data-i18n="step1FieldEvalLevel">Evaluation Level</td>
+                                <td data-i18n="step1DescEvalLevel"></td>
+                            </tr>
                         </tbody>
                     </table>
                     <div class="tip" data-i18n="step1ValidationTip"></div>
@@ -770,11 +776,44 @@
                 </div>
             </section>
 
-            <span class="section-anchor" id="step2"></span>
+            <span class="section-anchor" id="checklist"></span>
             <section>
                 <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
                     <div class="sec-num">2</div>
-                    <div class="sec-label" data-i18n="secStep2">Step 2 &#8212; Criteria Scoring</div>
+                    <div class="sec-label" data-i18n="secChecklist">Step 2 &#8212; Pre/Post-Match Checklist (National)</div>
+                    <div class="sec-chevron">&#9662;</div>
+                </button>
+                <div class="sec-body">
+                    <p data-i18n="checklistIntro"></p>
+                    <h2 data-i18n="checklistCard1">Personal Equipment</h2>
+                    <ul style="font-size:14px;line-height:2;padding-left:18px;margin-bottom:12px;">
+                        <li data-i18n="clH_equip_clothing"></li>
+                        <li data-i18n="clH_equip_whistle"></li>
+                    </ul>
+                    <h2 data-i18n="checklistCard2">Pre-Match Controls</h2>
+                    <ul style="font-size:14px;line-height:2;padding-left:18px;margin-bottom:12px;">
+                        <li data-i18n="clH_ctrl_field"></li>
+                        <li data-i18n="clH_ctrl_clothing"></li>
+                        <li data-i18n="clH_ctrl_balls"></li>
+                        <li data-i18n="clH_ctrl_briefing"></li>
+                        <li data-i18n="clH_ctrl_form"></li>
+                        <li data-i18n="clH_ctrl_eligibility"></li>
+                    </ul>
+                    <h2 data-i18n="checklistCard3">Post-Match Administration</h2>
+                    <ul style="font-size:14px;line-height:2;padding-left:18px;margin-bottom:12px;">
+                        <li data-i18n="clH_post_complete"></li>
+                        <li data-i18n="clH_post_signed"></li>
+                        <li data-i18n="clH_post_closed"></li>
+                    </ul>
+                    <div class="tip" data-i18n="checklistTip"></div>
+                </div>
+            </section>
+
+            <span class="section-anchor" id="step2"></span>
+            <section>
+                <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
+                    <div class="sec-num">3</div>
+                    <div class="sec-label" data-i18n="secStep2">Step 3 &#8212; Criteria Scoring</div>
                     <div class="sec-chevron">&#9662;</div>
                 </button>
                 <div class="sec-body">
@@ -867,8 +906,8 @@
             <span class="section-anchor" id="result"></span>
             <section>
                 <button class="sec-toggle" onclick="toggle(this)" aria-expanded="false">
-                    <div class="sec-num">3</div>
-                    <div class="sec-label" data-i18n="secResult">Step 3 &#8212; Result &amp; Export</div>
+                    <div class="sec-num">4</div>
+                    <div class="sec-label" data-i18n="secResult">Step 4 &#8212; Result &amp; Export</div>
                     <div class="sec-chevron">&#9662;</div>
                 </button>
                 <div class="sec-body">
@@ -895,6 +934,14 @@
                             <tr>
                                 <td><span class="vbadge vb-it2">IT2</span></td>
                                 <td data-i18n="step3CondIT2"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="vbadge vb-it1">NA</span></td>
+                                <td data-i18n="step3CondNA"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="vbadge vb-it2">NB</span></td>
+                                <td data-i18n="step3CondNB"></td>
                             </tr>
                             <tr>
                                 <td><span class="vbadge vb-nq">NQ</span></td>
@@ -987,7 +1034,8 @@ Evaluator fills index.html
                             <tr><td class="field-name">Away</td><td>Away</td><td>Single line of text</td></tr>
                             <tr><td class="field-name">Difficulty</td><td>Difficulty</td><td>Choice: Easy / Medium / Hard</td></tr>
                             <tr><td class="field-name">ScorePercent</td><td>ScorePercent</td><td>Number</td></tr>
-                            <tr><td class="field-name">Label</td><td>Label</td><td>Choice: IT1 / IT2 / NQ</td></tr>
+                            <tr><td class="field-name">Label</td><td>Label</td><td>Choice: IT1 / IT2 / NA / NB / NQ</td></tr>
+                            <tr><td class="field-name">EvaluationLevel</td><td>EvaluationLevel</td><td>Choice: international / national_a / national_b</td></tr>
                             <tr><td class="field-name">ScoreRules … ScoreCallQuality</td><td>(6 columns)</td><td>Number</td></tr>
                             <tr><td class="field-name">NotesRules … NotesCallQuality</td><td>(6 columns)</td><td>Multiple lines of text</td></tr>
                             <tr><td class="field-name">Remarks</td><td>Remarks</td><td>Multiple lines of text</td></tr>
@@ -1059,16 +1107,18 @@ Evaluator fills index.html
                 tocScoringScale: "Scoring Scale",
                 toc6Criteria: "The 6 Criteria",
                 tocNotes: "Notes & Voice",
-                tocResult: "Step 3 — Result",
+                tocChecklist: "Step 2 — Checklist",
+                tocResult: "Step 4 — Result",
                 tocVerdict: "Verdict Conditions",
                 tocExport: "Submitting",
                 tocTips: "Tips & Best Practices",
                 secOverview: "Overview",
                 secStep1: "Step 1 — Match & Referee Info",
-                secStep2: "Step 2 — Criteria Scoring",
-                secResult: "Step 3 — Result & Export",
+                secChecklist: "Step 2 — Pre/Post-Match Checklist (National)",
+                secStep2: "Step 3 — Criteria Scoring",
+                secResult: "Step 4 — Result & Export",
                 secTips: "Tips & Best Practices",
-                overviewP1: "The IFA Referee Evaluation form is a mobile-first web app for evaluating fistball referees during matches. Fill in match details, score the referee across 6 weighted criteria, and submit the result to the IFA office.",
+                overviewP1: "The IFA Referee Evaluation form is a mobile-first web app for evaluating fistball referees during matches. Fill in match details, score the referee across 6 weighted criteria, and submit the result to the IFA office. International evaluations (IT1/IT2) and national evaluations (A-Referee/B-Referee) are supported.",
                 overviewP2: "The form works in 5 languages (English, German, Spanish, Portuguese, Italian) — toggle in the top-right corner of the header.",
                 overviewTip: "💡 The form saves your progress automatically — data persists across page reloads and accidental navigation. All data is reset with 🔄 New Evaluation.",
                 step1Intro: "Fill in all fields before proceeding to scoring. This data appears in the final report and is stored in the IFA database.",
@@ -1086,6 +1136,26 @@ Evaluator fills index.html
                 step1DescTeams: "Names of both teams",
                 step1FieldContest: "Contest / Venue",
                 step1DescContest: "Competition or venue name (e.g. \"Men's World Championship 2026\")",
+                step1FieldEvalLevel: "Evaluation Level",
+                step1DescEvalLevel: "Choose International for IT1/IT2 qualifications, or National A / National B for Faustball Deutschland referee grades. National mode adds a pre/post-match checklist step.",
+                navChecklist: "Checklist",
+                secChecklist: "Step 2 — Pre/Post-Match Checklist (National only)",
+                checklistIntro: "This step appears only for national evaluations (A-Referee / B-Referee). Answer each item with Yes, No, or N/A. The checklist does not affect the score but is printed in the PDF report as a reference.",
+                checklistCard1: "Personal Equipment",
+                checklistCard2: "Pre-Match Controls",
+                checklistCard3: "Post-Match Administration",
+                clH_equip_clothing: "Referee attire including badge present?",
+                clH_equip_whistle: "Whistle, stopwatch, pressure gauge, yellow/red card present?",
+                clH_ctrl_field: "Playing field and equipment checked (setup, post padding, run-out zone)?",
+                clH_ctrl_clothing: "Team jerseys checked?",
+                clH_ctrl_balls: "Balls checked per regulations?",
+                clH_ctrl_briefing: "Teams briefed on local conditions and line judges?",
+                clH_ctrl_form: "Match report fully completed?",
+                clH_ctrl_eligibility: "Player eligibility verified before the match?",
+                clH_post_complete: "Completeness of match report entries verified?",
+                clH_post_signed: "Team captain and scorekeeper have signed?",
+                clH_post_closed: "Match report signed by referee and handed over?",
+                checklistTip: "💡 The checklist is informational — answers appear in the printed PDF but do not change the point score. Always check player eligibility early; problems after the match are hard to resolve.",
                 step1ValidationTip: "⚠️ All fields are required. The form will not let you proceed to Step 2 until every field is filled in.",
                 step1NavDots: "💡 The dots in the header bar show your current page. Tap any dot to jump directly to that page.",
                 step1Tip: "💡 Complete all fields accurately — they appear in the final report and cannot be changed after submission.",
@@ -1122,7 +1192,7 @@ Evaluator fills index.html
                 crit5Desc: "Rally & service positioning, net ball repositioning.",
                 crit6Name: "6. Call Quality",
                 crit6Desc: "Cognitive chain (observe → think → act), marginal calls due to suboptimal viewing angle.",
-                step2WarnRules: "⚠️ <strong>Rules (×4):</strong> A score below 8 automatically disqualifies the referee from IT1, regardless of the overall percentage.",
+                step2WarnRules: "⚠️ <strong>Rules (×4):</strong> A score below 8 automatically disqualifies the referee from IT1 and A-Referee (national), regardless of the overall percentage.",
                 step2hNotes: "Notes & Voice Input",
                 step2NotesP1: "Each criterion has an optional <strong>Notes</strong> field — tap the toggle to expand. Notes are included in the exported report. Always add notes when deducting points.",
                 step2NotesP2: "<strong>Voice input 🎤:</strong> Tap the microphone button to start dictation, tap again to stop. Transcribed text is appended to the notes field. Requires microphone permission (Chrome, Edge, Safari).",
@@ -1136,7 +1206,9 @@ Evaluator fills index.html
                 step3ThCond: "Conditions",
                 step3CondIT1: "Score ≥ 90% · No criterion below 6 · At most 1 criterion exactly at 6 · Rules score ≥ 8",
                 step3CondIT2: "Score ≥ 85% · No criterion below 6 · At most 1 criterion exactly at 6",
-                step3CondNQ: "Does not meet IT1 or IT2 requirements",
+                step3CondNA: "National A-Referee: Score ≥ 88% · No criterion below 6 · At most 1 criterion exactly at 6 · Rules score ≥ 8",
+                step3CondNB: "National B-Referee: Score ≥ 78% · No criterion below 5",
+                step3CondNQ: "Does not meet the conditions for the selected evaluation level",
                 step3hExport: "Exporting",
                 step3ExportP1: "Before exporting, hold a <strong>brief feedback session with the referee</strong> — discuss observations, strengths, and deductions. Add any insights from that conversation to the <strong>Remarks</strong> field.",
                 step3ExportP2: "Tap <strong>✉ Submit</strong> to send the evaluation directly to the IFA office. The data is transmitted automatically — no further action needed.",
@@ -1149,7 +1221,8 @@ Evaluator fills index.html
                 tips5: "A score of 6 on any criterion is a borderline pass — more than one such score blocks IT1 and IT2.",
                 tips6: "Voice input works best in a quiet environment — always review the transcription before saving.",
                 tips7: "After the match, hold a <strong>short feedback session with the referee</strong> before exporting and add observations to the Overall Remarks field.",
-                tips8: "Tap <strong>🔄 New Evaluation</strong> on the result screen to reset all fields for the next referee."
+                tips8: "Tap <strong>🔄 New Evaluation</strong> on the result screen to reset all fields for the next referee.",
+                tips9: "For <strong>national evaluations</strong>, select National A or National B in Step 1. A pre/post-match checklist step will appear — complete it before the match starts and update after. Player eligibility verification is especially important at national level."
             },
 
             de: {
@@ -1171,16 +1244,18 @@ Evaluator fills index.html
                 tocScoringScale: "Bewertungsskala",
                 toc6Criteria: "Die 6 Kriterien",
                 tocNotes: "Notizen & Sprache",
-                tocResult: "Schritt 3 — Ergebnis",
+                tocChecklist: "Schritt 2 — Checkliste",
+                tocResult: "Schritt 4 — Ergebnis",
                 tocVerdict: "Urteilsbedingungen",
                 tocExport: "Absenden",
                 tocTips: "Tipps & Best Practices",
                 secOverview: "Übersicht",
                 secStep1: "Schritt 1 — Spiel- & Schiedsrichterinfo",
-                secStep2: "Schritt 2 — Kriterienbewertung",
-                secResult: "Schritt 3 — Ergebnis & Export",
+                secChecklist: "Schritt 2 — Vor-/Nachspiel-Checkliste (Nur National)",
+                secStep2: "Schritt 3 — Kriterienbewertung",
+                secResult: "Schritt 4 — Ergebnis & Export",
                 secTips: "Tipps & Best Practices",
-                overviewP1: "Das IFA-Schiedsrichterbewertungsformular ist eine mobile Web-App zur Bewertung von Faustball-Schiedsrichtern während Spielen. Gib Spieldetails ein, bewerte den Schiedsrichter anhand von 6 gewichteten Kriterien und übermittle das Ergebnis direkt an das IFA-Büro.",
+                overviewP1: "Das IFA-Schiedsrichterbewertungsformular ist eine mobile Web-App zur Bewertung von Faustball-Schiedsrichtern während Spielen. Gib Spieldetails ein, bewerte den Schiedsrichter anhand von 6 gewichteten Kriterien und übermittle das Ergebnis direkt an das IFA-Büro. Internationale Bewertungen (IT1/IT2) und nationale Bewertungen (A-Schiedsrichter/B-Schiedsrichter) werden unterstützt.",
                 overviewP2: "Das Formular ist in 5 Sprachen verfügbar (Englisch, Deutsch, Spanisch, Portugiesisch, Italienisch) — umschalten über die Schaltfläche oben rechts in der Kopfzeile.",
                 overviewTip: "💡 Das Formular speichert deinen Fortschritt automatisch — Daten bleiben bei Seitenneuladungen und versehentlicher Navigation erhalten. Alle Daten werden mit 🔄 Neue Bewertung zurückgesetzt.",
                 step1Intro: "Füll alle Felder aus, bevor du zur Bewertung fortfährst. Diese Daten erscheinen im Abschlussbericht und werden in der IFA-Datenbank gespeichert.",
@@ -1198,6 +1273,26 @@ Evaluator fills index.html
                 step1DescTeams: "Namen beider Mannschaften",
                 step1FieldContest: "Wettbewerb / Ort",
                 step1DescContest: "Name des Wettbewerbs oder Austragungsorts (z. B. \"Herren-Weltmeisterschaft 2026\")",
+                step1FieldEvalLevel: "Bewertungsebene",
+                step1DescEvalLevel: "Wähle International für IT1/IT2-Qualifikationen oder National A / National B für Faustball Deutschland Schiedsrichtereinstufungen. Im nationalen Modus wird ein Checklisten-Schritt hinzugefügt.",
+                navChecklist: "Checkliste",
+                secChecklist: "Schritt 2 — Vor-/Nachspiel-Checkliste (Nur National)",
+                checklistIntro: "Dieser Schritt erscheint nur bei nationalen Bewertungen (A-Schiedsrichter / B-Schiedsrichter). Beantworte jeden Punkt mit Ja, Nein oder N.A. Die Checkliste hat keinen Einfluss auf die Punktzahl, wird aber im PDF-Ausdruck als Referenz aufgeführt.",
+                checklistCard1: "Persönliche Ausrüstung",
+                checklistCard2: "Kontrollen vor dem Spiel",
+                checklistCard3: "Administration nach dem Spiel",
+                clH_equip_clothing: "Schiedsrichterkleidung inkl. Abzeichen vorhanden?",
+                clH_equip_whistle: "Trillerpfeife, Stoppuhr, Druckprüfer, gelbe/rote Karte vorhanden?",
+                clH_ctrl_field: "Spielfeld und Ausrüstung geprüft (Aufbau, Pfostenschutz, Auslaufzone)?",
+                clH_ctrl_clothing: "Spielkleidung der Teams geprüft?",
+                clH_ctrl_balls: "Bälle nach Vorschrift geprüft?",
+                clH_ctrl_briefing: "Teams über Ortsbedingungen und Linienrichter informiert?",
+                clH_ctrl_form: "Spielformular vollständig ausgefüllt?",
+                clH_ctrl_eligibility: "Spielberechtigungen vor dem Spiel kontrolliert?",
+                clH_post_complete: "Vollständigkeit der Spielformular-Eintragungen geprüft?",
+                clH_post_signed: "Spielführer und Anschreiber haben unterschrieben?",
+                clH_post_closed: "Spielformular mit eigener Unterschrift abgeschlossen und übergeben?",
+                checklistTip: "💡 Die Checkliste ist informativ — Antworten erscheinen im ausgedruckten PDF, ändern aber nicht die Punktzahl. Spielberechtigungen immer frühzeitig prüfen; Probleme nach dem Spiel sind schwer zu lösen.",
                 step1ValidationTip: "⚠️ Alle Felder sind Pflichtfelder. Das Formular lässt dich erst zu Schritt 2 weitergehen, wenn alle Felder ausgefüllt sind.",
                 step1NavDots: "💡 Die Punkte in der Kopfzeile zeigen deine aktuelle Seite an. Tippe auf einen Punkt, um direkt zu dieser Seite zu springen.",
                 step1Tip: "💡 Füll alle Felder sorgfältig aus — sie erscheinen im Abschlussbericht und können nach dem Absenden nicht mehr geändert werden.",
@@ -1234,7 +1329,7 @@ Evaluator fills index.html
                 crit5Desc: "Positionierung im Wechsel & Aufschlag, Netzballneupositionierung.",
                 crit6Name: "6. Entscheidungsqualität",
                 crit6Desc: "Kognitive Kette (beobachten → denken → handeln), Grenzentscheidungen durch suboptimalen Blickwinkel.",
-                step2WarnRules: "⚠️ <strong>Regeln (×4):</strong> Ein Wert unter 8 disqualifiziert den Schiedsrichter automatisch für IT1, unabhängig vom Gesamtprozentsatz.",
+                step2WarnRules: "⚠️ <strong>Regeln (×4):</strong> Ein Wert unter 8 disqualifiziert den Schiedsrichter automatisch für IT1 und A-Schiedsrichter (national), unabhängig vom Gesamtprozentsatz.",
                 step2hNotes: "Notizen & Spracheingabe",
                 step2NotesP1: "Jedes Kriterium verfügt über ein optionales <strong>Notizen</strong>-Feld — tippe auf den Schalter, um es zu erweitern. Notizen werden in den exportierten Bericht aufgenommen. Füge bei Punktabzügen stets Notizen hinzu.",
                 step2NotesP2: "<strong>Spracheingabe 🎤:</strong> Tippe auf die Mikrofontaste, um die Diktierfunktion zu starten, und erneut, um sie zu beenden. Der transkribierte Text wird dem Notizfeld hinzugefügt. Erfordert Mikrofonberechtigung (Chrome, Edge, Safari).",
@@ -1248,7 +1343,9 @@ Evaluator fills index.html
                 step3ThCond: "Bedingungen",
                 step3CondIT1: "Ergebnis ≥ 90% · Kein Kriterium unter 6 · Höchstens 1 Kriterium genau bei 6 · Regelwertung ≥ 8",
                 step3CondIT2: "Ergebnis ≥ 85% · Kein Kriterium unter 6 · Höchstens 1 Kriterium genau bei 6",
-                step3CondNQ: "Erfüllt weder IT1- noch IT2-Anforderungen",
+                step3CondNA: "National A-Schiedsrichter: Ergebnis ≥ 88% · Kein Kriterium unter 6 · Höchstens 1 Kriterium genau bei 6 · Regelwertung ≥ 8",
+                step3CondNB: "National B-Schiedsrichter: Ergebnis ≥ 78% · Kein Kriterium unter 5",
+                step3CondNQ: "Erfüllt nicht die Bedingungen für die gewählte Bewertungsebene",
                 step3hExport: "Exportieren",
                 step3ExportP1: "Führe vor dem Export eine <strong>kurze Rückmeldung mit dem Schiedsrichter</strong> durch — besprich Beobachtungen, Stärken und Abzüge. Füge Erkenntnisse aus diesem Gespräch in das Feld <strong>Bemerkungen</strong> ein.",
                 step3ExportP2: "Tippe auf <strong>✉ Absenden</strong>, um die Bewertung direkt an das IFA-Büro zu übermitteln. Die Daten werden automatisch übertragen — kein weiterer Schritt erforderlich.",
@@ -1261,8 +1358,9 @@ Evaluator fills index.html
                 tips5: "Ein Wert von 6 bei einem Kriterium ist eine Grenzbeurteilung — mehr als ein solcher Wert sperrt IT1 und IT2.",
                 tips6: "Die Spracheingabe funktioniert am besten in einer ruhigen Umgebung — überprüfe die Transkription stets vor dem Speichern.",
                 tips7: "Führe nach dem Spiel eine <strong>kurze Rückmeldung mit dem Schiedsrichter</strong> durch, bevor du exportierst, und füge Beobachtungen in das Feld \u201EAllgemeine Bemerkungen\u201C ein.",
-    tips8: "Tippe auf dem Ergebnisbildschirm auf <strong>🔄 Neue Bewertung</strong>, um alle Felder für den nächsten Schiedsrichter zurückzusetzen."
-  },
+    tips8: "Tippe auf dem Ergebnisbildschirm auf <strong>🔄 Neue Bewertung</strong>, um alle Felder für den nächsten Schiedsrichter zurückzusetzen.",
+                tips9: "Für <strong>nationale Bewertungen</strong> wähle National A oder National B in Schritt 1. Ein Checklisten-Schritt erscheint — fülle ihn vor Spielbeginn aus und ergänze ihn danach. Die Spielberechtigungskontrolle ist auf nationaler Ebene besonders wichtig."
+            },
 
             es: {
                 pageTitle: "Evaluación de Árbitros IFA — Manual de usuario",
@@ -1283,16 +1381,18 @@ Evaluator fills index.html
                 tocScoringScale: "Escala de puntuación",
                 toc6Criteria: "Los 6 criterios",
                 tocNotes: "Notas y voz",
-                tocResult: "Paso 3 — Resultado",
+                tocChecklist: "Paso 2 — Lista de control",
+                tocResult: "Paso 4 — Resultado",
                 tocVerdict: "Condiciones del veredicto",
                 tocExport: "Enviar",
                 tocTips: "Consejos y buenas prácticas",
                 secOverview: "Resumen",
                 secStep1: "Paso 1 — Info del partido y árbitro",
-                secStep2: "Paso 2 — Puntuación de criterios",
-                secResult: "Paso 3 — Resultado y exportación",
+                secChecklist: "Paso 2 — Lista de control previa/posterior al partido (solo nacional)",
+                secStep2: "Paso 3 — Puntuación de criterios",
+                secResult: "Paso 4 — Resultado y exportación",
                 secTips: "Consejos y buenas prácticas",
-                overviewP1: "El formulario de evaluación de árbitros de la IFA es una aplicación web optimizada para móvil que permite evaluar a los árbitros de fistball durante los partidos. Introduce los datos del partido, puntúa al árbitro en 6 criterios ponderados y envía el resultado directamente a la oficina de la IFA.",
+                overviewP1: "El formulario de evaluación de árbitros de la IFA es una aplicación web optimizada para móvil que permite evaluar a los árbitros de fistball durante los partidos. Introduce los datos del partido, puntúa al árbitro en 6 criterios ponderados y envía el resultado directamente a la oficina de la IFA. Se admiten evaluaciones internacionales (IT1/IT2) y nacionales (Árbitro A/Árbitro B).",
                 overviewP2: "El formulario está disponible en 5 idiomas (inglés, alemán, español, portugués, italiano) — cambia con el botón en la esquina superior derecha del encabezado.",
                 overviewTip: "💡 El formulario guarda tu progreso automáticamente — los datos persisten al recargar la página o navegar accidentalmente. Todos los datos se restablecen con 🔄 Nueva evaluación.",
                 step1Intro: "Completa todos los campos antes de pasar a la puntuación. Estos datos aparecen en el informe final y se almacenan en la base de datos de la IFA.",
@@ -1310,6 +1410,26 @@ Evaluator fills index.html
                 step1DescTeams: "Nombres de ambos equipos",
                 step1FieldContest: "Competición / Sede",
                 step1DescContest: "Nombre de la competición o sede (p. ej. \"Campeonato Mundial Masculino 2026\")",
+                step1FieldEvalLevel: "Nivel de evaluación",
+                step1DescEvalLevel: "Elige Internacional para calificaciones IT1/IT2, o Nacional A / Nacional B para grados de árbitro de Faustball Deutschland. El modo nacional añade un paso de lista de control.",
+                navChecklist: "Lista de control",
+                secChecklist: "Paso 2 — Lista de control previa/posterior al partido (solo nacional)",
+                checklistIntro: "Este paso aparece solo para evaluaciones nacionales (Árbitro A / Árbitro B). Responde cada punto con Sí, No o N/A. La lista no afecta la puntuación, pero se imprime en el informe PDF como referencia.",
+                checklistCard1: "Equipamiento personal",
+                checklistCard2: "Controles previos al partido",
+                checklistCard3: "Administración posterior al partido",
+                clH_equip_clothing: "¿Uniforme de árbitro incluido el distintivo presente?",
+                clH_equip_whistle: "¿Silbato, cronómetro, manómetro, tarjetas amarilla/roja presentes?",
+                clH_ctrl_field: "¿Campo de juego y equipamiento verificados (montaje, protección de postes, zona de salida)?",
+                clH_ctrl_clothing: "¿Ropa de los equipos verificada?",
+                clH_ctrl_balls: "¿Balones comprobados según el reglamento?",
+                clH_ctrl_briefing: "¿Equipos informados sobre condiciones locales y jueces de línea?",
+                clH_ctrl_form: "¿Acta del partido completamente rellenada?",
+                clH_ctrl_eligibility: "¿Licencias de jugadores verificadas antes del partido?",
+                clH_post_complete: "¿Completitud de las anotaciones del acta del partido verificada?",
+                clH_post_signed: "¿Capitán del equipo y anotador han firmado?",
+                clH_post_closed: "¿Acta del partido firmada por el árbitro y entregada?",
+                checklistTip: "💡 La lista de control es informativa — las respuestas aparecen en el PDF impreso pero no cambian la puntuación. Verifica siempre las licencias con antelación; los problemas tras el partido son difíciles de resolver.",
                 step1ValidationTip: "⚠️ Todos los campos son obligatorios. El formulario no te permitirá pasar al Paso 2 hasta que todos los campos estén completados.",
                 step1NavDots: "💡 Los puntos en la barra de encabezado muestran tu página actual. Toca cualquier punto para saltar directamente a esa página.",
                 step1Tip: "💡 Completa todos los campos con precisión — aparecen en el informe final y no pueden modificarse tras el envío.",
@@ -1346,7 +1466,7 @@ Evaluator fills index.html
                 crit5Desc: "Posición en rally y saque, reposicionamiento en pelotas de red.",
                 crit6Name: "6. Calidad de Decisión",
                 crit6Desc: "Cadena cognitiva (observar → pensar → actuar), decisiones límite por ángulo de visión subóptimo.",
-                step2WarnRules: "⚠️ <strong>Reglas (×4):</strong> Una puntuación inferior a 8 descalifica automáticamente al árbitro para IT1, independientemente del porcentaje global.",
+                step2WarnRules: "⚠️ <strong>Reglas (×4):</strong> Una puntuación inferior a 8 descalifica automáticamente al árbitro para IT1 y Árbitro A (nacional), independientemente del porcentaje global.",
                 step2hNotes: "Notas e introducción por voz",
                 step2NotesP1: "Cada criterio tiene un campo opcional de <strong>Notas</strong> — toca el interruptor para expandirlo. Las notas se incluyen en el informe exportado. Añade siempre notas cuando deduzcas puntos.",
                 step2NotesP2: "<strong>Entrada de voz 🎤:</strong> Toca el botón del micrófono para iniciar el dictado y tócalo de nuevo para detenerlo. El texto transcrito se añade al campo de notas. Requiere permiso de micrófono (Chrome, Edge, Safari).",
@@ -1360,7 +1480,9 @@ Evaluator fills index.html
                 step3ThCond: "Condiciones",
                 step3CondIT1: "Puntuación ≥ 90% · Ningún criterio por debajo de 6 · Como máximo 1 criterio exactamente en 6 · Puntuación de Reglas ≥ 8",
                 step3CondIT2: "Puntuación ≥ 85% · Ningún criterio por debajo de 6 · Como máximo 1 criterio exactamente en 6",
-                step3CondNQ: "No cumple los requisitos de IT1 ni IT2",
+                step3CondNA: "Árbitro A Nacional: Puntuación ≥ 88% · Ningún criterio por debajo de 6 · Como máximo 1 criterio exactamente en 6 · Puntuación de Reglas ≥ 8",
+                step3CondNB: "Árbitro B Nacional: Puntuación ≥ 78% · Ningún criterio por debajo de 5",
+                step3CondNQ: "No cumple las condiciones para el nivel de evaluación seleccionado",
                 step3hExport: "Exportar",
                 step3ExportP1: "Antes de exportar, mantén una <strong>breve sesión de retroalimentación con el árbitro</strong> — comenta observaciones, puntos fuertes y deducciones. Añade las conclusiones de esa conversación en el campo <strong>Observaciones</strong>.",
                 step3ExportP2: "Toca <strong>✉ Enviar</strong> para transmitir la evaluación directamente a la oficina de la IFA. Los datos se envían automáticamente — no se requiere ninguna acción adicional.",
@@ -1373,7 +1495,8 @@ Evaluator fills index.html
                 tips5: "Una puntuación de 6 en cualquier criterio es un aprobado justo — más de una bloquea IT1 e IT2.",
                 tips6: "La entrada de voz funciona mejor en un entorno tranquilo — revisa siempre la transcripción antes de guardar.",
                 tips7: "Tras el partido, celebra una <strong>breve sesión de retroalimentación con el árbitro</strong> antes de exportar y añade las observaciones al campo Observaciones generales.",
-                tips8: "Toca <strong>🔄 Nueva evaluación</strong> en la pantalla de resultados para restablecer todos los campos para el siguiente árbitro."
+                tips8: "Toca <strong>🔄 Nueva evaluación</strong> en la pantalla de resultados para restablecer todos los campos para el siguiente árbitro.",
+                tips9: "Para <strong>evaluaciones nacionales</strong>, selecciona Nacional A o Nacional B en el Paso 1. Aparecerá un paso de lista de control — complétalo antes del comienzo del partido y actualízalo después. La verificación de licencias de jugadores es especialmente importante a nivel nacional."
             },
 
             pt: {
@@ -1395,16 +1518,18 @@ Evaluator fills index.html
                 tocScoringScale: "Escala de pontuação",
                 toc6Criteria: "Os 6 critérios",
                 tocNotes: "Notas e voz",
-                tocResult: "Passo 3 — Resultado",
+                tocChecklist: "Passo 2 — Lista de verificação",
+                tocResult: "Passo 4 — Resultado",
                 tocVerdict: "Condições do veredicto",
                 tocExport: "Enviar",
                 tocTips: "Dicas e boas práticas",
                 secOverview: "Visão geral",
                 secStep1: "Passo 1 — Info da partida e árbitro",
-                secStep2: "Passo 2 — Pontuação de critérios",
-                secResult: "Passo 3 — Resultado e exportação",
+                secChecklist: "Passo 2 — Lista de verificação pré/pós-partida (apenas nacional)",
+                secStep2: "Passo 3 — Pontuação de critérios",
+                secResult: "Passo 4 — Resultado e exportação",
                 secTips: "Dicas e boas práticas",
-                overviewP1: "O formulário de avaliação de árbitros da IFA é uma aplicação web optimizada para mobile para avaliar árbitros de fistball durante partidas. Preenche os detalhes da partida, pontua o árbitro em 6 critérios ponderados e envia o resultado directamente para o escritório da IFA.",
+                overviewP1: "O formulário de avaliação de árbitros da IFA é uma aplicação web optimizada para mobile para avaliar árbitros de fistball durante partidas. Preenche os detalhes da partida, pontua o árbitro em 6 critérios ponderados e envia o resultado directamente para o escritório da IFA. São suportadas avaliações internacionais (IT1/IT2) e nacionais (Árbitro A/Árbitro B).",
                 overviewP2: "O formulário funciona em 5 idiomas (inglês, alemão, espanhol, português, italiano) — alterne no canto superior direito do cabeçalho.",
                 overviewTip: "💡 O formulário guarda o teu progresso automaticamente — os dados persistem ao recarregar a página ou navegar acidentalmente. Todos os dados são redefinidos com 🔄 Nova Avaliação.",
                 step1Intro: "Preenche todos os campos antes de prosseguir para a pontuação. Estes dados aparecem no relatório final e são armazenados na base de dados da IFA.",
@@ -1422,6 +1547,26 @@ Evaluator fills index.html
                 step1DescTeams: "Nomes das duas equipas",
                 step1FieldContest: "Competição / Local",
                 step1DescContest: "Nome da competição ou local (ex.: \"Campeonato Mundial Masculino 2026\")",
+                step1FieldEvalLevel: "Nível de avaliação",
+                step1DescEvalLevel: "Escolhe Internacional para qualificações IT1/IT2 ou Nacional A / Nacional B para graus de árbitro do Faustball Deutschland. O modo nacional adiciona um passo de lista de verificação.",
+                navChecklist: "Lista de verificação",
+                secChecklist: "Passo 2 — Lista de verificação pré/pós-partida (apenas nacional)",
+                checklistIntro: "Este passo aparece apenas para avaliações nacionais (Árbitro A / Árbitro B). Responde a cada ponto com Sim, Não ou N/A. A lista não afecta a pontuação, mas é impressa no relatório PDF como referência.",
+                checklistCard1: "Equipamento pessoal",
+                checklistCard2: "Controlos pré-partida",
+                checklistCard3: "Administração pós-partida",
+                clH_equip_clothing: "Vestuário de árbitro incluindo insígnia presente?",
+                clH_equip_whistle: "Apito, cronómetro, manómetro, cartão amarelo/vermelho presentes?",
+                clH_ctrl_field: "Campo de jogo e equipamento verificados (montagem, protecção de postes, zona de saída)?",
+                clH_ctrl_clothing: "Equipamentos das equipas verificados?",
+                clH_ctrl_balls: "Bolas verificadas de acordo com os regulamentos?",
+                clH_ctrl_briefing: "Equipas informadas sobre condições locais e juízes de linha?",
+                clH_ctrl_form: "Relatório do jogo totalmente preenchido?",
+                clH_ctrl_eligibility: "Elegibilidade dos jogadores verificada antes da partida?",
+                clH_post_complete: "Completude das entradas do relatório do jogo verificada?",
+                clH_post_signed: "Capitão da equipa e apontador assinaram?",
+                clH_post_closed: "Relatório do jogo assinado pelo árbitro e entregue?",
+                checklistTip: "💡 A lista de verificação é informativa — as respostas aparecem no PDF impresso mas não alteram a pontuação. Verifica sempre as elegibilidades com antecedência; os problemas após o jogo são difíceis de resolver.",
                 step1ValidationTip: "⚠️ Todos os campos são obrigatórios. O formulário não te permitirá avançar para o Passo 2 até que todos os campos estejam preenchidos.",
                 step1NavDots: "💡 Os pontos na barra de cabeçalho mostram a tua página actual. Toca em qualquer ponto para saltar directamente para essa página.",
                 step1Tip: "💡 Preenche todos os campos com precisão — aparecem no relatório final e não podem ser alterados após o envio.",
@@ -1458,7 +1603,7 @@ Evaluator fills index.html
                 crit5Desc: "Posicionamento no rally e saque, reposicionamento em bolas de rede.",
                 crit6Name: "6. Qualidade de Decisão",
                 crit6Desc: "Cadeia cognitiva (observar → pensar → agir), chamadas marginais por ângulo de visão subótimo.",
-                step2WarnRules: "⚠️ <strong>Regras (×4):</strong> Uma pontuação inferior a 8 desclassifica automaticamente o árbitro para IT1, independentemente da percentagem global.",
+                step2WarnRules: "⚠️ <strong>Regras (×4):</strong> Uma pontuação inferior a 8 desclassifica automaticamente o árbitro para IT1 e Árbitro A (nacional), independentemente da percentagem global.",
                 step2hNotes: "Notas e entrada por voz",
                 step2NotesP1: "Cada critério tem um campo opcional de <strong>Notas</strong> — toca no botão para expandir. As notas são incluídas no relatório exportado. Adiciona sempre notas quando deduzires pontos.",
                 step2NotesP2: "<strong>Entrada de voz 🎤:</strong> Toca no botão do microfone para iniciar o ditado e toca novamente para parar. O texto transcrito é adicionado ao campo de notas. Requer permissão de microfone (Chrome, Edge, Safari).",
@@ -1472,7 +1617,9 @@ Evaluator fills index.html
                 step3ThCond: "Condições",
                 step3CondIT1: "Pontuação ≥ 90% · Nenhum critério abaixo de 6 · No máximo 1 critério exactamente em 6 · Pontuação de Regras ≥ 8",
                 step3CondIT2: "Pontuação ≥ 85% · Nenhum critério abaixo de 6 · No máximo 1 critério exactamente em 6",
-                step3CondNQ: "Não cumpre os requisitos de IT1 ou IT2",
+                step3CondNA: "Árbitro A Nacional: Pontuação ≥ 88% · Nenhum critério abaixo de 6 · No máximo 1 critério exactamente em 6 · Pontuação de Regras ≥ 8",
+                step3CondNB: "Árbitro B Nacional: Pontuação ≥ 78% · Nenhum critério abaixo de 5",
+                step3CondNQ: "Não cumpre as condições para o nível de avaliação seleccionado",
                 step3hExport: "Exportar",
                 step3ExportP1: "Antes de exportar, realiza uma <strong>breve sessão de feedback com o árbitro</strong> — discute observações, pontos fortes e deduções. Adiciona as conclusões dessa conversa ao campo <strong>Observações</strong>.",
                 step3ExportP2: "Toca em <strong>✉ Enviar</strong> para transmitir a avaliação diretamente para o escritório da IFA. Os dados são enviados automaticamente — nenhuma ação adicional necessária.",
@@ -1485,7 +1632,8 @@ Evaluator fills index.html
                 tips5: "Uma pontuação de 6 em qualquer critério é um aprovado limite — mais do que um bloqueia IT1 e IT2.",
                 tips6: "A entrada de voz funciona melhor num ambiente silencioso — revê sempre a transcrição antes de guardar.",
                 tips7: "Após a partida, realiza uma <strong>breve sessão de feedback com o árbitro</strong> antes de exportar e adiciona as observações ao campo Observações gerais.",
-                tips8: "Toca em <strong>🔄 Nova Avaliação</strong> na tela de resultados para redefinir todos os campos para o próximo árbitro."
+                tips8: "Toca em <strong>🔄 Nova Avaliação</strong> na tela de resultados para redefinir todos os campos para o próximo árbitro.",
+                tips9: "Para <strong>avaliações nacionais</strong>, selecciona Nacional A ou Nacional B no Passo 1. Aparecerá um passo de lista de verificação — preenche-o antes do início do jogo e actualiza após. A verificação de elegibilidade dos jogadores é especialmente importante a nível nacional."
             },
 
             it: {
@@ -1507,16 +1655,18 @@ Evaluator fills index.html
                 tocScoringScale: "Scala di punteggio",
                 toc6Criteria: "I 6 criteri",
                 tocNotes: "Note e voce",
-                tocResult: "Passo 3 — Risultato",
+                tocChecklist: "Passo 2 — Lista di controllo",
+                tocResult: "Passo 4 — Risultato",
                 tocVerdict: "Condizioni del verdetto",
                 tocExport: "Invio",
                 tocTips: "Consigli e buone pratiche",
                 secOverview: "Panoramica",
                 secStep1: "Passo 1 — Info partita e arbitro",
-                secStep2: "Passo 2 — Valutazione dei criteri",
-                secResult: "Passo 3 — Risultato ed esportazione",
+                secChecklist: "Passo 2 — Lista di controllo pre/post-partita (solo nazionale)",
+                secStep2: "Passo 3 — Valutazione dei criteri",
+                secResult: "Passo 4 — Risultato ed esportazione",
                 secTips: "Consigli e buone pratiche",
-                overviewP1: "Il modulo di valutazione degli arbitri IFA è un'applicazione web ottimizzata per mobile per valutare gli arbitri di fistball durante le partite. Inserisci i dettagli della partita, valuta l'arbitro su 6 criteri ponderati e invia il risultato direttamente all'ufficio IFA.",
+                overviewP1: "Il modulo di valutazione degli arbitri IFA è un'applicazione web ottimizzata per mobile per valutare gli arbitri di fistball durante le partite. Inserisci i dettagli della partita, valuta l'arbitro su 6 criteri ponderati e invia il risultato direttamente all'ufficio IFA. Sono supportate valutazioni internazionali (IT1/IT2) e nazionali (Arbitro A/Arbitro B).",
                 overviewP2: "Il modulo è disponibile in 5 lingue (inglese, tedesco, spagnolo, portoghese, italiano) — cambia nell'angolo in alto a destra dell'intestazione.",
                 overviewTip: "💡 Il modulo salva automaticamente i tuoi progressi — i dati persistono al ricaricamento della pagina o alla navigazione accidentale. Tutti i dati vengono azzerati con 🔄 Nuova valutazione.",
                 step1Intro: "Compila tutti i campi prima di procedere alla valutazione. Questi dati compaiono nel report finale e vengono archiviati nel database IFA.",
@@ -1534,6 +1684,26 @@ Evaluator fills index.html
                 step1DescTeams: "Nomi di entrambe le squadre",
                 step1FieldContest: "Competizione / Sede",
                 step1DescContest: "Nome della competizione o della sede (es. \"Campionato Mondiale Maschile 2026\")",
+                step1FieldEvalLevel: "Livello di valutazione",
+                step1DescEvalLevel: "Scegli Internazionale per le qualifiche IT1/IT2 oppure Nazionale A / Nazionale B per i gradi arbitrali di Faustball Deutschland. La modalità nazionale aggiunge un passaggio con lista di controllo.",
+                navChecklist: "Lista di controllo",
+                secChecklist: "Passo 2 — Lista di controllo pre/post-partita (solo nazionale)",
+                checklistIntro: "Questo passaggio appare solo per le valutazioni nazionali (Arbitro A / Arbitro B). Rispondi a ogni punto con Sì, No o N/A. La lista non influisce sul punteggio ma viene stampata nel report PDF come riferimento.",
+                checklistCard1: "Equipaggiamento personale",
+                checklistCard2: "Controlli pre-partita",
+                checklistCard3: "Amministrazione post-partita",
+                clH_equip_clothing: "Abbigliamento arbitrale incluso il distintivo presente?",
+                clH_equip_whistle: "Fischietto, cronometro, manometro, cartellino giallo/rosso presenti?",
+                clH_ctrl_field: "Campo di gioco e attrezzatura verificati (allestimento, protezione pali, zona di uscita)?",
+                clH_ctrl_clothing: "Maglie delle squadre verificate?",
+                clH_ctrl_balls: "Palloni verificati secondo il regolamento?",
+                clH_ctrl_briefing: "Squadre informate sulle condizioni locali e i giudici di linea?",
+                clH_ctrl_form: "Referto di gara completamente compilato?",
+                clH_ctrl_eligibility: "Idoneità dei giocatori verificata prima della partita?",
+                clH_post_complete: "Completezza delle annotazioni del referto verificata?",
+                clH_post_signed: "Capitano della squadra e segnapunti hanno firmato?",
+                clH_post_closed: "Referto firmato dall'arbitro e consegnato?",
+                checklistTip: "💡 La lista di controllo è informativa — le risposte compaiono nel PDF stampato ma non modificano il punteggio. Verifica sempre le idoneità in anticipo; i problemi dopo la partita sono difficili da risolvere.",
                 step1ValidationTip: "⚠️ Tutti i campi sono obbligatori. Il modulo non ti permetterà di procedere al Passo 2 finché tutti i campi non sono compilati.",
                 step1NavDots: "💡 I punti nella barra dell'intestazione mostrano la tua pagina corrente. Tocca qualsiasi punto per passare direttamente a quella pagina.",
                 step1Tip: "💡 Compila tutti i campi con precisione — compaiono nel report finale e non possono essere modificati dopo l'invio.",
@@ -1570,7 +1740,7 @@ Evaluator fills index.html
                 crit5Desc: "Posizionamento in gioco e al servizio, riposizionamento sulle palle di rete.",
                 crit6Name: "6. Qualità delle Decisioni",
                 crit6Desc: "Catena cognitiva (osservare → pensare → agire), decisioni limite per angolo di visione subottimale.",
-                step2WarnRules: "⚠️ <strong>Regole (×4):</strong> Un punteggio inferiore a 8 squalifica automaticamente l'arbitro per IT1, indipendentemente dalla percentuale complessiva.",
+                step2WarnRules: "⚠️ <strong>Regole (×4):</strong> Un punteggio inferiore a 8 squalifica automaticamente l'arbitro per IT1 e Arbitro A (nazionale), indipendentemente dalla percentuale complessiva.",
                 step2hNotes: "Note e inserimento vocale",
                 step2NotesP1: "Ogni criterio dispone di un campo <strong>Note</strong> opzionale — tocca il pulsante per espanderlo. Le note sono incluse nel report esportato. Aggiungi sempre note quando deduci punti.",
                 step2NotesP2: "<strong>Inserimento vocale 🎤:</strong> Tocca il pulsante del microfono per avviare la dettatura e toccalo di nuovo per fermarla. Il testo trascritto viene aggiunto al campo note. Richiede il permesso del microfono (Chrome, Edge, Safari).",
@@ -1584,7 +1754,9 @@ Evaluator fills index.html
                 step3ThCond: "Condizioni",
                 step3CondIT1: "Punteggio ≥ 90% · Nessun criterio sotto 6 · Al massimo 1 criterio esattamente a 6 · Punteggio Regole ≥ 8",
                 step3CondIT2: "Punteggio ≥ 85% · Nessun criterio sotto 6 · Al massimo 1 criterio esattamente a 6",
-                step3CondNQ: "Non soddisfa i requisiti IT1 o IT2",
+                step3CondNA: "Arbitro A Nazionale: Punteggio ≥ 88% · Nessun criterio sotto 6 · Al massimo 1 criterio esattamente a 6 · Punteggio Regole ≥ 8",
+                step3CondNB: "Arbitro B Nazionale: Punteggio ≥ 78% · Nessun criterio sotto 5",
+                step3CondNQ: "Non soddisfa le condizioni per il livello di valutazione selezionato",
                 step3hExport: "Esportazione",
                 step3ExportP1: "Prima di esportare, tieni una <strong>breve sessione di feedback con l'arbitro</strong> — discuti osservazioni, punti di forza e deduzioni. Aggiungi le considerazioni emerse da quella conversazione nel campo <strong>Osservazioni</strong>.",
                 step3ExportP2: "Tocca <strong>✉ Invia</strong> per trasmettere la valutazione direttamente all'ufficio IFA. I dati vengono inviati automaticamente — non è necessaria alcuna azione aggiuntiva.",
@@ -1597,7 +1769,8 @@ Evaluator fills index.html
                 tips5: "Un punteggio di 6 su qualsiasi criterio è una sufficienza limite — più di uno blocca IT1 e IT2.",
                 tips6: "L'inserimento vocale funziona meglio in un ambiente silenzioso — controlla sempre la trascrizione prima di salvare.",
                 tips7: "Dopo la partita, tieni una <strong>breve sessione di feedback con l'arbitro</strong> prima di esportare e aggiungi le osservazioni nel campo Osservazioni generali.",
-                tips8: "Tocca <strong>🔄 Nuova valutazione</strong> nella schermata dei risultati per azzerare tutti i campi per il prossimo arbitro."
+                tips8: "Tocca <strong>🔄 Nuova valutazione</strong> nella schermata dei risultati per azzerare tutti i campi per il prossimo arbitro.",
+                tips9: "Per le <strong>valutazioni nazionali</strong>, seleziona Nazionale A o Nazionale B al Passo 1. Apparirà un passaggio con lista di controllo — compilalo prima dell'inizio della partita e aggiornalo dopo. La verifica dell'idoneità dei giocatori è particolarmente importante a livello nazionale."
             }
         };
 
@@ -1630,9 +1803,10 @@ Evaluator fills index.html
             // Tips list
             const tl = document.getElementById('tipsList');
             if (tl) {
-                tl.innerHTML = ['tips1', 'tips2', 'tips3', 'tips4', 'tips5', 'tips6', 'tips7', 'tips8']
+                tl.innerHTML = ['tips1', 'tips2', 'tips3', 'tips4', 'tips5', 'tips6', 'tips7', 'tips8', 'tips9']
                     .map(k => `<li>${th(k)}</li>`).join('');
             }
+
         }
 
         function setHelpLang(lang) {

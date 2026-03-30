@@ -1365,6 +1365,48 @@
             background: var(--ifa-gray2);
         }
 
+        /* ── CHECKLIST ── */
+        .checklist-group-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--ifa-blue);
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--ifa-border);
+        }
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--ifa-gray2);
+        }
+        .checklist-item:last-child { border-bottom: none; }
+        .checklist-q {
+            flex: 1;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--ifa-text);
+        }
+        .checklist-btns { display: flex; gap: 4px; flex-shrink: 0; }
+        .cl-btn {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 5px;
+            border: 1.5px solid var(--ifa-border);
+            background: white;
+            color: var(--ifa-muted);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .cl-btn.sel-yes { background: #E8F5E9; border-color: #4CAF50; color: #2E7D32; }
+        .cl-btn.sel-no  { background: #FFEBEE; border-color: #F44336; color: #B71C1C; }
+        .cl-btn.sel-na  { background: var(--ifa-gray2); border-color: var(--ifa-muted); color: var(--ifa-muted); }
+
         @media print {
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             /* Always print in light theme */
@@ -1380,7 +1422,7 @@
             [data-theme="dark"] .breakdown-row.row-warn { background: rgba(208, 2, 27, 0.08) !important; }
             [data-theme="dark"] .qual-header { background: var(--ifa-gray2) !important; }
             [data-theme="dark"] .notes-textarea, [data-theme="dark"] .text-input { color: #1a2a3a !important; }
-            .header, #step-0, #step-1, #tour-backdrop,
+            .header, #step-0, #step-checklist, #step-1, #tour-backdrop,
             #step-2 .section-eyebrow, #step-2 .section-title,
             #difficultyCard, #refEmailCard, #step-2 .btn-row, #btnNewEval, #result-page-footer {
                 display: none !important;
@@ -1477,6 +1519,14 @@
                 <label>Place / Venue</label>
                 <input type="text" id="place" placeholder="City or stadium name">
             </div>
+            <div class="field">
+                <label id="labelEvalLevel">Evaluation Level</label>
+                <select id="evaluationLevel" onchange="saveState()">
+                    <option value="international">International (IT1/IT2)</option>
+                    <option value="national_a">National – A-Schiedsrichter</option>
+                    <option value="national_b">National – B-Schiedsrichter</option>
+                </select>
+            </div>
         </div>
 
         <div id="scoringMethodBox"
@@ -1489,7 +1539,118 @@
 
         <div class="btn-row">
             <div id="step0-error" style="display:none;color:var(--danger);font-size:13px;margin-bottom:8px;text-align:center;"></div>
-            <button class="btn btn-primary" id="btn-continue" onclick="if(validateStep0())goStep(1)">Continue →</button>
+            <button class="btn btn-primary" id="btn-continue" onclick="if(validateStep0())goStep(isNational()?1:2)">Continue →</button>
+        </div>
+    </div>
+
+    <!-- ═══ STEP CHECKLIST (national only) ═══ -->
+    <div class="step" id="step-checklist">
+        <div class="section-eyebrow" id="cl-eyebrow">Step 2 of 4</div>
+        <div class="section-title">Checkliste<br>Vor-/Nachspiel</div>
+
+        <div class="card">
+            <div class="card-title" id="cl-card1-title">Persönliche Ausrüstung</div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-equip_clothing">Schiedsrichterkleidung inkl. Abzeichen vorhanden?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-equip_clothing-yes" onclick="setChecklist('equip_clothing','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-equip_clothing-no" onclick="setChecklist('equip_clothing','no')">Nein</button>
+                    <button class="cl-btn" id="cl-equip_clothing-na" onclick="setChecklist('equip_clothing','na')">N.A.</button>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-equip_whistle">Trillerpfeife, Stoppuhr, Druckprüfer, gelbe/rote Karte vorhanden?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-equip_whistle-yes" onclick="setChecklist('equip_whistle','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-equip_whistle-no" onclick="setChecklist('equip_whistle','no')">Nein</button>
+                    <button class="cl-btn" id="cl-equip_whistle-na" onclick="setChecklist('equip_whistle','na')">N.A.</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" id="cl-card2-title">Kontrollen vor dem Spiel</div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-ctrl_field">Spielfeld und Ausrüstung geprüft (Aufbau, Pfostenschutz, Auslaufzone)?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-ctrl_field-yes" onclick="setChecklist('ctrl_field','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-ctrl_field-no" onclick="setChecklist('ctrl_field','no')">Nein</button>
+                    <button class="cl-btn" id="cl-ctrl_field-na" onclick="setChecklist('ctrl_field','na')">N.A.</button>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-ctrl_clothing">Spielkleidung der Teams geprüft?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-ctrl_clothing-yes" onclick="setChecklist('ctrl_clothing','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-ctrl_clothing-no" onclick="setChecklist('ctrl_clothing','no')">Nein</button>
+                    <button class="cl-btn" id="cl-ctrl_clothing-na" onclick="setChecklist('ctrl_clothing','na')">N.A.</button>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-ctrl_balls">Bälle nach Vorschrift geprüft?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-ctrl_balls-yes" onclick="setChecklist('ctrl_balls','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-ctrl_balls-no" onclick="setChecklist('ctrl_balls','no')">Nein</button>
+                    <button class="cl-btn" id="cl-ctrl_balls-na" onclick="setChecklist('ctrl_balls','na')">N.A.</button>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-ctrl_briefing">Teams über Ortsbedingungen und Linienrichter informiert?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-ctrl_briefing-yes" onclick="setChecklist('ctrl_briefing','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-ctrl_briefing-no" onclick="setChecklist('ctrl_briefing','no')">Nein</button>
+                    <button class="cl-btn" id="cl-ctrl_briefing-na" onclick="setChecklist('ctrl_briefing','na')">N.A.</button>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-ctrl_form">Spielformular vollständig ausgefüllt?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-ctrl_form-yes" onclick="setChecklist('ctrl_form','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-ctrl_form-no" onclick="setChecklist('ctrl_form','no')">Nein</button>
+                    <button class="cl-btn" id="cl-ctrl_form-na" onclick="setChecklist('ctrl_form','na')">N.A.</button>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-ctrl_eligibility">Spielberechtigungen vor dem Spiel kontrolliert?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-ctrl_eligibility-yes" onclick="setChecklist('ctrl_eligibility','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-ctrl_eligibility-no" onclick="setChecklist('ctrl_eligibility','no')">Nein</button>
+                    <button class="cl-btn" id="cl-ctrl_eligibility-na" onclick="setChecklist('ctrl_eligibility','na')">N.A.</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" id="cl-card3-title">Administration nach dem Spiel</div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-post_complete">Vollständigkeit der Spielformular-Eintragungen geprüft (Spieler, Sieger, Ergebnis, Uhrzeit)?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-post_complete-yes" onclick="setChecklist('post_complete','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-post_complete-no" onclick="setChecklist('post_complete','no')">Nein</button>
+                    <button class="cl-btn" id="cl-post_complete-na" onclick="setChecklist('post_complete','na')">N.A.</button>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-post_signed">Spielführer und Anschreiber haben unterschrieben?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-post_signed-yes" onclick="setChecklist('post_signed','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-post_signed-no" onclick="setChecklist('post_signed','no')">Nein</button>
+                    <button class="cl-btn" id="cl-post_signed-na" onclick="setChecklist('post_signed','na')">N.A.</button>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-q" id="cl-q-post_closed">Spielformular mit eigener Unterschrift abgeschlossen und übergeben?</div>
+                <div class="checklist-btns">
+                    <button class="cl-btn" id="cl-post_closed-yes" onclick="setChecklist('post_closed','yes')">Ja</button>
+                    <button class="cl-btn" id="cl-post_closed-no" onclick="setChecklist('post_closed','no')">Nein</button>
+                    <button class="cl-btn" id="cl-post_closed-na" onclick="setChecklist('post_closed','na')">N.A.</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-secondary" id="cl-btn-back" onclick="goStep(0)">← Back</button>
+            <button class="btn btn-primary" id="cl-btn-next" onclick="goStep(2)">Continue →</button>
         </div>
     </div>
 
@@ -1505,8 +1666,8 @@
         <div id="criteriaContainer"></div>
 
         <div class="btn-row">
-            <button class="btn btn-secondary" onclick="goStep(0)">← Back</button>
-            <button class="btn btn-primary" onclick="goStep(2)">Results →</button>
+            <button class="btn btn-secondary" onclick="goStep(isNational()?1:0)">← Back</button>
+            <button class="btn btn-primary" onclick="goStep(3)">Results →</button>
         </div>
     </div>
 
@@ -1559,7 +1720,7 @@
         </div>
 
         <div class="btn-row">
-            <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
+            <button class="btn btn-secondary" onclick="goStep(2)">← Back</button>
             <button class="btn btn-accent" id="btn-export" onclick="saveResult()">⬇ Export</button>
         </div>
         <div style="margin-top:56px;">
@@ -1598,11 +1759,11 @@
                 },
                 exLabel: { en: 'Covers', de: 'Beinhaltet', es: 'Incluye', pt: 'Inclui', it: 'Comprende' },
                 examples: {
-                    en: ['Jersey check omitted or incomplete', 'Game report not properly completed or signed', 'Scoreboard not updated correctly', 'Unexpected situation (protest, injury) poorly handled', 'Ball not inspected before approval or wrong ball used without intervention'],
-                    de: ['Trikotprüfung ausgelassen oder unvollständig', 'Spielbericht nicht ordnungsgemäß ausgefüllt oder unterschrieben', 'Anzeigetafel nicht korrekt aktualisiert', 'Unerwartete Situation schlecht gehandhabt', 'Ball vor Genehmigung nicht geprüft oder falscher Ball ohne Eingreifen verwendet'],
-                    es: ['Revisión de camisetas omitida o incompleta', 'Acta no completada o firmada correctamente', 'Marcador no actualizado correctamente', 'Situación inesperada mal gestionada', 'Balón no inspeccionado antes de aprobación o balón incorrecto usado sin intervención'],
-                    pt: ['Verificação de camisetas omitida ou incompleta', 'Relatório não preenchido ou assinado corretamente', 'Placar não atualizado corretamente', 'Situação inesperada mal gerenciada', 'Bola não inspecionada antes da aprovação ou bola incorreta usada sem intervenção'],
-                    it: ['Controllo maglie omesso o incompleto', 'Referto non compilato o firmato correttamente', 'Tabellone non aggiornato correttamente', 'Situazione imprevista gestita male', "Palla non ispezionata prima dell'approvazione o palla errata usata senza intervento"]
+                    en: ['Jersey check omitted or incomplete', 'Game report not properly completed or signed', 'Scoreboard not updated correctly', 'Unexpected situation (protest, injury) poorly handled', 'Ball not inspected before approval or wrong ball used without intervention', 'Player eligibility not checked before the match (national)', 'Runout zone not cleared of spectators'],
+                    de: ['Trikotprüfung ausgelassen oder unvollständig', 'Spielbericht nicht ordnungsgemäß ausgefüllt oder unterschrieben', 'Anzeigetafel nicht korrekt aktualisiert', 'Unerwartete Situation schlecht gehandhabt', 'Ball vor Genehmigung nicht geprüft oder falscher Ball ohne Eingreifen verwendet', 'Spielberechtigungen vor dem Spiel nicht kontrolliert (national)', 'Auslaufzone nicht von Zuschauern freigehalten'],
+                    es: ['Revisión de camisetas omitida o incompleta', 'Acta no completada o firmada correctamente', 'Marcador no actualizado correctamente', 'Situación inesperada mal gestionada', 'Balón no inspeccionado antes de aprobación o balón incorrecto usado sin intervención', 'Habilitaciones de jugadores no verificadas antes del partido (nacional)', 'Zona de salida no despejada de espectadores'],
+                    pt: ['Verificação de camisetas omitida ou incompleta', 'Relatório não preenchido ou assinado corretamente', 'Placar não atualizado corretamente', 'Situação inesperada mal gerenciada', 'Bola não inspecionada antes da aprovação ou bola incorreta usada sem intervenção', 'Habilitações de jogadores não verificadas antes da partida (nacional)', 'Zona de saída não limpa de espectadores'],
+                    it: ['Controllo maglie omesso o incompleto', 'Referto non compilato o firmato correttamente', 'Tabellone non aggiornato correttamente', 'Situazione imprevista gestita male', "Palla non ispezionata prima dell'approvazione o palla errata usata senza intervento", 'Idoneità giocatori non verificata prima della partita (nazionale)', 'Zona di corsa non sgomberata dagli spettatori']
                 }
             },
             {
@@ -1640,18 +1801,18 @@
                 },
                 exLabel: { en: 'Common deductions', de: 'Häufige Abzüge', es: 'Deducciones comunes', pt: 'Deduções comuns', it: 'Deduzioni comuni' },
                 examples: {
-                    en: ['Clear fault not called (obvious in/out, clear net touch, unambiguous foot fault)', 'Wrong point or service award', 'Misapplication of timeout or substitution rule', 'Close call missed due to bad angle → assess in criterion 2 (Call Quality), not here'],
-                    de: ['Eindeutiger Fehler nicht gepfiffen (offensichtlich In/Out, klare Netzberührung, eindeutiger Fußfehler)', 'Falsche Punkt- oder Aufschlagvergabe', 'Falsche Anwendung der Auszeit- oder Auswechslungsregel', 'Knappe Entscheidung wegen schlechtem Winkel verpasst → bei Kriterium 2 (Entscheidungsqualität) bewerten, nicht hier'],
-                    es: ['Falta clara no pitada (In/Out obvio, toque de red claro, falta de pie inequívoca)', 'Adjudicación incorrecta de punto o saque', 'Aplicación incorrecta de tiempo muerto o sustitución', 'Decisión cercana perdida por mal ángulo → evaluar en criterio 2 (Calidad de Decisión), no aquí'],
-                    pt: ['Falta clara não marcada (In/Out óbvio, toque de rede claro, falta de pé inequívoca)', 'Atribuição incorreta de ponto ou saque', 'Aplicação incorreta de tempo morto ou substituição', 'Chamada próxima perdida por mau ângulo → avaliar no critério 2 (Qualidade de Decisão), não aqui'],
-                    it: ['Fallo chiaro non fischiato (In/Out ovvio, tocco di rete chiaro, fallo di piede inequivocabile)', 'Assegnazione errata di punto o servizio', 'Applicazione errata del timeout o della sostituzione', 'Decisione ravvicinata mancata per cattiva angolazione → valutare nel criterio 2 (Qualità delle Decisioni), non qui']
+                    en: ['Clear fault not called (obvious in/out, clear net touch, unambiguous foot fault)', 'Service step-over not called consistently from the start', 'Net/band error not detected', 'Blocking situation decided incorrectly', 'Wrong point or service award', 'Misapplication of timeout or substitution rule', 'Close call missed due to bad angle → assess in criterion 2 (Call Quality), not here'],
+                    de: ['Eindeutiger Fehler nicht gepfiffen (offensichtlich In/Out, klare Netzberührung, eindeutiger Fußfehler)', 'Angabefehler/Übertritt nicht konsequent von Anfang an gepfiffen', 'Netz-/Bandfehler nicht erkannt', 'Sperrsituation falsch entschieden', 'Falsche Punkt- oder Aufschlagvergabe', 'Falsche Anwendung der Auszeit- oder Auswechslungsregel', 'Knappe Entscheidung wegen schlechtem Winkel verpasst → bei Kriterium 2 (Entscheidungsqualität) bewerten, nicht hier'],
+                    es: ['Falta clara no pitada (In/Out obvio, toque de red claro, falta de pie inequívoca)', 'Falta de pisada en el saque no pitada sistemáticamente desde el inicio', 'Error de red/banda no detectado', 'Situación de bloqueo decidida incorrectamente', 'Adjudicación incorrecta de punto o saque', 'Aplicación incorrecta de tiempo muerto o sustitución', 'Decisión cercana perdida por mal ángulo → evaluar en criterio 2 (Calidad de Decisión), no aquí'],
+                    pt: ['Falta clara não marcada (In/Out óbvio, toque de rede claro, falta de pé inequívoca)', 'Ultrapassagem no saque não marcada consistentemente desde o início', 'Erro de rede/fita não detectado', 'Situação de bloqueio decidida incorretamente', 'Atribuição incorreta de ponto ou saque', 'Aplicação incorreta de tempo morto ou substituição', 'Chamada próxima perdida por mau ângulo → avaliar no critério 2 (Qualidade de Decisão), não aqui'],
+                    it: ['Fallo chiaro non fischiato (In/Out ovvio, tocco di rete chiaro, fallo di piede inequivocabile)', 'Fallo di passo al servizio non fischiato con continuità fin dall\'inizio', 'Errore di rete/nastro non rilevato', 'Situazione di blocco decisa in modo errato', 'Assegnazione errata di punto o servizio', 'Applicazione errata del timeout o della sostituzione', 'Decisione ravvicinata mancata per cattiva angolazione → valutare nel criterio 2 (Qualità delle Decisioni), non qui']
                 },
                 warn: {
-                    en: '⚠️ Rules score below 8 automatically blocks IT1 — regardless of the overall percentage.',
-                    de: '⚠️ Regelwertung unter 8 sperrt IT1 – unabhängig vom Gesamtergebnis.',
-                    es: '⚠️ Puntaje en Reglas menor a 8 bloquea IT1 automáticamente.',
-                    pt: '⚠️ Pontuação em Regras abaixo de 8 bloqueia IT1 automaticamente.',
-                    it: '⚠️ Punteggio Regole sotto 8 blocca IT1 automaticamente.'
+                    en: '⚠️ Rules score below 8 automatically blocks IT1 and A-Referee (national) — regardless of the overall percentage.',
+                    de: '⚠️ Regelwertung unter 8 sperrt IT1 und A-Schiedsrichter (national) – unabhängig vom Gesamtergebnis.',
+                    es: '⚠️ Puntaje en Reglas menor a 8 bloquea IT1 y Árbitro A (nacional) automáticamente.',
+                    pt: '⚠️ Pontuação em Regras abaixo de 8 bloqueia IT1 e Árbitro A (nacional) automaticamente.',
+                    it: '⚠️ Punteggio Regole sotto 8 blocca IT1 e Arbitro A (nazionale) automaticamente.'
                 }
             },
             {
@@ -1668,11 +1829,11 @@
                 },
                 exLabel: { en: 'Covers', de: 'Beinhaltet', es: 'Incluye', pt: 'Inclui', it: 'Comprende' },
                 examples: {
-                    en: ['Penalties not issued consistently or firmly', 'Lost discipline control in a heated situation', 'Unclear or weak communication with coaches', 'Poor coordination with second referee or line judges'],
-                    de: ['Strafen nicht konsequent ausgesprochen', 'Disziplinverlust in angespannter Situation', 'Unklare Kommunikation mit Trainern', 'Schwache Koordination mit Zweitem SR oder Linienrichtern'],
-                    es: ['Sanciones no aplicadas con consistencia', 'Pérdida de control en situación tensa', 'Comunicación deficiente con entrenadores', 'Coordinación débil con el segundo árbitro'],
-                    pt: ['Penalidades não aplicadas de forma consistente', 'Perda de controle em situação tensa', 'Comunicação fraca com treinadores', 'Coordenação fraca com o segundo árbitro'],
-                    it: ['Sanzioni non applicate con coerenza', 'Perdita di controllo in situazione tesa', 'Comunicazione scarsa con gli allenatori', 'Coordinamento debole con il secondo arbitro']
+                    en: ['Penalties not issued consistently or firmly', 'Yellow/red cards not used in situations that clearly warrant them', 'Lost discipline control in a heated situation', 'Unclear or weak communication with coaches', 'Poor coordination with second referee or line judges'],
+                    de: ['Strafen nicht konsequent ausgesprochen', 'Gelbe/rote Karten nicht in angebrachten Situationen eingesetzt', 'Disziplinverlust in angespannter Situation', 'Unklare Kommunikation mit Trainern', 'Schwache Koordination mit Zweitem SR oder Linienrichtern'],
+                    es: ['Sanciones no aplicadas con consistencia', 'Tarjetas amarillas/rojas no utilizadas cuando la situación claramente lo requería', 'Pérdida de control en situación tensa', 'Comunicación deficiente con entrenadores', 'Coordinación débil con el segundo árbitro'],
+                    pt: ['Penalidades não aplicadas de forma consistente', 'Cartões amarelos/vermelhos não utilizados quando a situação claramente exigia', 'Perda de controle em situação tensa', 'Comunicação fraca com treinadores', 'Coordenação fraca com o segundo árbitro'],
+                    it: ['Sanzioni non applicate con coerenza', 'Cartellini gialli/rossi non utilizzati in situazioni che lo richiedevano chiaramente', 'Perdita di controllo in situazione tesa', 'Comunicazione scarsa con gli allenatori', 'Coordinamento debole con il secondo arbitro']
                 }
             },
             {
@@ -1689,11 +1850,11 @@
                 },
                 exLabel: { en: 'Common deductions', de: 'Häufige Abzüge', es: 'Deducciones comunes', pt: 'Deduções comuns', it: 'Deduzioni comuni' },
                 examples: {
-                    en: ['Gesture missing, late, or incorrect', 'Whistle too weak or hesitant', 'Passive or uncertain body language', 'Visible loss of composure or authority'],
-                    de: ['Geste fehlend, zu spät oder falsch', 'Pfiff zu schwach oder zögerlich', 'Passive oder unsichere Körpersprache', 'Sichtbarer Verlust von Autorität'],
-                    es: ['Gesto ausente, tardío o incorrecto', 'Silbato demasiado débil o dubitativo', 'Lenguaje corporal pasivo o inseguro', 'Pérdida visible de compostura o autoridad'],
-                    pt: ['Gesto ausente, atrasado ou incorreto', 'Apito muito fraco ou hesitante', 'Linguagem corporal passiva ou insegura', 'Perda visível de compostura ou autoridade'],
-                    it: ['Gesto mancante, in ritardo o errato', 'Fischietto troppo debole o esitante', 'Linguaggio del corpo passivo o incerto', 'Perdita visibile di compostezza o autorità']
+                    en: ['Gesture missing, late, or incorrect', 'Whistle too weak or hesitant', 'Passive or uncertain body language', 'Visible loss of composure or authority', 'Influenced by calls from players, coaches, or spectators', 'Discusses or disputes decisions with players or coaches after the match'],
+                    de: ['Geste fehlend, zu spät oder falsch', 'Pfiff zu schwach oder zögerlich', 'Passive oder unsichere Körpersprache', 'Sichtbarer Verlust von Autorität', 'Lässt sich durch Spieler, Betreuer oder Zuschauer beeinflussen', 'Geht nach dem Spiel Entscheidungen mit Spielern oder Betreuern nach'],
+                    es: ['Gesto ausente, tardío o incorrecto', 'Silbato demasiado débil o dubitativo', 'Lenguaje corporal pasivo o inseguro', 'Pérdida visible de compostura o autoridad', 'Se deja influenciar por jugadores, entrenadores o espectadores', 'Discute decisiones con jugadores o entrenadores después del partido'],
+                    pt: ['Gesto ausente, atrasado ou incorreto', 'Apito muito fraco ou hesitante', 'Linguagem corporal passiva ou insegura', 'Perda visível de compostura ou autoridade', 'Deixa-se influenciar por jogadores, treinadores ou espectadores', 'Discute decisões com jogadores ou treinadores após a partida'],
+                    it: ['Gesto mancante, in ritardo o errato', 'Fischietto troppo debole o esitante', 'Linguaggio del corpo passivo o incerto', 'Perdita visibile di compostezza o autorità', 'Si lascia influenzare da giocatori, allenatori o spettatori', 'Discute le decisioni con giocatori o allenatori dopo la partita']
                 }
             },
             {
@@ -1721,7 +1882,7 @@
         const TOTAL_WEIGHT = CRITERIA.reduce((s, c) => s + c.weight, 0);
         let currentLang = localStorage.getItem('ifa-lang') || 'en';
 
-        let scores = {}, notes = {}, selectedDiff = '', currentStep = 0, remarksHints = '';
+        let scores = {}, notes = {}, selectedDiff = '', currentStep = 0, remarksHints = '', checklistAnswers = {};
 
         const TRANSLATIONS = {
             en: {
@@ -1751,10 +1912,32 @@
                 warnLaw: 'Rules score below 8 — law mistakes disqualify IT1',
                 warningTitle: '⚠ Disqualification Factors',
                 verdictIT1: '✓ IT1 — International 1', verdictIT2: '✓ IT2 — International 2', verdictNQ: '✗ Not Qualified (NQ)',
+                verdictNA: '✓ A-Referee — National A', verdictNB: '✓ B-Referee — National B',
                 qualTitle: 'Qualification Criteria',
                 qualIT1: '<strong>IT1</strong> — ≥90% · no score <6 · max 1 item at 6 · no law mistakes',
                 qualIT2: '<strong>IT2</strong> — ≥85% · no score <6 · max 1 item at 6',
                 qualNQ: '<strong>NQ</strong> — Does not meet minimum requirements',
+                qualNA: '<strong>A-Referee</strong> — ≥88% · no score <6 · max 1 item at 6 · no law mistakes',
+                qualNB: '<strong>B-Referee</strong> — ≥78% · no score <5',
+                step1of4: 'Step 1 of 4', step2of4: 'Step 2 of 4', step3of4: 'Step 3 of 4', step4of4: 'Step 4 of 4',
+                titleChecklist: 'Pre/Post-Match<br>Checklist',
+                labelEvalLevel: 'Evaluation Level',
+                optionInternational: 'International (IT1 / IT2)',
+                optionNationalA: 'National A \u2013 A-Referee',
+                optionNationalB: 'National B \u2013 B-Referee',
+                clCard1: 'Personal Equipment', clCard2: 'Pre-Match Controls', clCard3: 'Post-Match Administration',
+                clQ_equip_clothing: 'Referee clothing (incl. badge) present?',
+                clQ_equip_whistle: 'Whistle, stopwatch, pressure gauge, yellow/red card present?',
+                clQ_ctrl_field: 'Field & equipment checked (setup, post protection, runout zone)?',
+                clQ_ctrl_clothing: 'Playing clothing of both teams checked?',
+                clQ_ctrl_balls: 'Balls checked according to specifications?',
+                clQ_ctrl_briefing: 'Teams briefed on local conditions and line referees?',
+                clQ_ctrl_form: 'Game form fully completed?',
+                clQ_ctrl_eligibility: 'Player eligibility verified before the match?',
+                clQ_post_complete: 'Completeness of game form checked (players, winner, result, time)?',
+                clQ_post_signed: 'Team captains and score keeper signed the form?',
+                clQ_post_closed: 'Form closed with own signature and handed over?',
+                clYes: 'Yes', clNo: 'No', clNa: 'N/A',
                 breakdownTitle: 'Score Breakdown & Notes',
                 confirmReset: 'Start a new evaluation? Current data will be lost.',
                 submitSuccess: 'Evaluation sent successfully.',
@@ -1802,10 +1985,32 @@
                 warnLaw: 'Regelwertung unter 8 — Regelfehler disqualifizieren IT1',
                 warningTitle: '⚠ Disqualifikationsfaktoren',
                 verdictIT1: '✓ IT1 — International 1', verdictIT2: '✓ IT2 — International 2', verdictNQ: '✗ Nicht qualifiziert (NQ)',
+                verdictNA: '✓ A-Schiedsrichter — National A', verdictNB: '✓ B-Schiedsrichter — National B',
                 qualTitle: 'Qualifikationskriterien',
                 qualIT1: '<strong>IT1</strong> — ≥90% · keine Wertung <6 · max. 1 Element bei 6 · keine Regelfehler',
                 qualIT2: '<strong>IT2</strong> — ≥85% · keine Wertung <6 · max. 1 Element bei 6',
                 qualNQ: '<strong>NQ</strong> — Erfüllt nicht die Mindestanforderungen',
+                qualNA: '<strong>A-Schiedsrichter</strong> — ≥88% · keine Wertung <6 · max. 1 Element bei 6 · keine Regelfehler',
+                qualNB: '<strong>B-Schiedsrichter</strong> — ≥78% · keine Wertung <5',
+                step1of4: 'Schritt 1 von 4', step2of4: 'Schritt 2 von 4', step3of4: 'Schritt 3 von 4', step4of4: 'Schritt 4 von 4',
+                titleChecklist: 'Checkliste<br>Vor-/Nachspiel',
+                labelEvalLevel: 'Bewertungsebene',
+                optionInternational: 'International (IT1 / IT2)',
+                optionNationalA: 'National A \u2013 A-Schiedsrichter',
+                optionNationalB: 'National B \u2013 B-Schiedsrichter',
+                clCard1: 'Persönliche Ausrüstung', clCard2: 'Kontrollen vor dem Spiel', clCard3: 'Administration nach dem Spiel',
+                clQ_equip_clothing: 'Schiedsrichterkleidung inkl. Abzeichen vorhanden?',
+                clQ_equip_whistle: 'Trillerpfeife, Stoppuhr, Druckprüfer, gelbe/rote Karte vorhanden?',
+                clQ_ctrl_field: 'Spielfeld und Ausrüstung geprüft (Aufbau, Pfostenschutz, Auslaufzone)?',
+                clQ_ctrl_clothing: 'Spielkleidung der Teams geprüft?',
+                clQ_ctrl_balls: 'Bälle nach Vorschrift geprüft?',
+                clQ_ctrl_briefing: 'Teams über Ortsbedingungen und Linienrichter informiert?',
+                clQ_ctrl_form: 'Spielformular vollständig ausgefüllt?',
+                clQ_ctrl_eligibility: 'Spielberechtigungen vor dem Spiel kontrolliert?',
+                clQ_post_complete: 'Vollständigkeit der Spielformular-Eintragungen geprüft (Spieler, Sieger, Ergebnis, Uhrzeit)?',
+                clQ_post_signed: 'Spielführer und Anschreiber haben unterschrieben?',
+                clQ_post_closed: 'Spielformular mit eigener Unterschrift abgeschlossen und übergeben?',
+                clYes: 'Ja', clNo: 'Nein', clNa: 'N.A.',
                 breakdownTitle: 'Punkte-Aufschlüsselung & Notizen',
                 confirmReset: 'Neue Bewertung starten? Aktuelle Daten gehen verloren.',
                 submitSuccess: 'Bewertung erfolgreich gesendet.',
@@ -1853,9 +2058,30 @@
                 warnLaw: 'Puntaje en Reglas menor a 8 — errores de reglamento descalifican IT1',
                 warningTitle: '⚠ Factores de Descalificación',
                 verdictIT1: '✓ IT1 — Internacional 1', verdictIT2: '✓ IT2 — Internacional 2', verdictNQ: '✗ No Calificado (NQ)',
+                verdictNA: '✓ Árbitro A — Nacional A', verdictNB: '✓ Árbitro B — Nacional B',
                 qualTitle: 'Criterios de Calificación',
                 qualIT1: '<strong>IT1</strong> — ≥90% · sin puntaje <6 · máx. 1 elemento en 6 · sin errores de reglamento',
                 qualIT2: '<strong>IT2</strong> — ≥85% · sin puntaje <6 · máx. 1 elemento en 6',
+                qualNA: '<strong>Árbitro A</strong> — ≥88% · sin puntaje <6 · máx. 1 en 6 · sin errores',
+                qualNB: '<strong>Árbitro B</strong> — ≥78% · sin puntaje <5',
+                step1of4: 'Paso 1 de 4', step2of4: 'Paso 2 de 4', step3of4: 'Paso 3 de 4', step4of4: 'Paso 4 de 4',
+                titleChecklist: 'Lista de<br>verificación', labelEvalLevel: 'Nivel de evaluación',
+                optionInternational: 'Internacional (IT1 / IT2)',
+                optionNationalA: 'Nacional A \u2013 \u00C1rbitro A',
+                optionNationalB: 'Nacional B \u2013 \u00C1rbitro B',
+                clCard1: 'Equipamiento personal', clCard2: 'Controles previos', clCard3: 'Administración post-partido',
+                clQ_equip_clothing: '¿Ropa de árbitro (incl. insignia) presente?',
+                clQ_equip_whistle: '¿Silbato, cronómetro, manómetro, tarjetas amarilla/roja presentes?',
+                clQ_ctrl_field: '¿Campo y equipo revisados (montaje, protección de postes, zona de salida)?',
+                clQ_ctrl_clothing: '¿Ropa de juego de ambos equipos revisada?',
+                clQ_ctrl_balls: '¿Balones revisados según especificaciones?',
+                clQ_ctrl_briefing: '¿Equipos informados sobre condiciones locales y árbitros de línea?',
+                clQ_ctrl_form: '¿Acta completamente rellenada?',
+                clQ_ctrl_eligibility: '¿Habilitaciones de jugadores verificadas antes del partido?',
+                clQ_post_complete: '¿Completitud del acta verificada (jugadores, ganador, resultado, hora)?',
+                clQ_post_signed: '¿Capitanes y anotador han firmado el acta?',
+                clQ_post_closed: '¿Acta cerrada con propia firma y entregada?',
+                clYes: 'Sí', clNo: 'No', clNa: 'N/A',
                 qualNQ: '<strong>NQ</strong> — No cumple los requisitos mínimos',
                 breakdownTitle: 'Desglose de Puntajes & Notas',
                 confirmReset: '¿Iniciar una nueva evaluación? Los datos actuales se perderán.',
@@ -1904,9 +2130,30 @@
                 warnLaw: 'Pontuação em Regras abaixo de 8 — erros de regras desclassificam IT1',
                 warningTitle: '⚠ Fatores de Desclassificação',
                 verdictIT1: '✓ IT1 — Internacional 1', verdictIT2: '✓ IT2 — Internacional 2', verdictNQ: '✗ Não Qualificado (NQ)',
+                verdictNA: '✓ Árbitro A — Nacional A', verdictNB: '✓ Árbitro B — Nacional B',
                 qualTitle: 'Critérios de Qualificação',
                 qualIT1: '<strong>IT1</strong> — ≥90% · sem pontuação <6 · máx. 1 item em 6 · sem erros de regras',
                 qualIT2: '<strong>IT2</strong> — ≥85% · sem pontuação <6 · máx. 1 item em 6',
+                qualNA: '<strong>Árbitro A</strong> — ≥88% · sem pontuação <6 · máx. 1 em 6 · sem erros',
+                qualNB: '<strong>Árbitro B</strong> — ≥78% · sem pontuação <5',
+                step1of4: 'Passo 1 de 4', step2of4: 'Passo 2 de 4', step3of4: 'Passo 3 de 4', step4of4: 'Passo 4 de 4',
+                titleChecklist: 'Lista de<br>verificação', labelEvalLevel: 'Nível de avaliação',
+                optionInternational: 'Internacional (IT1 / IT2)',
+                optionNationalA: 'Nacional A \u2013 \u00C1rbitro A',
+                optionNationalB: 'Nacional B \u2013 \u00C1rbitro B',
+                clCard1: 'Equipamento pessoal', clCard2: 'Controles pré-jogo', clCard3: 'Administração pós-jogo',
+                clQ_equip_clothing: 'Roupa de árbitro (incl. crachá) presente?',
+                clQ_equip_whistle: 'Apito, cronômetro, medidor de pressão, cartões amarelo/vermelho presentes?',
+                clQ_ctrl_field: 'Campo e equipamento verificados (montagem, proteção de postes, zona de saída)?',
+                clQ_ctrl_clothing: 'Roupa de jogo de ambas as equipes verificada?',
+                clQ_ctrl_balls: 'Bolas verificadas de acordo com as especificações?',
+                clQ_ctrl_briefing: 'Equipes informadas sobre condições locais e árbitros de linha?',
+                clQ_ctrl_form: 'Formulário de jogo completamente preenchido?',
+                clQ_ctrl_eligibility: 'Habilitações dos jogadores verificadas antes da partida?',
+                clQ_post_complete: 'Completude do formulário verificada (jogadores, vencedor, resultado, hora)?',
+                clQ_post_signed: 'Capitães e anotador assinaram o formulário?',
+                clQ_post_closed: 'Formulário fechado com assinatura própria e entregue?',
+                clYes: 'Sim', clNo: 'Não', clNa: 'N/A',
                 qualNQ: '<strong>NQ</strong> — Não atende aos requisitos mínimos',
                 breakdownTitle: 'Detalhamento de Pontuações & Notas',
                 confirmReset: 'Iniciar uma nova avaliação? Os dados atuais serão perdidos.',
@@ -1955,9 +2202,30 @@
                 warnLaw: 'Punteggio Regole inferiore a 8 — errori di regolamento squalificano IT1',
                 warningTitle: '⚠ Fattori di Squalifica',
                 verdictIT1: '✓ IT1 — Internazionale 1', verdictIT2: '✓ IT2 — Internazionale 2', verdictNQ: '✗ Non Qualificato (NQ)',
+                verdictNA: '✓ Arbitro A — Nazionale A', verdictNB: '✓ Arbitro B — Nazionale B',
                 qualTitle: 'Criteri di Qualificazione',
                 qualIT1: '<strong>IT1</strong> — ≥90% · nessun punteggio <6 · max 1 elemento a 6 · nessun errore di regola',
                 qualIT2: '<strong>IT2</strong> — ≥85% · nessun punteggio <6 · max 1 elemento a 6',
+                qualNA: '<strong>Arbitro A</strong> — ≥88% · nessun punteggio <6 · max 1 a 6 · nessun errore',
+                qualNB: '<strong>Arbitro B</strong> — ≥78% · nessun punteggio <5',
+                step1of4: 'Passo 1 di 4', step2of4: 'Passo 2 di 4', step3of4: 'Passo 3 di 4', step4of4: 'Passo 4 di 4',
+                titleChecklist: 'Checklist<br>Pre/Post-partita', labelEvalLevel: 'Livello di valutazione',
+                optionInternational: 'Internazionale (IT1 / IT2)',
+                optionNationalA: 'Nazionale A \u2013 Arbitro A',
+                optionNationalB: 'Nazionale B \u2013 Arbitro B',
+                clCard1: 'Equipaggiamento personale', clCard2: 'Controlli pre-partita', clCard3: 'Amministrazione post-partita',
+                clQ_equip_clothing: 'Abbigliamento arbitro (incl. distintivo) presente?',
+                clQ_equip_whistle: 'Fischietto, cronometro, manometro, cartellini giallo/rosso presenti?',
+                clQ_ctrl_field: 'Campo e attrezzatura verificati (montaggio, protezione pali, zona di corsa)?',
+                clQ_ctrl_clothing: 'Abbigliamento da gioco di entrambe le squadre verificato?',
+                clQ_ctrl_balls: 'Palle verificate secondo le specifiche?',
+                clQ_ctrl_briefing: 'Squadre informate sulle condizioni locali e i giudici di linea?',
+                clQ_ctrl_form: 'Referto di gara completamente compilato?',
+                clQ_ctrl_eligibility: 'Idoneità dei giocatori verificata prima della partita?',
+                clQ_post_complete: 'Completezza del referto verificata (giocatori, vincitore, risultato, orario)?',
+                clQ_post_signed: 'Capitani e segretario hanno firmato il referto?',
+                clQ_post_closed: 'Referto chiuso con firma propria e consegnato?',
+                clYes: 'Sì', clNo: 'No', clNa: 'N/A',
                 qualNQ: '<strong>NQ</strong> — Non soddisfa i requisiti minimi',
                 breakdownTitle: 'Dettaglio Punteggi & Note',
                 confirmReset: 'Avviare una nuova valutazione? I dati attuali andranno persi.',
@@ -2010,6 +2278,13 @@
             lb0[3].textContent = t('labelDate');
             lb0[4].textContent = t('labelTeams');
             lb0[5].textContent = t('labelPlace');
+            if (lb0[6]) lb0[6].textContent = t('labelEvalLevel');
+            const selEl = document.getElementById('evaluationLevel');
+            if (selEl) {
+                selEl.options[0].text = t('optionInternational');
+                selEl.options[1].text = t('optionNationalA');
+                selEl.options[2].text = t('optionNationalB');
+            }
             document.getElementById('labelDifficulty').textContent = t('labelDifficulty');
             document.getElementById('evaluatorName').placeholder = t('phEvaluator');
             document.getElementById('refName').placeholder = t('phRefName');
@@ -2025,15 +2300,36 @@
             if (smb) smb.innerHTML = `<strong style="font-family:'Oswald',sans-serif;letter-spacing:1px;font-size:11px;">${t('scoringMethod')}</strong><br>${t('scoringDesc')}`;
             document.querySelector('#step-0 .btn-primary').textContent = t('btnContinue');
 
-            // Step 1
-            document.querySelector('#step-1 .section-eyebrow').textContent = t('step2of3');
+            // Step checklist
+            document.querySelector('#step-checklist .section-title').innerHTML = t('titleChecklist');
+            document.getElementById('cl-card1-title').textContent = t('clCard1');
+            document.getElementById('cl-card2-title').textContent = t('clCard2');
+            document.getElementById('cl-card3-title').textContent = t('clCard3');
+            document.getElementById('cl-btn-back').textContent = t('btnBack');
+            document.getElementById('cl-btn-next').textContent = t('btnContinue');
+            // Checklist question texts
+            const clQuestions = ['equip_clothing','equip_whistle','ctrl_field','ctrl_clothing','ctrl_balls','ctrl_briefing','ctrl_form','ctrl_eligibility','post_complete','post_signed','post_closed'];
+            clQuestions.forEach(key => {
+                const el = document.getElementById('cl-q-' + key);
+                if (el) el.textContent = t('clQ_' + key);
+            });
+            // Checklist button labels
+            clQuestions.forEach(key => {
+                const y = document.getElementById('cl-' + key + '-yes');
+                const n = document.getElementById('cl-' + key + '-no');
+                const na = document.getElementById('cl-' + key + '-na');
+                if (y) y.textContent = t('clYes');
+                if (n) n.textContent = t('clNo');
+                if (na) na.textContent = t('clNa');
+            });
+
+            // Step 1 (criteria)
             document.querySelector('#step-1 .section-title').innerHTML = t('titleScoring');
             document.getElementById('sttNotice').textContent = t('sttNotice');
             document.querySelector('#step-1 .btn-secondary').textContent = t('btnBack');
             document.querySelector('#step-1 .btn-primary').textContent = t('btnResults');
 
-            // Step 2
-            document.querySelector('#step-2 .section-eyebrow').textContent = t('step3of3');
+            // Step 2 (results)
             document.querySelector('#step-2 .section-title').innerHTML = t('titleResult');
             const rt = document.getElementById('remarksTitle');
             if (rt) rt.textContent = t('remarksTitle');
@@ -2057,8 +2353,10 @@
             if (bpdf) bpdf.textContent = t('btnPdf');
 
             // Rebuild dynamic content if on those steps
-            if (currentStep === 1) buildCriteria();
-            if (currentStep === 2) renderResult();
+            if (currentStep === 2) buildCriteria();
+            if (currentStep === 3) renderResult();
+            // Update step counters/eyebrows after translation change
+            updateUI();
         }
 
         function downloadPDF() {
@@ -2132,6 +2430,7 @@
         }
         function saveState() {
             localStorage.setItem('ifa-eval-state', JSON.stringify({
+                version: 2,
                 evaluatorName: document.getElementById('evaluatorName').value,
                 refName: document.getElementById('refName').value,
                 country: document.getElementById('country').value,
@@ -2139,7 +2438,8 @@
                 teamHome: document.getElementById('teamHome').value,
                 teamAway: document.getElementById('teamAway').value,
                 place: document.getElementById('place').value,
-                selectedDiff, scores, notes,
+                evaluationLevel: document.getElementById('evaluationLevel')?.value || 'international',
+                selectedDiff, scores, notes, checklistAnswers,
                 remarksHints: document.getElementById('remarksHints')?.value ?? remarksHints,
                 currentStep
             }));
@@ -2150,9 +2450,19 @@
             if (!raw) return;
             try {
                 const s = JSON.parse(raw);
+                // Migrate from v1 step numbering (criteria=1, results=2) to v2 (criteria=2, results=3)
+                if (!s.version || s.version < 2) {
+                    if (s.currentStep === 1) s.currentStep = 2;
+                    else if (s.currentStep === 2) s.currentStep = 3;
+                    if (!s.evaluationLevel) s.evaluationLevel = 'international';
+                }
                 ['evaluatorName','refName','country','matchDate','teamHome','teamAway','place'].forEach(id => {
                     if (s[id] != null) document.getElementById(id).value = s[id];
                 });
+                if (s.evaluationLevel) {
+                    const el = document.getElementById('evaluationLevel');
+                    if (el) el.value = s.evaluationLevel;
+                }
                 if (s.selectedDiff) {
                     selectedDiff = s.selectedDiff;
                     document.querySelectorAll('.diff-btn').forEach(b => {
@@ -2161,8 +2471,9 @@
                 }
                 if (s.scores) scores = s.scores;
                 if (s.notes) notes = s.notes;
+                if (s.checklistAnswers) { checklistAnswers = s.checklistAnswers; restoreChecklist(); }
                 if (s.remarksHints) remarksHints = s.remarksHints;
-                if (s.currentStep >= 1) {
+                if (s.currentStep >= 2) {
                     buildCriteria();
                     Object.entries(scores).forEach(([id, val]) => updateScore(id, val));
                     Object.entries(notes).forEach(([id, text]) => {
@@ -2170,7 +2481,7 @@
                         if (ta) { ta.value = text; saveNote(id); }
                     });
                 }
-                if (s.currentStep === 2) {
+                if (s.currentStep === 3) {
                     document.getElementById('remarksHints').value = remarksHints;
                     autoResizeTextarea(document.getElementById('remarksHints'));
                     const mp = document.getElementById('remarksHintsPrint');
@@ -2187,6 +2498,29 @@
             document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
             el.classList.add('selected');
             saveState();
+        }
+
+        function isNational() {
+            const el = document.getElementById('evaluationLevel');
+            return el && (el.value === 'national_a' || el.value === 'national_b');
+        }
+
+        function setChecklist(key, val) {
+            checklistAnswers[key] = val;
+            ['yes','no','na'].forEach(v => {
+                const btn = document.getElementById('cl-' + key + '-' + v);
+                if (btn) btn.className = 'cl-btn' + (v === val ? ' sel-' + val : '');
+            });
+            saveState();
+        }
+
+        function restoreChecklist() {
+            Object.entries(checklistAnswers).forEach(([key, val]) => {
+                ['yes','no','na'].forEach(v => {
+                    const btn = document.getElementById('cl-' + key + '-' + v);
+                    if (btn) btn.className = 'cl-btn' + (v === val ? ' sel-' + val : '');
+                });
+            });
         }
 
         function validateStep0() {
@@ -2402,13 +2736,28 @@
             CRITERIA.forEach(c => { wSum += (scores[c.id] || 10) * c.weight; });
             const avg = wSum / TOTAL_WEIGHT;
             const pctD = Math.round(((avg - 1) / 9) * 1000) / 10;
-            const hasUnder3 = CRITERIA.some(c => (scores[c.id] || 10) < 6);
-            const countAt3 = CRITERIA.filter(c => { const s = scores[c.id] || 10; return s >= 6 && s < 7; }).length;
             const lawMistake = (scores['rules'] || 10) < 8;
-            let verdict = 'NQ';
-            if (pctD >= 90 && !hasUnder3 && countAt3 <= 1 && !lawMistake) verdict = 'IT1';
-            else if (pctD >= 85 && !hasUnder3 && countAt3 <= 1) verdict = 'IT2';
-            return { avg, pctD, verdict, hasUnder3, countAt3, lawMistake };
+
+            if (isNational()) {
+                const level = document.getElementById('evaluationLevel').value;
+                const hasUnder6 = CRITERIA.some(c => (scores[c.id] || 10) < 6);
+                const countAt6 = CRITERIA.filter(c => { const s = scores[c.id] || 10; return s >= 6 && s < 7; }).length;
+                const hasUnder5 = CRITERIA.some(c => (scores[c.id] || 10) < 5);
+                let verdict = 'NQ';
+                if (level === 'national_a') {
+                    if (pctD >= 88 && !hasUnder6 && countAt6 <= 1 && !lawMistake) verdict = 'NA';
+                } else if (level === 'national_b') {
+                    if (pctD >= 78 && !hasUnder5) verdict = 'NB';
+                }
+                return { avg, pctD, verdict, hasUnder3: hasUnder6, countAt3: countAt6, lawMistake };
+            } else {
+                const hasUnder3 = CRITERIA.some(c => (scores[c.id] || 10) < 6);
+                const countAt3 = CRITERIA.filter(c => { const s = scores[c.id] || 10; return s >= 6 && s < 7; }).length;
+                let verdict = 'NQ';
+                if (pctD >= 90 && !hasUnder3 && countAt3 <= 1 && !lawMistake) verdict = 'IT1';
+                else if (pctD >= 85 && !hasUnder3 && countAt3 <= 1) verdict = 'IT2';
+                return { avg, pctD, verdict, hasUnder3, countAt3, lawMistake };
+            }
         }
 
         function renderResult() {
@@ -2418,13 +2767,15 @@
             const place = document.getElementById('place').value || '—';
             const date = document.getElementById('matchDate').value || '—';
 
-            const vpClass = r.verdict === 'IT1' ? 'vp-it1' : r.verdict === 'IT2' ? 'vp-it2' : 'vp-nq';
-            const vpText = r.verdict === 'IT1' ? t('verdictIT1') : r.verdict === 'IT2' ? t('verdictIT2') : t('verdictNQ');
+            const vpClass = r.verdict === 'IT1' || r.verdict === 'NA' ? 'vp-it1' : r.verdict === 'IT2' || r.verdict === 'NB' ? 'vp-it2' : 'vp-nq';
+            const vpText = r.verdict === 'IT1' ? t('verdictIT1') : r.verdict === 'IT2' ? t('verdictIT2') : r.verdict === 'NA' ? t('verdictNA') : r.verdict === 'NB' ? t('verdictNB') : t('verdictNQ');
 
             let warnings = '';
+            const nat = isNational();
+            const level = document.getElementById('evaluationLevel')?.value || 'international';
             if (r.hasUnder3) warnings += `<div class="warn-item"><span>▸</span>${t('warnUnder3')}</div>`;
-            if (r.countAt3 > 1) warnings += `<div class="warn-item"><span>▸</span>${t('warnCountAt3')}</div>`;
-            if (r.lawMistake) warnings += `<div class="warn-item"><span>▸</span>${t('warnLaw')}</div>`;
+            if (r.countAt3 > 1 && (!nat || level === 'national_a')) warnings += `<div class="warn-item"><span>▸</span>${t('warnCountAt3')}</div>`;
+            if (r.lawMistake && (!nat || level === 'national_a')) warnings += `<div class="warn-item"><span>▸</span>${nat ? t('warnLawNat') || t('warnLaw') : t('warnLaw')}</div>`;
 
             const bdRows = CRITERIA.map(c => {
                 const s = scores[c.id] || 10;
@@ -2458,6 +2809,7 @@
       <div class="chip"><div class="chip-label">${t('labelPlace')}</div><div class="chip-value" style="font-size:12px">${escapeHtml(place)}</div></div>
       ${(document.getElementById('teamHome').value || document.getElementById('teamAway').value) ? `<div class="chip"><div class="chip-label">${t('labelTeams')}</div><div class="chip-value" style="font-size:11px">${escapeHtml(document.getElementById('teamHome').value || '?')} vs ${escapeHtml(document.getElementById('teamAway').value || '?')}</div></div>` : ''}
       <div class="chip"><div class="chip-label">${t('labelDifficulty')}</div><div class="chip-value">${selectedDiff ? t('diff' + selectedDiff) : '—'}</div></div>
+      <div class="chip"><div class="chip-label">${t('labelEvalLevel')}</div><div class="chip-value" style="font-size:11px">${isNational() ? (document.getElementById('evaluationLevel').value === 'national_a' ? 'National A' : 'National B') : 'International'}</div></div>
     </div>
 
     ${warnings ? `<div class="warn-box"><div class="warn-box-title">${t('warningTitle')}</div>${warnings}</div>` : ''}
@@ -2467,12 +2819,43 @@
       ${bdRows}
     </div>
 
+    ${isNational() ? `
+    <div class="qual-box">
+      <div class="qual-header">${t('qualTitle')}</div>
+      <div class="qual-row"><span>${r.verdict === 'NA' ? '✅' : '⬜'}</span><span>${t('qualNA')}</span></div>
+      <div class="qual-row"><span>${r.verdict === 'NB' ? '✅' : '⬜'}</span><span>${t('qualNB')}</span></div>
+      <div class="qual-row"><span>${r.verdict === 'NQ' ? '❌' : '⬜'}</span><span>${t('qualNQ')}</span></div>
+    </div>
+    ${Object.keys(checklistAnswers).length > 0 ? (() => {
+      const clLabels = {
+        equip_clothing: currentLang === 'de' ? 'SR-Kleidung inkl. Abzeichen' : 'Referee clothing incl. badge',
+        equip_whistle: currentLang === 'de' ? 'Pfeife/Uhr/Druckprüfer/Karten' : 'Whistle/stopwatch/gauge/cards',
+        ctrl_field: currentLang === 'de' ? 'Spielfeld geprüft' : 'Field checked',
+        ctrl_clothing: currentLang === 'de' ? 'Spielkleidung geprüft' : 'Playing clothing checked',
+        ctrl_balls: currentLang === 'de' ? 'Bälle geprüft' : 'Balls checked',
+        ctrl_briefing: currentLang === 'de' ? 'Teams informiert' : 'Teams briefed',
+        ctrl_form: currentLang === 'de' ? 'Spielformular ausgefüllt' : 'Game form completed',
+        ctrl_eligibility: currentLang === 'de' ? 'Spielberechtigungen kontrolliert' : 'Player eligibility checked',
+        post_complete: currentLang === 'de' ? 'Formular-Vollständigkeit geprüft' : 'Form completeness checked',
+        post_signed: currentLang === 'de' ? 'Unterschriften eingeholt' : 'Signatures collected',
+        post_closed: currentLang === 'de' ? 'Formular abgeschlossen/übergeben' : 'Form closed & submitted'
+      };
+      const valLabel = v => v === 'yes' ? (currentLang === 'de' ? 'Ja' : 'Yes') : v === 'no' ? (currentLang === 'de' ? 'Nein' : 'No') : 'N.A.';
+      const valColor = v => v === 'yes' ? '#2E7D32' : v === 'no' ? '#B71C1C' : '#6b7f99';
+      const rows = Object.entries(checklistAnswers).map(([key, val]) =>
+        `<div class="breakdown-row"><div class="breakdown-row-left"><div class="breakdown-row-label">${clLabels[key] || key}</div></div><div class="breakdown-row-score" style="color:${valColor(val)};font-size:12px;min-width:40px">${valLabel(val)}</div></div>`
+      ).join('');
+      return `<div class="breakdown-card" style="margin-top:14px;">
+        <div class="breakdown-header">${t('clCard1')+' / '+t('clCard2')+' / '+t('clCard3')}</div>
+        ${rows}
+      </div>`;
+    })() : ''}` : `
     <div class="qual-box">
       <div class="qual-header">${t('qualTitle')}</div>
       <div class="qual-row"><span>${r.verdict === 'IT1' ? '✅' : '⬜'}</span><span>${t('qualIT1')}</span></div>
       <div class="qual-row"><span>${r.verdict === 'IT2' ? '✅' : '⬜'}</span><span>${t('qualIT2')}</span></div>
       <div class="qual-row"><span>${r.verdict === 'NQ' ? '❌' : '⬜'}</span><span>${t('qualNQ')}</span></div>
-    </div>
+    </div>`}
 `;
             document.getElementById('result-page-footer').innerHTML = `
     <div class="ifa-footer">
@@ -2518,23 +2901,52 @@
 
         // ── Navigation ──
         function updateUI() {
+            const nat = isNational();
+            const totalSteps = nat ? 4 : 3;
+            // Logical (1-based) step: for international skip physical step 1 (checklist)
+            let logicalStep;
+            if (nat) {
+                logicalStep = currentStep + 1;
+            } else {
+                if (currentStep === 0) logicalStep = 1;
+                else if (currentStep === 2) logicalStep = 2;
+                else logicalStep = 3;
+            }
             document.querySelectorAll('.step').forEach((s, i) => s.classList.toggle('active', i === currentStep));
-            document.getElementById('progressBar').style.width = (((currentStep + 1) / 3) * 100) + '%';
-            document.getElementById('stepCounter').textContent = `${currentStep + 1} / 3`;
+            document.getElementById('progressBar').style.width = ((logicalStep / totalSteps) * 100) + '%';
+            document.getElementById('stepCounter').textContent = `${logicalStep} / ${totalSteps}`;
+
+            // Update eyebrow labels for each step
+            const stepEls = document.querySelectorAll('.step');
+            const eyebrowMap = nat
+                ? { 0: t('step1of4'), 1: t('step2of4'), 2: t('step3of4'), 3: t('step4of4') }
+                : { 0: t('step1of3'), 2: t('step2of3'), 3: t('step3of3') };
+            Object.entries(eyebrowMap).forEach(([phys, label]) => {
+                const eb = stepEls[parseInt(phys)]?.querySelector('.section-eyebrow');
+                if (eb && label) eb.textContent = label;
+            });
+
             const dots = document.getElementById('navDots'); dots.innerHTML = '';
-            for (let i = 0; i < 3; i++) { const d = document.createElement('div'); d.className = 'nav-dot' + (i === currentStep ? ' active' : ''); d.onclick = () => navToStep(i); dots.appendChild(d); }
+            const physSteps = nat ? [0, 1, 2, 3] : [0, 2, 3];
+            physSteps.forEach(physStep => {
+                const d = document.createElement('div');
+                d.className = 'nav-dot' + (physStep === currentStep ? ' active' : '');
+                d.onclick = () => navToStep(physStep);
+                dots.appendChild(d);
+            });
         }
 
         function navToStep(n) {
             if (n === currentStep) return;
-            if (n > 0 && currentStep === 0 && !validateStep0()) return;
+            if (currentStep === 0 && n > 0 && !validateStep0()) return;
+            if (n === 1 && !isNational()) return; // checklist only for national
             goStep(n);
         }
 
         function goStep(n) {
             if (activeRecognition) activeRecognition.stop();
-            if (n === 1) buildCriteria();
-            if (n === 2) renderResult();
+            if (n === 2) buildCriteria();
+            if (n === 3) renderResult();
             currentStep = n; updateUI(); window.scrollTo(0, 0);
             saveState();
         }
@@ -2554,6 +2966,7 @@
                 home: document.getElementById('teamHome').value || '-',
                 away: document.getElementById('teamAway').value || '-',
                 difficulty: selectedDiff ? t('diff' + selectedDiff) : '-',
+                evaluationLevel: document.getElementById('evaluationLevel')?.value || 'international',
                 scorePercent: r.pctD,
                 label: r.verdict,
                 score_rules: scores['rules'] || 10,
@@ -2595,10 +3008,13 @@
 
         function resetForm(skipConfirm = false) {
             if (!skipConfirm && !confirm(t('confirmReset'))) return;
-            scores = {}; notes = {}; selectedDiff = ''; remarksHints = '';
+            scores = {}; notes = {}; selectedDiff = ''; remarksHints = ''; checklistAnswers = {};
             ['refName', 'country', 'place', 'evaluatorName', 'remarksHints', 'teamHome', 'teamAway', 'refEmail'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('matchDate').value = new Date().toISOString().slice(0, 10);
+            const el = document.getElementById('evaluationLevel');
+            if (el) el.value = 'international';
             document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.cl-btn').forEach(b => b.className = 'cl-btn');
             localStorage.removeItem('ifa-eval-state');
             goStep(0);
         }
@@ -2613,6 +3029,7 @@
                 if (this.value.trim()) this.classList.remove('field-error');
             });
         });
+        document.getElementById('evaluationLevel').addEventListener('change', saveState);
         restoreState();
         updateUI();
     </script>
@@ -2845,19 +3262,26 @@
                 { target: 'evaluatorName', title: 'Your Name', body: 'Enter your full name as the evaluator. This identifies who conducted the evaluation.' },
                 { target: 'refName', title: 'Referee\'s Name', body: 'Enter the full name of the referee being evaluated, their country code (3 letters), and the match date.' },
                 { target: 'teamHome', title: 'Match Details', body: 'Enter team names and the competition/venue. This context matters — a World Championship final differs from a regional league match.' },
+                { target: 'evaluationLevel', title: 'Evaluation Level', body: 'Select the level: International (IT1/IT2) or National (A/B-Referee). National mode adds a pre/post-match checklist and uses different qualification thresholds.' },
                 { target: 'scoringMethodBox', title: 'Scoring Method', body: 'Each criterion starts at 10 points. Deduct 1 point per observable mistake. Higher weights amplify the impact on the final score.' },
-                { target: 'btn-continue', title: 'Continue When Ready', body: 'Once all fields are filled, tap Continue to proceed to Criteria Scoring. You can always navigate back to correct details.', arrow: 'bottom' }
+                { target: 'btn-continue', title: 'Continue When Ready', body: 'Once all fields are filled, tap Continue to proceed. For national evaluations a checklist step will appear next.', arrow: 'bottom' }
             ],
             1: [
-                { target: 'card-rules', title: 'Rules (×4) — Most Important', body: 'This criterion carries the highest weight. A score below 8 automatically prevents IT1 — regardless of the overall percentage.' },
+                { target: 'cl-card1-title', title: 'Personal Equipment', body: 'Check referee clothing (incl. badge), whistle, stopwatch, pressure gauge, and cards. These should be verified before the match.' },
+                { target: 'cl-card2-title', title: 'Pre-Match Controls', body: 'Verify field setup, playing clothing, balls, player eligibility, and game form. Player eligibility is particularly important for national matches.' },
+                { target: 'cl-card3-title', title: 'Post-Match Administration', body: 'After the match, confirm that all entries are complete, signatures have been collected, and the form has been closed and handed over.' },
+                { target: 'cl-btn-next', title: 'Continue to Scoring', body: 'Tap Continue to proceed to the criteria scoring step. The checklist results will appear in the final report.', arrow: 'bottom' }
+            ],
+            2: [
+                { target: 'card-rules', title: 'Rules (×4) — Most Important', body: 'This criterion carries the highest weight. A score below 8 automatically prevents IT1 and A-Referee qualification — regardless of the overall percentage.' },
                 { target: 'stepper-rules', title: 'Scoring Stepper', body: 'Each criterion starts at 10. Tap − to deduct 1 point per mistake. The label and colour update in real time.' },
                 { target: 'help-btn-rules', title: 'Tap ? for Guidance', body: 'Every criterion has a ? button. Tap it to see exactly what to observe and a list of common deduction examples.' },
                 { target: 'notes-toggle-rules', title: 'Notes — Always Add Context', body: 'Tap the Notes toggle on any card to explain why you deducted points. Specific notes are valuable feedback for the referee.' },
                 { target: 'card-leadership', title: 'Leadership (×3)', body: 'Assess penalties, game control, communication with players and coaches, and coordination with the second referee.' },
                 { target: 'card-demeanor', title: 'Demeanor (×3)', body: 'Observe gestures, whistle volume, and body language. Is the referee confident and visibly in control?', arrow: 'bottom' }
             ],
-            2: [
-                { target: 'resultContent', title: 'Evaluation Result', body: 'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ) are shown automatically.' },
+            3: [
+                { target: 'resultContent', title: 'Evaluation Result', body: 'The score is calculated from all criteria weighted sums. A percentage and verdict (IT1/IT2/NQ or A-/B-Referee/NQ for national) are shown automatically.' },
                 { target: 'labelDifficulty', title: 'Match Difficulty', body: 'Select the difficulty level of the match. This context helps calibrate the evaluation — a harder match demands more from the referee.' },
                 { target: 'remarksTitle', title: 'Overall Remarks', body: 'Before exporting, hold a brief post-match discussion with the referee. Add observations from that conversation here.' },
                 { target: 'btn-export', title: 'Submit the Evaluation', body: 'Tap Submit to send the evaluation directly to the IFA office. The data is transmitted automatically — no further action needed.', arrow: 'bottom' }
