@@ -1901,6 +1901,7 @@
                 scoringDesc: 'Each criterion starts at <strong>10 points</strong>. Deduct 1 point per mistake. Higher weight = more impact on total score.',
                 btnContinue: 'Continue →', btnBack: '← Back', btnResults: 'Results →',
                 btnEdit: '← Back', btnExport: '✉ Submit', btnNewEval: '🔄 New Evaluation',
+                tourSkip: 'Skip', tourPrev: '← Prev', tourNext: 'Next →', tourDone: '✓ Done', tourStep: 'Step',
                 scoreExcellent: 'Excellent', scoreGood: 'Good', scoreInconstant: 'Inconstant', scorePoor: 'Poor', scoreCritical: 'Critical',
                 eachMistake: 'Each mistake: −1 pt', helpWhatToAssess: 'What to assess', weight: 'Weight',
                 notes: '📝 Notes', recording: '🔴 Recording… tap mic to stop',
@@ -1974,6 +1975,7 @@
                 scoringDesc: 'Jedes Kriterium startet bei <strong>10 Punkten</strong>. Jeder Fehler: −1 Pkt. Höhere Gewichtung = größerer Einfluss auf Gesamtergebnis.',
                 btnContinue: 'Weiter →', btnBack: '← Zurück', btnResults: 'Ergebnisse →',
                 btnEdit: '← Zurück', btnExport: '✉ Absenden', btnNewEval: '🔄 Neue Bewertung',
+                tourSkip: 'Überspringen', tourPrev: '← Zurück', tourNext: 'Weiter →', tourDone: '✓ Fertig', tourStep: 'Schritt',
                 scoreExcellent: 'Ausgezeichnet', scoreGood: 'Gut', scoreInconstant: 'Inkonstant', scorePoor: 'Schwach', scoreCritical: 'Kritisch',
                 eachMistake: 'Jeder Fehler: −1 Pkt.', helpWhatToAssess: 'Was zu bewerten', weight: 'Gewicht',
                 notes: '📝 Notizen', recording: '🔴 Aufnahme… Mikrofon tippen zum Stoppen',
@@ -2047,6 +2049,7 @@
                 scoringDesc: 'Cada criterio comienza en <strong>10 puntos</strong>. Cada error: −1 pt. Mayor peso = mayor impacto en la puntuación total.',
                 btnContinue: 'Continuar →', btnBack: '← Atrás', btnResults: 'Resultados →',
                 btnEdit: '← Atrás', btnExport: '✉ Enviar', btnNewEval: '🔄 Nueva Evaluación',
+                tourSkip: 'Omitir', tourPrev: '← Anterior', tourNext: 'Siguiente →', tourDone: '✓ Listo', tourStep: 'Paso',
                 scoreExcellent: 'Excelente', scoreGood: 'Bueno', scoreInconstant: 'Inconstante', scorePoor: 'Deficiente', scoreCritical: 'Crítico',
                 eachMistake: 'Cada error: −1 pt', helpWhatToAssess: 'Qué evaluar', weight: 'Peso',
                 notes: '📝 Notas', recording: '🔴 Grabando… toque el mic para detener',
@@ -2119,6 +2122,7 @@
                 scoringDesc: 'Cada critério começa em <strong>10 pontos</strong>. Cada erro: −1 pt. Maior peso = maior impacto na pontuação total.',
                 btnContinue: 'Continuar →', btnBack: '← Voltar', btnResults: 'Resultados →',
                 btnEdit: '← Voltar', btnExport: '✉ Enviar', btnNewEval: '🔄 Nova Avaliação',
+                tourSkip: 'Pular', tourPrev: '← Anterior', tourNext: 'Próximo →', tourDone: '✓ Concluído', tourStep: 'Passo',
                 scoreExcellent: 'Excelente', scoreGood: 'Bom', scoreInconstant: 'Inconstante', scorePoor: 'Fraco', scoreCritical: 'Crítico',
                 eachMistake: 'Cada erro: −1 pt', helpWhatToAssess: 'O que avaliar', weight: 'Peso',
                 notes: '📝 Notas', recording: '🔴 Gravando… toque o mic para parar',
@@ -2191,6 +2195,7 @@
                 scoringDesc: 'Ogni criterio inizia da <strong>10 punti</strong>. Ogni errore: −1 pt. Peso maggiore = impatto maggiore sul punteggio totale.',
                 btnContinue: 'Continua →', btnBack: '← Indietro', btnResults: 'Risultati →',
                 btnEdit: '← Indietro', btnExport: '✉ Invia', btnNewEval: '🔄 Nuova Valutazione',
+                tourSkip: 'Salta', tourPrev: '← Indietro', tourNext: 'Avanti →', tourDone: '✓ Fine', tourStep: 'Passo',
                 scoreExcellent: 'Eccellente', scoreGood: 'Buono', scoreInconstant: 'Incostante', scorePoor: 'Scarso', scoreCritical: 'Critico',
                 eachMistake: 'Ogni errore: −1 pt', helpWhatToAssess: 'Cosa valutare', weight: 'Peso',
                 notes: '📝 Note', recording: '🔴 Registrazione… tocca il mic per fermare',
@@ -3325,7 +3330,7 @@
             const arrow = s.arrow || 'top';
             const pad = 8;
             const rect = el.getBoundingClientRect();
-            const t = rect.top - pad;
+            const rTop = rect.top - pad;
             const l = rect.left - pad;
             const r = rect.right + pad;
             const b = rect.bottom + pad;
@@ -3333,10 +3338,10 @@
             const VH = window.innerHeight;
 
             document.getElementById('tour-ring').style.cssText =
-                `top:${t}px;left:${l}px;width:${r - l}px;height:${b - t}px;`;
+                `top:${rTop}px;left:${l}px;width:${r - l}px;height:${b - rTop}px;`;
 
             document.getElementById('tour-mask').style.clipPath =
-                `polygon(0 0,${W}px 0,${W}px ${VH}px,0 ${VH}px,0 0,${l}px ${t}px,${l}px ${b}px,${r}px ${b}px,${r}px ${t}px,${l}px ${t}px)`;
+                `polygon(0 0,${W}px 0,${W}px ${VH}px,0 ${VH}px,0 0,${l}px ${rTop}px,${l}px ${b}px,${r}px ${b}px,${r}px ${rTop}px,${l}px ${rTop}px)`;
 
             const bubble = document.getElementById('tour-bubble');
             const bubbleH = 200; // estimated bubble height for clamping
@@ -3344,13 +3349,13 @@
             // auto-flip: if arrow:top would push bubble off bottom, switch to bottom
             if (useArrow === 'top' && b + 14 + bubbleH > VH) useArrow = 'bottom';
             // auto-flip: if arrow:bottom would push bubble off top, switch to top
-            if (useArrow === 'bottom' && t - 14 - bubbleH < 0) useArrow = 'top';
+            if (useArrow === 'bottom' && rTop - 14 - bubbleH < 0) useArrow = 'top';
             bubble.className = 'arrow-' + useArrow;
             if (useArrow === 'top') {
                 bubble.style.top = Math.min(b + 14, VH - bubbleH - 8) + 'px';
                 bubble.style.bottom = '';
             } else {
-                const rawBottom = VH - t + 14;
+                const rawBottom = VH - rTop + 14;
                 bubble.style.top = '';
                 bubble.style.bottom = Math.min(rawBottom, VH - bubbleH - 8) + 'px';
             }
@@ -3358,12 +3363,14 @@
 
             const tl = TOUR_TRANSLATIONS[currentLang] || TOUR_TRANSLATIONS.en;
             const tKey = `s${currentStep}_${tourIdx}`;
-            document.getElementById('tour-progress').textContent = `Step ${tourIdx + 1} / ${tourSteps.length}`;
+            document.getElementById('tour-progress').textContent = `${t('tourStep')} ${tourIdx + 1} / ${tourSteps.length}`;
             document.getElementById('tour-title').textContent = tl[tKey + '_title'] || s.title || '';
             document.getElementById('tour-body').textContent = tl[tKey + '_body'] || s.body || '';
+            document.getElementById('tour-skip').textContent = t('tourSkip');
             document.getElementById('tour-prev').style.display = tourIdx === 0 ? 'none' : '';
+            document.getElementById('tour-prev').textContent = t('tourPrev');
             const nextBtn = document.getElementById('tour-next');
-            nextBtn.textContent = tourIdx === tourSteps.length - 1 ? '✓ Done' : 'Next →';
+            nextBtn.textContent = tourIdx === tourSteps.length - 1 ? t('tourDone') : t('tourNext');
             nextBtn.onclick = tourIdx === tourSteps.length - 1 ? endTour : () => shiftTour(1);
 
             document.querySelectorAll('.tour-dot').forEach((d, i) =>
