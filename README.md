@@ -28,28 +28,28 @@ Beide Flows schreiben in: `https://ifafistball.sharepoint.com/sites/referee`
 
 ### Payload-Felder
 
-| Feld | main | integration |
-|---|---|---|
-| `evaluator` | ✓ | ✓ |
-| `referee` | ✓ | ✓ |
-| `country` | ✓ | ✓ |
-| `date` | ✓ | ✓ |
-| `contest` | ✓ | ✓ |
-| `home` | ✓ | ✓ |
-| `away` | ✓ | ✓ |
-| `difficulty` | ✓ | ✓ |
-| `evaluationLevel` | — | ✓ |
-| `scorePercent` | ✓ | ✓ |
-| `label` | ✓ | ✓ |
-| `score_rules` | ✓ | ✓ |
-| `score_leadership` | ✓ | ✓ |
-| `score_technical` | ✓ | ✓ |
-| `score_demeanor` | ✓ | ✓ |
-| `score_balls` | ✓ | — |
-| `score_motion` | ✓ | — |
-| `score_positioning` | — | ✓ |
-| `score_callquality` | — | ✓ |
-| `remarks` | ✓ | ✓ |
+| Feld | main | integration | Werte (integration) |
+|---|---|---|---|
+| `evaluator` | ✓ | ✓ | string |
+| `referee` | ✓ | ✓ | string |
+| `country` | ✓ | ✓ | string |
+| `date` | ✓ | ✓ | YYYY-MM-DD |
+| `contest` | ✓ | ✓ | string |
+| `home` | ✓ | ✓ | string |
+| `away` | ✓ | ✓ | string |
+| `difficulty` | ✓ | ✓ | Easy / Medium / Hard |
+| `evaluationLevel` | — | ✓ | International / National |
+| `scorePercent` | ✓ | ✓ | number |
+| `label` | ✓ | ✓ | IT1 / IT2 / A-Ref / B-Ref / NQ |
+| `score_rules` | ✓ | ✓ | 1–10 |
+| `score_leadership` | ✓ | ✓ | 1–10 |
+| `score_technical` | ✓ | ✓ | 1–10 |
+| `score_demeanor` | ✓ | ✓ | 1–10 |
+| `score_balls` | ✓ | — | |
+| `score_motion` | ✓ | — | |
+| `score_positioning` | — | ✓ | 1–10 |
+| `score_callquality` | — | ✓ | 1–10 |
+| `remarks` | ✓ | ✓ | string |
 
 ### Merge-Hinweis
 
