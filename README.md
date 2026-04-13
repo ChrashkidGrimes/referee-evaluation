@@ -37,8 +37,8 @@ Beide Flows schreiben in: `https://ifafistball.sharepoint.com/sites/referee`
 | `contest` | ✓ | ✓ | string |
 | `home` | ✓ | ✓ | string |
 | `away` | ✓ | ✓ | string |
-| `difficulty` | ✓ | ✓ | Easy / Medium / Hard |
-| `evaluationLevel` | — | ✓ | International / National |
+| `difficulty` | ✓ | ✓ | easy / medium / hard |
+| `evaluationLevel` | — | ✓ | international / national |
 | `scorePercent` | ✓ | ✓ | number |
 | `label` | ✓ | ✓ | IT1 / IT2 / A-Ref / B-Ref / NQ |
 | `score_rules` | ✓ | ✓ | 1–10 |
